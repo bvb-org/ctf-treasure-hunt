@@ -1,0 +1,86 @@
+===== CHALLENGE 7: MICROSERVICE MAZE =====
+
+Your task is to trace a user request through a complex microservice architecture to identify where an error is occurring.
+
+INSTRUCTIONS:
+1. Study the microservice architecture diagram and logs provided below
+2. Trace the request with ID "req-7d3f9a2e" through the system
+3. Identify which microservice is causing the error
+4. Find the root cause of the error
+5. Enter the password hidden in the error details on the challenge page to unlock the next challenge
+
+MICROSERVICE ARCHITECTURE DIAGRAM:
+
+[API Gateway] → [Auth Service] → [User Service]
+      ↓                               ↓
+[Payment Service] ← [Order Service] → [Inventory Service]
+      ↓                ↓
+[Notification Service] [Shipping Service]
+
+REQUEST FLOW:
+1. All requests enter through the API Gateway
+2. The API Gateway forwards requests to the appropriate service
+3. Services communicate with each other as needed
+4. Each service logs its actions with the request ID
+
+SYSTEM LOGS:
+
+[2025-04-30 14:23:15] [API Gateway] [INFO] [req-7d3f9a2e] Received request: POST /api/orders
+[2025-04-30 14:23:15] [API Gateway] [INFO] [req-7d3f9a2e] Forwarding request to Auth Service
+[2025-04-30 14:23:15] [Auth Service] [INFO] [req-7d3f9a2e] Validating user token
+[2025-04-30 14:23:15] [Auth Service] [INFO] [req-7d3f9a2e] Token valid for user: john.doe@example.com
+[2025-04-30 14:23:15] [Auth Service] [INFO] [req-7d3f9a2e] Forwarding request to Order Service
+[2025-04-30 14:23:16] [Order Service] [INFO] [req-7d3f9a2e] Creating new order for user: john.doe@example.com
+[2025-04-30 14:23:16] [Order Service] [INFO] [req-7d3f9a2e] Order items: 2x Product A, 1x Product B
+[2025-04-30 14:23:16] [Order Service] [INFO] [req-7d3f9a2e] Checking inventory availability
+[2025-04-30 14:23:16] [Order Service] [INFO] [req-7d3f9a2e] Sending request to Inventory Service
+[2025-04-30 14:23:16] [Inventory Service] [INFO] [req-7d3f9a2e] Checking inventory for: Product A
+[2025-04-30 14:23:16] [Inventory Service] [INFO] [req-7d3f9a2e] Product A available: 10 units
+[2025-04-30 14:23:16] [Inventory Service] [INFO] [req-7d3f9a2e] Checking inventory for: Product B
+[2025-04-30 14:23:16] [Inventory Service] [INFO] [req-7d3f9a2e] Product B available: 5 units
+[2025-04-30 14:23:16] [Inventory Service] [INFO] [req-7d3f9a2e] Reserving inventory: 2x Product A, 1x Product B
+[2025-04-30 14:23:16] [Inventory Service] [INFO] [req-7d3f9a2e] Inventory reserved successfully
+[2025-04-30 14:23:16] [Inventory Service] [INFO] [req-7d3f9a2e] Sending response to Order Service
+[2025-04-30 14:23:17] [Order Service] [INFO] [req-7d3f9a2e] Inventory check successful
+[2025-04-30 14:23:17] [Order Service] [INFO] [req-7d3f9a2e] Processing payment
+[2025-04-30 14:23:17] [Order Service] [INFO] [req-7d3f9a2e] Sending request to Payment Service
+[2025-04-30 14:23:17] [Payment Service] [INFO] [req-7d3f9a2e] Processing payment for order
+[2025-04-30 14:23:17] [Payment Service] [INFO] [req-7d3f9a2e] Payment amount: $45.99
+[2025-04-30 14:23:17] [Payment Service] [INFO] [req-7d3f9a2e] Charging credit card: **** **** **** 4321
+[2025-04-30 14:23:18] [Payment Service] [ERROR] [req-7d3f9a2e] Payment processing failed
+[2025-04-30 14:23:18] [Payment Service] [ERROR] [req-7d3f9a2e] Error details: Connection timeout to payment gateway
+[2025-04-30 14:23:18] [Payment Service] [ERROR] [req-7d3f9a2e] Root cause: Payment gateway API key expired (Error code: PG-AUTH-EXP)
+[2025-04-30 14:23:18] [Payment Service] [ERROR] [req-7d3f9a2e] Debug info: Secret password for challenge: MicroserviceTracer123
+[2025-04-30 14:23:18] [Payment Service] [INFO] [req-7d3f9a2e] Sending failure response to Order Service
+[2025-04-30 14:23:18] [Order Service] [ERROR] [req-7d3f9a2e] Payment processing failed
+[2025-04-30 14:23:18] [Order Service] [INFO] [req-7d3f9a2e] Releasing reserved inventory
+[2025-04-30 14:23:18] [Order Service] [INFO] [req-7d3f9a2e] Sending request to Inventory Service
+[2025-04-30 14:23:18] [Inventory Service] [INFO] [req-7d3f9a2e] Releasing reserved inventory: 2x Product A, 1x Product B
+[2025-04-30 14:23:18] [Inventory Service] [INFO] [req-7d3f9a2e] Inventory released successfully
+[2025-04-30 14:23:18] [Order Service] [INFO] [req-7d3f9a2e] Order creation failed
+[2025-04-30 14:23:18] [Order Service] [INFO] [req-7d3f9a2e] Sending notification about failed order
+[2025-04-30 14:23:18] [Order Service] [INFO] [req-7d3f9a2e] Sending request to Notification Service
+[2025-04-30 14:23:19] [Notification Service] [INFO] [req-7d3f9a2e] Sending order failure notification
+[2025-04-30 14:23:19] [Notification Service] [INFO] [req-7d3f9a2e] Notification sent to: john.doe@example.com
+[2025-04-30 14:23:19] [Order Service] [INFO] [req-7d3f9a2e] Returning error response to API Gateway
+[2025-04-30 14:23:19] [API Gateway] [ERROR] [req-7d3f9a2e] Order creation failed
+[2025-04-30 14:23:19] [API Gateway] [INFO] [req-7d3f9a2e] Returning error response to client
+
+HINT: Follow the request ID through the logs and look for error messages to identify the root cause.
+
+===== SOLUTION (HIDDEN) =====
+
+Tracing the request with ID "req-7d3f9a2e" through the system:
+
+1. The request enters through the API Gateway (POST /api/orders)
+2. It's forwarded to the Auth Service, which validates the user token
+3. The request then goes to the Order Service, which creates a new order
+4. Order Service checks inventory with the Inventory Service, which is successful
+5. Order Service then processes payment with the Payment Service
+6. The Payment Service fails with a connection timeout to the payment gateway
+7. The root cause is an expired payment gateway API key (Error code: PG-AUTH-EXP)
+8. The error propagates back through the system, releasing inventory and sending a notification
+
+The microservice causing the error is the Payment Service.
+The root cause is an expired payment gateway API key.
+The password hidden in the error details is: MicroserviceTracer123

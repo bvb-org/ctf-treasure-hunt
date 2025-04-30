@@ -1,0 +1,114 @@
+{
+  "event": {
+    "name": "ING Tech Treasure Hunt",
+    "description": "A technical treasure hunt for ING's brightest minds",
+    "duration": "4 hours",
+    "date": "2025-05-30T18:00:00",
+    "location": "Online"
+  },
+  "challenges": [
+    {
+      "id": "challenge1",
+      "title": "The Hidden Message",
+      "description": "Decode the hidden message in the binary sequence",
+      "difficulty": "Easy",
+      "points": 100,
+      "category": "Cryptography",
+      "file": "binary_message.txt",
+      "hint": "Think about how text is represented in computers"
+    },
+    {
+      "id": "challenge2",
+      "title": "Network Puzzle",
+      "description": "Identify network devices from their descriptions and complete the network diagram",
+      "difficulty": "Easy",
+      "points": 150,
+      "category": "Networking",
+      "file": "network_puzzle.html",
+      "hint": "Match each device description with its common network symbol"
+    },
+    {
+      "id": "challenge3",
+      "title": "Password Strength",
+      "description": "Create a secure password that meets all the specified requirements",
+      "difficulty": "Easy",
+      "points": 150,
+      "category": "Security",
+      "file": "password_strength.html",
+      "hint": "Combine different character types in a creative way"
+    },
+    {
+      "id": "challenge4",
+      "title": "HTTP Status Codes",
+      "description": "Match the HTTP status codes with their correct descriptions",
+      "difficulty": "Medium",
+      "points": 200,
+      "category": "Web Development",
+      "file": "http_status.html",
+      "hint": "Remember the different categories: 1xx, 2xx, 3xx, 4xx, and 5xx"
+    },
+    {
+      "id": "challenge5",
+      "title": "Git Mystery",
+      "description": "Find the secret message hidden in the Git commit history",
+      "difficulty": "Medium",
+      "points": 200,
+      "category": "Version Control",
+      "file": "git_instructions.txt",
+      "hint": "Look at the first letter of each commit message"
+    },
+    {
+      "id": "challenge6",
+      "title": "Tech Logo Quiz",
+      "description": "Identify the tech companies from partial or distorted logos",
+      "difficulty": "Medium",
+      "points": 200,
+      "category": "Tech Culture",
+      "file": "logo_quiz.html",
+      "hint": "Focus on the distinctive colors and shapes of each logo"
+    },
+    {
+      "id": "challenge7",
+      "title": "Debug the Code",
+      "description": "Find and fix the bugs in a simple JavaScript function",
+      "difficulty": "Medium",
+      "points": 250,
+      "category": "Development",
+      "file": "debug_code.html",
+      "hint": "Check for syntax errors, logic issues, and missing elements"
+    },
+    {
+      "id": "challenge8",
+      "title": "IT Crossword Puzzle",
+      "description": "Complete the crossword puzzle with IT and programming terms",
+      "difficulty": "Hard",
+      "points": 300,
+      "category": "General IT Knowledge",
+      "file": "it_crossword.html",
+      "hint": "Think about common programming languages, hardware components, and tech terminology"
+    }
+  ],
+  "progression": {
+    "type": "sequential",
+    "unlockConditions": {
+      "challenge2": ["challenge1"],
+      "challenge3": ["challenge2"],
+      "challenge4": ["challenge3"],
+      "challenge5": ["challenge3"],
+      "challenge6": ["challenge4", "challenge5"],
+      "challenge7": ["challenge6"],
+      "challenge8": ["challenge7"]
+    }
+  },
+  "scoring": {
+    "basePoints": true,
+    "timeBonus": {
+      "enabled": true,
+      "formula": "points * (1 + (remainingTimeInSeconds / totalTimeInSeconds) * 0.5)"
+    },
+    "hintPenalty": {
+      "enabled": true,
+      "value": 0.2
+    }
+  }
+}

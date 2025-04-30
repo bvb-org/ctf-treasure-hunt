@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTTP Status Codes Challenge</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .challenge-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #ff6200;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .instructions {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+        }
+        .status-codes {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .status-code {
+            background-color: #e8f4fd;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid #2196f3;
+            cursor: grab;
+        }
+        .status-code.dragging {
+            opacity: 0.5;
+            cursor: grabbing;
+        }
+        .status-code h3 {
+            margin-top: 0;
+            color: #2196f3;
+        }
+        .descriptions {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .description {
+            background-color: #f0f0f0;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px dashed #999;
+            min-height: 60px;
+        }
+        .description.hover {
+            background-color: #e0e0e0;
+            border: 1px dashed #555;
+        }
+        .description h3 {
+            margin-top: 0;
+            color: #555;
+        }
+        .description-content {
+            font-style: italic;
+            color: #666;
+        }
+        .matched {
+            background-color: #e8f5e9;
+            border: 1px solid #4caf50;
+        }
+        .hint {
+            background-color: #fffde7;
+            padding: 10px;
+            border-left: 4px solid #ffd600;
+            margin-top: 20px;
+        }
+        .solution {
+            display: none;
+            background-color: #e8f5e9;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            border-left: 4px solid #4caf50;
+        }
+        .submit-section {
+            margin-top: 30px;
+            text-align: center;
+        }
+        .submit-button {
+            background-color: #ff6200;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .submit-button:hover {
+            background-color: #e55a00;
+        }
+        .submit-button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        .success-message {
+            display: none;
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background-color: #4caf50;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        .progress-text {
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="challenge-container">
+        <h1>CHALLENGE 4: HTTP STATUS CODES</h1>
+        
+        <div class="instructions">
+            <h2>Instructions</h2>
+            <p>Your task is to match each HTTP status code with its correct description. This challenge tests your knowledge of common HTTP status codes used in web development and API design.</p>
+            <p>Drag each status code to its corresponding description. Once all matches are correct, you'll receive the challenge password.</p>
+        </div>
+        
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <div class="progress-text" id="progress-text">Progress: 0/10 matched</div>
+        
+        <div class="status-codes" id="status-codes">
+            <div class="status-code" draggable="true" data-code="200">
+                <h3>200 OK</h3>
+            </div>
+            <div class="status-code" draggable="true" data-code="201">
+                <h3>201 Created</h3>
+            </div>
+            <div class="status-code" draggable="true" data-code="301">
+                <h3>301 Moved Permanently</h3>
+            </div>
+            <div class="status-code" draggable="true" data-code="400">
+                <h3>400 Bad Request</h3>
+            </div>
+            <div class="status-code" draggable="true" data-code="401">
+                <h3>401 Unauthorized</h3>
+            </div>
+            <div class="status-code" draggable="true" data-code="403">
+                <h3>403 Forbidden</h3>
+            </div>
+            <div class="status-code" draggable="true" data-code="404">
+                <h3>404 Not Found</h3>
+            </div>
+            <div class="status-code" draggable="true" data-code="500">
+                <h3>500 Internal Server Error</h3>
+            </div>
+            <div class="status-code" draggable="true" data-code="503">
+                <h3>503 Service Unavailable</h3>
+            </div>
+            <div class="status-code" draggable="true" data-code="418">
+                <h3>418 I'm a Teapot</h3>
+            </div>
+        </div>
+        
+        <div class="descriptions" id="descriptions">
+            <div class="description" data-code="200">
+                <h3>Description 1</h3>
+                <p class="description-content">Standard response for successful HTTP requests. The request has succeeded and the server has returned the expected content.</p>
+            </div>
+            <div class="description" data-code="201">
+                <h3>Description 2</h3>
+                <p class="description-content">The request has been fulfilled, resulting in the creation of a new resource. Typically used as a response to POST requests.</p>
+            </div>
+            <div class="description" data-code="301">
+                <h3>Description 3</h3>
+                <p class="description-content">The requested resource has been permanently moved to a new URL. All future requests should use the new URL.</p>
+            </div>
+            <div class="description" data-code="400">
+                <h3>Description 4</h3>
+                <p class="description-content">The server cannot process the request due to a client error, such as malformed request syntax or invalid request message framing.</p>
+            </div>
+            <div class="description" data-code="401">
+                <h3>Description 5</h3>
+                <p class="description-content">Authentication is required but has failed or has not been provided. The client must authenticate itself to get the requested response.</p>
+            </div>
+            <div class="description" data-code="403">
+                <h3>Description 6</h3>
+                <p class="description-content">The client does not have access rights to the content. Unlike 401, the client's identity is known to the server but lacks sufficient permissions.</p>
+            </div>
+            <div class="description" data-code="404">
+                <h3>Description 7</h3>
+                <p class="description-content">The requested resource could not be found on the server. This is one of the most common HTTP errors encountered by users.</p>
+            </div>
+            <div class="description" data-code="500">
+                <h3>Description 8</h3>
+                <p class="description-content">A generic error message indicating that the server encountered an unexpected condition that prevented it from fulfilling the request.</p>
+            </div>
+            <div class="description" data-code="503">
+                <h3>Description 9</h3>
+                <p class="description-content">The server is currently unable to handle the request due to temporary overloading or maintenance of the server.</p>
+            </div>
+            <div class="description" data-code="418">
+                <h3>Description 10</h3>
+                <p class="description-content">An April Fools' joke from 1998. This code indicates that the server refuses to brew coffee because it is, permanently, a teapot.</p>
+            </div>
+        </div>
+        
+        <div class="success-message" id="success-message">
+            <p>Congratulations! You've correctly matched all HTTP status codes with their descriptions.</p>
+            <p>The challenge password is: <strong>HTTP200OK</strong></p>
+        </div>
+        
+        <div class="hint">
+            <h3>Hint</h3>
+            <p>Remember the different categories: 1xx (Informational), 2xx (Success), 3xx (Redirection), 4xx (Client Error), and 5xx (Server Error). Also, don't forget about the joke status code!</p>
+        </div>
+        
+        <div class="solution">
+            <h3>Solution (Hidden)</h3>
+            <p>200 OK - Standard response for successful HTTP requests</p>
+            <p>201 Created - Request fulfilled, resulting in creation of a new resource</p>
+            <p>301 Moved Permanently - Resource permanently moved to a new URL</p>
+            <p>400 Bad Request - Server cannot process due to client error</p>
+            <p>401 Unauthorized - Authentication required but failed or not provided</p>
+            <p>403 Forbidden - Client lacks access rights to the content</p>
+            <p>404 Not Found - Requested resource could not be found</p>
+            <p>500 Internal Server Error - Server encountered unexpected condition</p>
+            <p>503 Service Unavailable - Server temporarily unable to handle request</p>
+            <p>418 I'm a Teapot - April Fools' joke status code</p>
+            <p>Password: HTTP200OK</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const statusCodes = document.querySelectorAll('.status-code');
+            const descriptions = document.querySelectorAll('.description');
+            const progressFill = document.getElementById('progress-fill');
+            const progressText = document.getElementById('progress-text');
+            const successMessage = document.getElementById('success-message');
+            
+            let dragged = null;
+            let matchedCount = 0;
+            
+            // Initialize drag and drop for status codes
+            statusCodes.forEach(statusCode => {
+                statusCode.addEventListener('dragstart', function(e) {
+                    dragged = this;
+                    this.classList.add('dragging');
+                    e.dataTransfer.setData('text/plain', this.dataset.code);
+                });
+                
+                statusCode.addEventListener('dragend', function() {
+                    this.classList.remove('dragging');
+                });
+            });
+            
+            // Initialize drop zones for descriptions
+            descriptions.forEach(description => {
+                description.addEventListener('dragover', function(e) {
+                    e.preventDefault();
+                    this.classList.add('hover');
+                });
+                
+                description.addEventListener('dragleave', function() {
+                    this.classList.remove('hover');
+                });
+                
+                description.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    this.classList.remove('hover');
+                    
+                    const statusCodeValue = e.dataTransfer.getData('text/plain');
+                    
+                    // Check if this description already has a status code
+                    if (this.querySelector('.status-code')) {
+                        return;
+                    }
+                    
+                    // Check if the match is correct
+                    if (statusCodeValue === this.dataset.code) {
+                        // Correct match
+                        this.appendChild(dragged);
+                        this.classList.add('matched');
+                        dragged.setAttribute('draggable', 'false');
+                        matchedCount++;
+                        
+                        // Update progress
+                        const progress = (matchedCount / 10) * 100;
+                        progressFill.style.width = progress + '%';
+                        progressText.textContent = `Progress: ${matchedCount}/10 matched`;
+                        
+                        // Check if all matches are correct
+                        if (matchedCount === 10) {
+                            successMessage.style.display = 'block';
+                        }
+                    } else {
+                        // Incorrect match - shake the description
+                        this.classList.add('shake');
+                        setTimeout(() => {
+                            this.classList.remove('shake');
+                        }, 500);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

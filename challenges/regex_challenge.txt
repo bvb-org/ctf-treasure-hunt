@@ -1,0 +1,91 @@
+===== CHALLENGE 6: REGEX RIDDLE =====
+
+Your task is to create a regular expression pattern that matches specific criteria for validating product codes in an e-commerce system.
+
+INSTRUCTIONS:
+1. Create a regex pattern that validates product codes according to the rules below
+2. Test your pattern against the provided test cases
+3. Enter the correct regex pattern as the password on the challenge page to unlock the next challenge
+
+PRODUCT CODE RULES:
+
+A valid product code must follow these rules:
+1. Start with either "ING-" or "TECH-"
+2. Followed by exactly 3 uppercase letters (A-Z)
+3. Followed by a hyphen (-)
+4. Followed by exactly 4 digits (0-9)
+5. The 3rd digit must be either 7 or 9
+6. End with an optional category suffix that:
+   a. Starts with a hash (#)
+   b. Followed by 1-3 lowercase letters (a-z)
+   c. The category suffix is optional (may or may not be present)
+
+EXAMPLES OF VALID PRODUCT CODES:
+- ING-ABC-1234
+- TECH-XYZ-5678
+- ING-DEF-1274
+- TECH-MNO-5698#dev
+- ING-PQR-1374#ui
+- TECH-STU-5978#api
+
+EXAMPLES OF INVALID PRODUCT CODES:
+- ING-abc-1234 (letters must be uppercase)
+- TECH-XYZ-567 (must have exactly 4 digits)
+- ABC-DEF-1234 (must start with ING- or TECH-)
+- ING-ABC-1234# (category suffix must have at least one letter after #)
+- TECH-XYZ-5678#DEV (category suffix must be lowercase)
+- ING-ABC-1234#toolong (category suffix must have 1-3 letters)
+- TECH-XYZ-5612 (3rd digit must be 7 or 9)
+
+TEST YOUR REGEX:
+
+Use this JavaScript code to test your regex pattern:
+
+```javascript
+function testProductCode(regex, code) {
+  return regex.test(code) ? "VALID" : "INVALID";
+}
+
+// Replace this with your regex pattern
+const productCodeRegex = /YOUR_REGEX_PATTERN_HERE/;
+
+// Test cases
+const testCases = [
+  "ING-ABC-1234",
+  "TECH-XYZ-5678",
+  "ING-DEF-1274",
+  "TECH-MNO-5698#dev",
+  "ING-PQR-1374#ui",
+  "TECH-STU-5978#api",
+  "ING-abc-1234",
+  "TECH-XYZ-567",
+  "ABC-DEF-1234",
+  "ING-ABC-1234#",
+  "TECH-XYZ-5678#DEV",
+  "ING-ABC-1234#toolong",
+  "TECH-XYZ-5612"
+];
+
+// Run tests
+testCases.forEach(code => {
+  console.log(`${code}: ${testProductCode(productCodeRegex, code)}`);
+});
+```
+
+HINT: Use lookahead and lookbehind assertions for complex validations like the 3rd digit requirement.
+
+Good luck!
+
+===== SOLUTION (HIDDEN) =====
+
+The correct regex pattern is:
+^(ING|TECH)-[A-Z]{3}-\d{2}[79]\d(#[a-z]{1,3})?$
+
+Explanation:
+- ^(ING|TECH)- : Starts with either "ING-" or "TECH-"
+- [A-Z]{3}- : Followed by exactly 3 uppercase letters and a hyphen
+- \d{2}[79]\d : 4 digits where the 3rd digit is either 7 or 9
+- (#[a-z]{1,3})? : Optional category suffix with # followed by 1-3 lowercase letters
+- $ : End of string
+
+Password: ^(ING|TECH)-[A-Z]{3}-\d{2}[79]\d(#[a-z]{1,3})?$

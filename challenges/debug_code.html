@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug the Code Challenge</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .challenge-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #ff6200;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .instructions {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+        }
+        .code-section {
+            margin-bottom: 30px;
+        }
+        .code-editor {
+            width: 100%;
+            height: 300px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f8f8f8;
+            resize: vertical;
+        }
+        .code-output {
+            width: 100%;
+            min-height: 100px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f0f0f0;
+            margin-top: 15px;
+            white-space: pre-wrap;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+        .btn-run {
+            background-color: #4caf50;
+            color: white;
+        }
+        .btn-run:hover {
+            background-color: #45a049;
+        }
+        .btn-reset {
+            background-color: #f44336;
+            color: white;
+        }
+        .btn-reset:hover {
+            background-color: #d32f2f;
+        }
+        .btn-hint {
+            background-color: #2196f3;
+            color: white;
+        }
+        .btn-hint:hover {
+            background-color: #0b7dda;
+        }
+        .hint {
+            background-color: #fffde7;
+            padding: 10px;
+            border-left: 4px solid #ffd600;
+            margin-top: 20px;
+            display: none;
+        }
+        .solution {
+            display: none;
+            background-color: #e8f5e9;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            border-left: 4px solid #4caf50;
+        }
+        .success-message {
+            display: none;
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .bug-list {
+            background-color: #e8f4fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border-left: 4px solid #2196f3;
+        }
+        .bug-list ul {
+            padding-left: 20px;
+        }
+        .bug-list li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="challenge-container">
+        <h1>CHALLENGE 7: DEBUG THE CODE</h1>
+        
+        <div class="instructions">
+            <h2>Instructions</h2>
+            <p>Your task is to find and fix the bugs in the JavaScript function below. This challenge tests your debugging skills and understanding of JavaScript fundamentals.</p>
+            <p>The function is supposed to take an array of numbers, filter out the even numbers, double the remaining odd numbers, and return the sum of the doubled values. However, it contains several bugs that prevent it from working correctly.</p>
+            <p>Fix all the bugs and make the function work as intended. Once the function passes all test cases, you'll receive the challenge password.</p>
+        </div>
+        
+        <div class="bug-list">
+            <h2>Bug Types to Look For</h2>
+            <ul>
+                <li>Syntax errors</li>
+                <li>Logic errors</li>
+                <li>Missing or incorrect operators</li>
+                <li>Incorrect variable usage</li>
+                <li>Array manipulation issues</li>
+            </ul>
+        </div>
+        
+        <div class="code-section">
+            <h2>Code Editor</h2>
+            <textarea id="code-editor" class="code-editor">// Function to process an array of numbers
+// It should:
+// 1. Filter out even numbers
+// 2. Double the remaining odd numbers
+// 3. Return the sum of the doubled values
+
+funtion processNumbers(numbers) {
+  // Check if input is valid
+  if (!Array.isArray(numbers) {
+    return "Error: Input must be an array";
+  }
+  
+  // Filter out even numbers
+  const oddNumbers = numbers.filter(function(num) {
+    return num % 2 = 0;
+  });
+  
+  // Double the odd numbers
+  const doubledOdds = oddNumbers.map(num => {
+    num * 2;
+  });
+  
+  // Calculate the sum
+  let sum == 0;
+  for (let i = 0; i <= doubledOdds.length; i++) {
+    sum += doubledOdds[i];
+  }
+  
+  return sums;
+}</textarea>
+            
+            <div class="button-group">
+                <button id="run-btn" class="btn btn-run">Run Code</button>
+                <button id="reset-btn" class="btn btn-reset">Reset Code</button>
+                <button id="hint-btn" class="btn btn-hint">Show Hint</button>
+            </div>
+            
+            <h2>Output</h2>
+            <div id="code-output" class="code-output">// Output will appear here when you run the code</div>
+            
+            <div id="hint" class="hint">
+                <h3>Hint</h3>
+                <p>Look for these common issues:</p>
+                <ul>
+                    <li>Check the function declaration syntax</li>
+                    <li>Verify that all parentheses and braces are properly closed</li>
+                    <li>Check the comparison operators in the filter function</li>
+                    <li>Make sure the map function is returning a value</li>
+                    <li>Check for incorrect variable names and assignment operators</li>
+                    <li>Verify the loop bounds in the for loop</li>
+                </ul>
+            </div>
+            
+            <div id="success-message" class="success-message">
+                <p>Congratulations! You've successfully fixed all the bugs in the code.</p>
+                <p>The challenge password is: <strong>BugHunter42</strong></p>
+            </div>
+        </div>
+        
+        <div class="solution">
+            <h3>Solution (Hidden)</h3>
+            <pre>
+function processNumbers(numbers) {
+  // Check if input is valid
+  if (!Array.isArray(numbers)) {
+    return "Error: Input must be an array";
+  }
+  
+  // Filter out even numbers
+  const oddNumbers = numbers.filter(function(num) {
+    return num % 2 !== 0;
+  });
+  
+  // Double the odd numbers
+  const doubledOdds = oddNumbers.map(num => {
+    return num * 2;
+  });
+  
+  // Calculate the sum
+  let sum = 0;
+  for (let i = 0; i < doubledOdds.length; i++) {
+    sum += doubledOdds[i];
+  }
+  
+  return sum;
+}
+            </pre>
+            <p>Bugs fixed:</p>
+            <ol>
+                <li>Fixed typo in function declaration: "funtion" → "function"</li>
+                <li>Added missing closing parenthesis in the if statement</li>
+                <li>Fixed comparison operator in filter: "=" → "!=="</li>
+                <li>Added return statement in the map function</li>
+                <li>Fixed assignment operator: "==" → "="</li>
+                <li>Fixed loop condition: "<=" → "<"</li>
+                <li>Fixed variable name in return: "sums" → "sum"</li>
+            </ol>
+            <p>Password: BugHunter42</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const codeEditor = document.getElementById('code-editor');
+            const codeOutput = document.getElementById('code-output');
+            const runBtn = document.getElementById('run-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const hintBtn = document.getElementById('hint-btn');
+            const hint = document.getElementById('hint');
+            const successMessage = document.getElementById('success-message');
+            
+            const originalCode = codeEditor.value;
+            
+            // Test cases
+            const testCases = [
+                {
+                    input: [1, 2, 3, 4, 5],
+                    expected: 18 // (1*2) + (3*2) + (5*2) = 2 + 6 + 10 = 18
+                },
+                {
+                    input: [10, 20, 30],
+                    expected: 0 // No odd numbers, so sum is 0
+                },
+                {
+                    input: [7, 9, 11],
+                    expected: 54 // (7*2) + (9*2) + (11*2) = 14 + 18 + 22 = 54
+                },
+                {
+                    input: "not an array",
+                    expected: "Error: Input must be an array"
+                }
+            ];
+            
+            runBtn.addEventListener('click', function() {
+                try {
+                    // Get the code from the editor
+                    const code = codeEditor.value;
+                    
+                    // Evaluate the code to get the function
+                    const processNumbers = new Function(`
+                        ${code}
+                        return processNumbers;
+                    `)();
+                    
+                    // Run test cases
+                    let output = "// Test Results:\n";
+                    let allTestsPassed = true;
+                    
+                    testCases.forEach((testCase, index) => {
+                        try {
+                            const result = processNumbers(testCase.input);
+                            const passed = JSON.stringify(result) === JSON.stringify(testCase.expected);
+                            
+                            output += `Test ${index + 1}: ${passed ? 'PASSED' : 'FAILED'}\n`;
+                            output += `  Input: ${JSON.stringify(testCase.input)}\n`;
+                            output += `  Expected: ${JSON.stringify(testCase.expected)}\n`;
+                            output += `  Got: ${JSON.stringify(result)}\n\n`;
+                            
+                            if (!passed) {
+                                allTestsPassed = false;
+                            }
+                        } catch (error) {
+                            output += `Test ${index + 1}: ERROR\n`;
+                            output += `  Input: ${JSON.stringify(testCase.input)}\n`;
+                            output += `  Error: ${error.message}\n\n`;
+                            allTestsPassed = false;
+                        }
+                    });
+                    
+                    // Display the output
+                    codeOutput.textContent = output;
+                    
+                    // Show success message if all tests passed
+                    if (allTestsPassed) {
+                        successMessage.style.display = 'block';
+                    } else {
+                        successMessage.style.display = 'none';
+                    }
+                } catch (error) {
+                    codeOutput.textContent = `// Error: ${error.message}`;
+                    successMessage.style.display = 'none';
+                }
+            });
+            
+            resetBtn.addEventListener('click', function() {
+                codeEditor.value = originalCode;
+                codeOutput.textContent = "// Output will appear here when you run the code";
+                successMessage.style.display = 'none';
+            });
+            
+            hintBtn.addEventListener('click', function() {
+                hint.style.display = hint.style.display === 'none' ? 'block' : 'none';
+            });
+        });
+    </script>
+</body>
+</html>

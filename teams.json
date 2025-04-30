@@ -1,0 +1,84 @@
+{
+  "teams": [
+    {
+      "id": "binary-bandits",
+      "name": "Binary Bandits",
+      "password": "B4nd1t5C0d3!",
+      "members": ["John Doe", "Jane Smith", "Alex Johnson"],
+      "score": 0,
+      "completedChallenges": []
+    },
+    {
+      "id": "syntax-error",
+      "name": "Syntax Error",
+      "password": "Synt4x2025!",
+      "members": ["Emily Chen", "Michael Brown", "Sarah Wilson"],
+      "score": 0,
+      "completedChallenges": []
+    },
+    {
+      "id": "terminal-titans",
+      "name": "Terminal Titans",
+      "password": "T1t4nT3rm!",
+      "members": ["David Lee", "Lisa Wang", "Robert Garcia"],
+      "score": 0,
+      "completedChallenges": []
+    },
+    {
+      "id": "firewall-fighters",
+      "name": "Firewall Fighters",
+      "password": "F1r3W4ll!",
+      "members": ["Jessica Kim", "Andrew Taylor", "Nicole Martinez"],
+      "score": 0,
+      "completedChallenges": []
+    },
+    {
+      "id": "stack-overflow",
+      "name": "Stack Overflow",
+      "password": "0v3rfl0w!",
+      "members": ["Thomas Anderson", "Maria Rodriguez", "James Wilson"],
+      "score": 0,
+      "completedChallenges": []
+    },
+    {
+      "id": "null-pointers",
+      "name": "Null Pointers",
+      "password": "Nu11P01nt!",
+      "members": ["Kevin Zhang", "Amanda Lewis", "Daniel Clark"],
+      "score": 0,
+      "completedChallenges": []
+    },
+    {
+      "id": "git-guardians",
+      "name": "Git Guardians",
+      "password": "G1tGu4rd!",
+      "members": ["Rachel Green", "Chris Evans", "Michelle Wong"],
+      "score": 0,
+      "completedChallenges": []
+    },
+    {
+      "id": "code-breakers",
+      "name": "Code Breakers",
+      "password": "Br34kC0d3!",
+      "members": ["Brian Johnson", "Sophia Patel", "Eric Thompson"],
+      "score": 0,
+      "completedChallenges": []
+    },
+    {
+      "id": "data-dragons",
+      "name": "Data Dragons",
+      "password": "Dr4g0nD4t4!",
+      "members": ["Laura Chen", "Mark Davis", "Olivia Wilson"],
+      "score": 0,
+      "completedChallenges": []
+    },
+    {
+      "id": "quantum-questers",
+      "name": "Quantum Questers",
+      "password": "Qu4ntumQ!",
+      "members": ["Ryan Mitchell", "Emma Rodriguez", "Jason Kim"],
+      "score": 0,
+      "completedChallenges": []
+    }
+  ]
+}

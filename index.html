@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ING Tech Treasure Hunt</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <h1>ING Tech Treasure Hunt</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#rules">Rules</a></li>
+                    <li><a href="#registration">Registration</a></li>
+                    <li><a href="#leaderboard">Leaderboard</a></li>
+                    <li><a href="#" id="start-hunt-btn" class="btn-start">Start Hunt</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <section id="hero">
+            <div class="hero-content">
+                <h2>Decode. Discover. Dominate.</h2>
+                <p>Join the ultimate tech treasure hunt challenge designed for ING's brightest minds.</p>
+                <div class="countdown">
+                    <div id="countdown-timer">
+                        <div class="time-block">
+                            <span id="days">00</span>
+                            <span class="time-label">Days</span>
+                        </div>
+                        <div class="time-block">
+                            <span id="hours">00</span>
+                            <span class="time-label">Hours</span>
+                        </div>
+                        <div class="time-block">
+                            <span id="minutes">00</span>
+                            <span class="time-label">Minutes</span>
+                        </div>
+                        <div class="time-block">
+                            <span id="seconds">00</span>
+                            <span class="time-label">Seconds</span>
+                        </div>
+                    </div>
+                </div>
+                <a href="#registration" class="btn-register">Register Now</a>
+            </div>
+        </section>
+
+        <section id="about">
+            <h2>About the Hunt</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>The ING Tech Treasure Hunt is a one-night event that challenges your technical skills, problem-solving abilities, and teamwork. Navigate through a series of puzzles, decode hidden messages, and uncover secrets to claim victory and awesome prizes!</p>
+                    <p>Perfect for developers, architects, DevOps engineers, product owners, and all tech enthusiasts at ING.</p>
+                </div>
+                <div class="about-features">
+                    <div class="feature">
+                        <i class="fas fa-users"></i>
+                        <h3>Team-based</h3>
+                        <p>Form your own team or join one</p>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-clock"></i>
+                        <h3>Time-limited</h3>
+                        <p>Complete challenges within 4 hours</p>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-trophy"></i>
+                        <h3>Prizes</h3>
+                        <p>Win exclusive ING tech merchandise</p>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-pizza-slice"></i>
+                        <h3>Food & Drinks</h3>
+                        <p>Celebrate with pizza and drinks after</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="rules">
+            <h2>Rules & Guidelines</h2>
+            <div class="rules-container">
+                <div class="rule">
+                    <div class="rule-number">1</div>
+                    <div class="rule-content">
+                        <h3>Team Composition</h3>
+                        <p>Teams of 3-5 members. You can register as a complete team or as an individual to be matched with others.</p>
+                    </div>
+                </div>
+                <div class="rule">
+                    <div class="rule-number">2</div>
+                    <div class="rule-content">
+                        <h3>Duration</h3>
+                        <p>The hunt will last for 4 hours, starting at 6:00 PM and ending at 10:00 PM, followed by pizza and drinks.</p>
+                    </div>
+                </div>
+                <div class="rule">
+                    <div class="rule-number">3</div>
+                    <div class="rule-content">
+                        <h3>Tools</h3>
+                        <p>You may use any online resources, programming tools, or software to solve challenges. Collaboration within teams is encouraged.</p>
+                    </div>
+                </div>
+                <div class="rule">
+                    <div class="rule-number">4</div>
+                    <div class="rule-content">
+                        <h3>Scoring</h3>
+                        <p>Points are awarded based on challenge difficulty and completion time. Earlier completions receive bonus points.</p>
+                    </div>
+                </div>
+                <div class="rule">
+                    <div class="rule-number">5</div>
+                    <div class="rule-content">
+                        <h3>Fair Play</h3>
+                        <p>No sharing solutions between teams. Admins will monitor progress and may provide hints if needed.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="registration">
+            <h2>Registration</h2>
+            <div class="registration-container">
+                <div class="registration-info">
+                    <p>To participate in the ING Tech Treasure Hunt, please register using the link below.</p>
+                    <p>Teams of 3-5 members will be formed. You can register as a complete team or as an individual to be matched with others.</p>
+                    <a href="#" class="btn-register" id="registration-link">Register Here</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="leaderboard">
+            <h2>Leaderboard</h2>
+            <div class="leaderboard-container">
+                <table id="leaderboard-table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Team</th>
+                            <th>Challenges Completed</th>
+                            <th>Time</th>
+                            <th>Points</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Leaderboard data will be populated dynamically -->
+                    </tbody>
+                </table>
+                <p class="leaderboard-note">Leaderboard updates in real-time during the event</p>
+            </div>
+        </section>
+
+        <footer>
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <p>ING Tech Treasure Hunt</p>
+                </div>
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#rules">Rules</a></li>
+                        <li><a href="#registration">Registration</a></li>
+                        <li><a href="#leaderboard">Leaderboard</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h3>Contact</h3>
+                    <p><i class="fas fa-envelope"></i> treasurehunt@ing.com</p>
+                    <p><i class="fas fa-phone"></i> Internal Ext: 12345</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 ING Tech Treasure Hunt. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add event listener to the Start Hunt button
+            const startHuntBtn = document.getElementById('start-hunt-btn');
+            if (startHuntBtn) {
+                startHuntBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Fetch teams data and show team selection modal
+                    fetch('/api/teams')
+                        .then(response => response.json())
+                        .then(teams => {
+                            // Use the same function from main.js
+                            if (typeof showTeamSelectionModal === 'function') {
+                                showTeamSelectionModal(teams);
+                            } else {
+                                // Fallback if function not available
+                                alert('Please use the Registration link to select your team.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error fetching teams data:', error);
+                            alert('Error loading teams. Please try again later.');
+                        });
+                });
+            }
+        });
+    </script>
+</body>
+</html>

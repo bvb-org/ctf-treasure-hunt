@@ -1,0 +1,64 @@
+# ===== CHALLENGE 4: DOCKER DEPLOYMENT =====
+#
+# Your task is to fix this Dockerfile to properly deploy a Java Spring Boot application.
+# The current configuration has several issues that prevent the container from running correctly.
+#
+# INSTRUCTIONS:
+# 1. Identify and fix all issues in the Dockerfile
+# 2. The application should run on port 8080 and be accessible from outside the container
+# 3. The application requires environment variables for database connection
+# 4. Find the hidden password in the comments of the fixed Dockerfile
+# 5. Enter the password on the challenge page to unlock the next challenge
+#
+# HINT: Check the exposed ports and environment variables
+
+# Base image - using outdated version
+FROM openjdk:8-jdk-alpine
+
+# Maintainer information
+LABEL maintainer="ing-tech-team@example.com"
+
+# Working directory
+WORKDIR /app
+
+# Copy the JAR file
+# BUG: Incorrect path - should specify the actual JAR file
+COPY target/*.jar app.jar
+
+# BUG: Missing environment variables for database connection
+# Should define environment variables for DB connection
+
+# BUG: Incorrect port exposure - Spring Boot default is 8080
+EXPOSE 8081
+
+# BUG: Incorrect Java options - memory settings are too low
+# BUG: Using ADD instead of COPY for the JAR file (already copied above)
+# BUG: Using incorrect entry point format
+ENTRYPOINT ["java", "-Xms128m", "-Xmx256m", "-jar", "app.jar"]
+
+# ===== SOLUTION (HIDDEN) =====
+#
+# Fixed Dockerfile:
+#
+# FROM openjdk:11-jdk-slim
+# 
+# LABEL maintainer="ing-tech-team@example.com"
+# 
+# WORKDIR /app
+# 
+# COPY target/spring-boot-app.jar app.jar
+# 
+# # Environment variables for database connection
+# ENV DB_HOST=db.example.com
+# ENV DB_PORT=5432
+# ENV DB_NAME=appdb
+# ENV DB_USER=dbuser
+# ENV DB_PASSWORD=dbpass
+# 
+# # Expose the correct port
+# EXPOSE 8080
+# 
+# # Proper Java options with adequate memory
+# ENTRYPOINT ["java", "-Xms512m", "-Xmx1024m", "-jar", "/app/app.jar"]
+#
+# Password: DockerMaster2025
