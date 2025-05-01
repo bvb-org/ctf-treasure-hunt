@@ -25,6 +25,7 @@
         </header>
 
         <section id="hero">
+            <canvas id="hero-canvas"></canvas>
             <div class="hero-content">
                 <h2>Decode. Discover. Dominate.</h2>
                 <p>Join the ultimate tech treasure hunt challenge designed for ING's brightest minds.</p>
@@ -68,7 +69,7 @@
                     <div class="feature">
                         <i class="fas fa-clock"></i>
                         <h3>Time-limited</h3>
-                        <p>Complete challenges within 4 hours</p>
+                        <p>Complete challenges within the time limit</p>
                     </div>
                     <div class="feature">
                         <i class="fas fa-trophy"></i>
@@ -76,9 +77,9 @@
                         <p>Win exclusive ING tech merchandise</p>
                     </div>
                     <div class="feature">
-                        <i class="fas fa-pizza-slice"></i>
-                        <h3>Food & Drinks</h3>
-                        <p>Celebrate with pizza and drinks after</p>
+                        <i class="fas fa-lightbulb"></i>
+                        <h3>Innovation</h3>
+                        <p>Showcase your creative problem-solving</p>
                     </div>
                 </div>
             </div>
@@ -98,7 +99,7 @@
                     <div class="rule-number">2</div>
                     <div class="rule-content">
                         <h3>Duration</h3>
-                        <p>The hunt will last for 4 hours, starting at 6:00 PM and ending at 10:00 PM, followed by pizza and drinks.</p>
+                        <p>The hunt will last for the specified time period, with real-time updates on your progress.</p>
                     </div>
                 </div>
                 <div class="rule">
@@ -184,6 +185,7 @@
     </div>
 
     <script src="js/main.js"></script>
+    <script src="js/animations.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Add event listener to the Start Hunt button

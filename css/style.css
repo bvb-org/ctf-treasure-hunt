@@ -8,6 +8,70 @@
     --success-color: #28a745;
     --danger-color: #dc3545;
     --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    --transition-speed: 0.3s;
+    --gradient-primary: linear-gradient(135deg, #ff6200 0%, #ff8800 100%);
+    --gradient-dark: linear-gradient(135deg, #333 0%, #222 100%);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+@keyframes slideInLeft {
+    from { opacity: 0; transform: translateX(-30px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInRight {
+    from { opacity: 0; transform: translateX(30px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+/* Ripple effect for buttons */
+.btn-register, .btn-start {
+    position: relative;
+    overflow: hidden;
+}
+
+.ripple {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    transform: scale(0);
+    animation: ripple 0.6s linear;
+    pointer-events: none;
+}
+
+@keyframes ripple {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+/* Scroll reveal animations */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease;
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 * {
@@ -21,6 +85,19 @@ body {
     line-height: 1.6;
     color: var(--dark-color);
     background-color: var(--light-color);
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at bottom, #f5f5f5 0%, #e0e0e0 100%);
+    z-index: -1;
 }
 
 .container {
@@ -52,11 +129,18 @@ header {
     justify-content: space-between;
     align-items: center;
     padding: 20px 0;
-    background-color: #fff;
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
     box-shadow: var(--box-shadow);
     position: sticky;
     top: 0;
     z-index: 100;
+    transition: all var(--transition-speed);
+    animation: fadeIn 0.8s ease-out;
+}
+
+header:hover {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
 .logo {
@@ -67,7 +151,17 @@ header {
 .logo h1 {
     font-size: 1.5rem;
     margin-bottom: 0;
-    color: var(--primary-color);
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    transition: transform var(--transition-speed);
+}
+
+.logo h1:hover {
+    transform: scale(1.05);
 }
 
 nav ul {
@@ -81,48 +175,122 @@ nav ul li {
 nav ul li a {
     color: var(--dark-color);
     font-weight: 500;
-    transition: color 0.3s;
+    transition: all var(--transition-speed);
+    position: relative;
+    padding: 5px 0;
+}
+
+nav ul li a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: var(--primary-color);
+    transition: width var(--transition-speed);
 }
 
 nav ul li a:hover {
     color: var(--primary-color);
 }
 
+nav ul li a:hover::after {
+    width: 100%;
+}
+
 .btn-start {
-    background-color: var(--primary-color);
+    background: var(--gradient-primary);
     color: #fff !important;
-    padding: 10px 20px;
-    border-radius: 5px;
-    transition: background-color 0.3s;
+    padding: 12px 24px;
+    border-radius: 30px;
+    transition: all var(--transition-speed);
+    box-shadow: 0 4px 15px rgba(255, 98, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.btn-start::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.2);
+    transition: width var(--transition-speed);
+    z-index: -1;
 }
 
 .btn-start:hover {
-    background-color: #e55a00;
+    transform: translateY(-3px);
+    box-shadow: 0 7px 20px rgba(255, 98, 0, 0.4);
+}
+
+.btn-start:hover::before {
+    width: 100%;
+}
+
+.btn-start:active {
+    transform: translateY(0);
 }
 
 /* Hero Section */
 #hero {
-    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('../img/hero-bg.jpg');
-    background-size: cover;
-    background-position: center;
+    position: relative;
     color: #fff;
     text-align: center;
-    padding: 100px 0;
+    padding: 120px 0;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.7) 100%);
+    overflow: hidden;
+}
+
+#hero-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
 }
 
 .hero-content {
     max-width: 800px;
     margin: 0 auto;
+    position: relative;
+    z-index: 1;
+    animation: fadeIn 1s ease-out;
 }
 
 .hero-content h2 {
-    font-size: 3rem;
+    font-size: 3.5rem;
     margin-bottom: 20px;
+    font-weight: 700;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    animation: slideInLeft 1s ease-out;
+    background: linear-gradient(90deg, #fff, #ff6200, #fff);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: gradient 5s ease infinite;
+}
+
+@keyframes gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 .hero-content p {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     margin-bottom: 40px;
+    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+    animation: slideInRight 1s ease-out;
+    max-width: 80%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .countdown {
@@ -140,7 +308,22 @@ nav ul li a:hover {
     padding: 20px;
     border-radius: 10px;
     min-width: 100px;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all var(--transition-speed);
+    animation: float 3s ease-in-out infinite;
 }
+
+.time-block:hover {
+    transform: translateY(-5px);
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+.time-block:nth-child(1) { animation-delay: 0s; }
+.time-block:nth-child(2) { animation-delay: 0.2s; }
+.time-block:nth-child(3) { animation-delay: 0.4s; }
+.time-block:nth-child(4) { animation-delay: 0.6s; }
 
 .time-block span {
     display: block;
@@ -158,17 +341,38 @@ nav ul li a:hover {
 
 .btn-register {
     display: inline-block;
-    background-color: var(--primary-color);
+    background: var(--gradient-primary);
     color: #fff;
-    padding: 15px 30px;
-    border-radius: 5px;
+    padding: 16px 36px;
+    border-radius: 50px;
     font-size: 1.2rem;
     font-weight: bold;
-    transition: background-color 0.3s;
+    transition: all var(--transition-speed);
+    box-shadow: 0 10px 25px rgba(255, 98, 0, 0.4);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    animation: pulse 2s infinite;
+}
+
+.btn-register::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.7s;
 }
 
 .btn-register:hover {
-    background-color: #e55a00;
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(255, 98, 0, 0.5);
+}
+
+.btn-register:hover::before {
+    left: 100%;
 }
 
 /* About Section */
@@ -201,21 +405,50 @@ nav ul li a:hover {
 }
 
 .feature {
-    background-color: var(--light-color);
+    background-color: #fff;
     padding: 30px;
-    border-radius: 10px;
+    border-radius: 15px;
     box-shadow: var(--box-shadow);
-    transition: transform 0.3s;
+    transition: all var(--transition-speed);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.feature::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: var(--gradient-primary);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--transition-speed);
+    z-index: -1;
 }
 
 .feature:hover {
-    transform: translateY(-10px);
+    transform: translateY(-15px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.feature:hover::before {
+    transform: scaleX(1);
 }
 
 .feature i {
     font-size: 2.5rem;
     color: var(--primary-color);
     margin-bottom: 20px;
+    transition: all var(--transition-speed);
+    display: inline-block;
+}
+
+.feature:hover i {
+    transform: scale(1.2) rotate(5deg);
 }
 
 /* Rules Section */
@@ -234,25 +467,46 @@ nav ul li a:hover {
     align-items: flex-start;
     margin-bottom: 30px;
     background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
+    padding: 25px;
+    border-radius: 15px;
     box-shadow: var(--box-shadow);
     text-align: left;
+    transition: all var(--transition-speed);
+    transform: translateX(-50px);
+    opacity: 0;
+    animation: slideInLeft 0.5s forwards;
+}
+
+.rule:nth-child(1) { animation-delay: 0.1s; }
+.rule:nth-child(2) { animation-delay: 0.2s; }
+.rule:nth-child(3) { animation-delay: 0.3s; }
+.rule:nth-child(4) { animation-delay: 0.4s; }
+.rule:nth-child(5) { animation-delay: 0.5s; }
+
+.rule:hover {
+    transform: translateX(0) scale(1.02);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
 .rule-number {
-    background-color: var(--primary-color);
+    background: var(--gradient-primary);
     color: #fff;
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     font-weight: bold;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     margin-right: 20px;
     flex-shrink: 0;
+    box-shadow: 0 5px 15px rgba(255, 98, 0, 0.3);
+    transition: all var(--transition-speed);
+}
+
+.rule:hover .rule-number {
+    transform: scale(1.1) rotate(360deg);
 }
 
 .rule-content h3 {
@@ -271,11 +525,37 @@ nav ul li a:hover {
 }
 
 .registration-info {
-    background-color: var(--light-color);
-    padding: 30px;
-    border-radius: 10px;
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 20px;
     box-shadow: var(--box-shadow);
     text-align: center;
+    transition: all var(--transition-speed);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    animation: fadeIn 1s ease-out;
+}
+
+.registration-info::before {
+    content: '';
+    position: absolute;
+    top: -100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(255, 98, 0, 0.05), transparent);
+    transition: top var(--transition-speed);
+    z-index: -1;
+}
+
+.registration-info:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.registration-info:hover::before {
+    top: 0;
 }
 
 .registration-info p {
@@ -301,11 +581,18 @@ nav ul li a:hover {
 
 #leaderboard-table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
     background-color: #fff;
     box-shadow: var(--box-shadow);
-    border-radius: 10px;
+    border-radius: 15px;
     overflow: hidden;
+    transition: all var(--transition-speed);
+    animation: fadeIn 1s ease-out;
+}
+
+#leaderboard-table:hover {
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
 }
 
 #leaderboard-table th,
@@ -316,9 +603,12 @@ nav ul li a:hover {
 }
 
 #leaderboard-table th {
-    background-color: var(--primary-color);
+    background: var(--gradient-primary);
     color: #fff;
-    font-weight: 500;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-size: 0.9rem;
 }
 
 #leaderboard-table tr:nth-child(even) {
@@ -327,6 +617,10 @@ nav ul li a:hover {
 
 #leaderboard-table tr:hover {
     background-color: #f1f1f1;
+    transform: scale(1.01);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    z-index: 10;
+    position: relative;
 }
 
 .leaderboard-note {
@@ -337,9 +631,21 @@ nav ul li a:hover {
 
 /* Footer */
 footer {
-    background-color: var(--dark-color);
+    background: var(--gradient-dark);
     color: #fff;
     padding: 60px 0 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: var(--gradient-primary);
 }
 
 .footer-content {
