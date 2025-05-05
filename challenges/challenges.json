@@ -116,6 +116,16 @@
       "category": "Cryptography",
       "file": "cipher_challenge.html",
       "hint": "Look for patterns and common letter frequencies in English"
+    },
+    {
+      "id": "challenge12",
+      "title": "AI Whisperer",
+      "description": "Extract information from an AI assistant by finding the right prompts",
+      "difficulty": "Medium",
+      "points": 250,
+      "category": "Artificial Intelligence",
+      "file": "ai_whisperer.html",
+      "hint": "Try different command patterns and look for subtle hints in the AI's responses"
     }
   ],
   "progression": {
@@ -130,7 +140,8 @@
       "challenge8": ["challenge7"],
       "challenge9": ["challenge6"],
       "challenge10": ["challenge9"],
-      "challenge11": ["challenge10"]
+      "challenge11": ["challenge10"],
+      "challenge12": ["challenge11"]
     }
   },
   "scoring": {

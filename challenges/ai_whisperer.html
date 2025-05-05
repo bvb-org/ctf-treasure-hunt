@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Whisperer Challenge</title>
+    <style>
+        /* mIRC-inspired styling for the entire page */
+        body {
+            font-family: "Courier New", Courier, monospace;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            color: #ccc;
+        }
+        
+        /* mIRC-style window container */
+        .mirc-window {
+            max-width: 900px;
+            margin: 20px auto;
+            border: 2px solid #444;
+            border-radius: 0;
+            background-color: #000;
+            box-shadow: 0 0 20px rgba(0, 0, 255, 0.2);
+        }
+        
+        /* mIRC-style title bar */
+        .mirc-title-bar {
+            background: linear-gradient(to right, #000080, #0000aa);
+            color: #fff;
+            padding: 5px 10px;
+            font-weight: bold;
+            border-bottom: 1px solid #444;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .mirc-title-bar .window-controls {
+            display: flex;
+        }
+        
+        .window-button {
+            width: 12px;
+            height: 12px;
+            margin-left: 5px;
+            border: 1px solid #666;
+            border-radius: 2px;
+            background-color: #ccc;
+        }
+        
+        /* mIRC-style menu bar */
+        .mirc-menu-bar {
+            background-color: #1a1a1a;
+            border-bottom: 1px solid #444;
+            padding: 2px 10px;
+            display: flex;
+        }
+        
+        .mirc-menu-item {
+            color: #fff;
+            margin-right: 15px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        .mirc-menu-item:hover {
+            text-decoration: underline;
+        }
+        
+        /* mIRC-style content area */
+        .mirc-content {
+            padding: 15px;
+        }
+        
+        /* mIRC-style section headers */
+        .mirc-section {
+            border: 1px solid #444;
+            margin-bottom: 15px;
+            background-color: #000;
+        }
+        
+        .mirc-section-header {
+            background-color: #1a1a1a;
+            color: #fff;
+            padding: 5px 10px;
+            font-weight: bold;
+            border-bottom: 1px solid #444;
+        }
+        
+        .mirc-section-content {
+            padding: 10px;
+        }
+        
+        /* mIRC-style text colors */
+        h1, h2, h3 {
+            color: #00ffff; /* Cyan - typical mIRC highlight color */
+            margin-top: 0;
+        }
+        
+        p {
+            margin-bottom: 10px;
+        }
+        
+        ul {
+            padding-left: 20px;
+            list-style-type: square;
+            color: #ccc;
+        }
+        
+        li {
+            margin-bottom: 5px;
+        }
+        
+        /* mIRC-style chat container */
+        .mirc-container {
+            display: flex;
+            height: 400px;
+            border: 1px solid #444;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+        
+        .mirc-sidebar {
+            width: 150px;
+            background-color: #1a1a1a;
+            border-right: 1px solid #444;
+            padding: 10px;
+            overflow-y: auto;
+        }
+        
+        .mirc-sidebar h3 {
+            color: #fff;
+            font-size: 14px;
+            margin: 0 0 10px 0;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #444;
+        }
+        
+        .user-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .user-list li {
+            padding: 3px 5px;
+            margin-bottom: 2px;
+            border-radius: 3px;
+        }
+        
+        .user-list li.op {
+            color: #ff9900;
+            font-weight: bold;
+        }
+        
+        .user-list li.bot {
+            color: #33cc33;
+        }
+        
+        .user-list li.user {
+            color: #3399ff;
+        }
+        
+        .mirc-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .mirc-header {
+            background-color: #1a1a1a;
+            padding: 5px 10px;
+            border-bottom: 1px solid #444;
+            font-size: 14px;
+            color: #fff;
+        }
+        
+        .mirc-chat {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+            background-color: #000;
+        }
+        
+        .mirc-input-area {
+            display: flex;
+            padding: 10px;
+            background-color: #1a1a1a;
+            border-top: 1px solid #444;
+        }
+        
+        .mirc-input {
+            flex: 1;
+            background-color: #000;
+            border: 1px solid #444;
+            color: #fff;
+            padding: 5px 10px;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 14px;
+        }
+        
+        .mirc-input:focus {
+            outline: none;
+            border-color: #666;
+        }
+        
+        .mirc-send {
+            background-color: #333;
+            color: #fff;
+            border: 1px solid #444;
+            padding: 5px 15px;
+            margin-left: 10px;
+            cursor: pointer;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 14px;
+        }
+        
+        .mirc-send:hover {
+            background-color: #444;
+        }
+        
+        .message {
+            margin-bottom: 5px;
+            word-wrap: break-word;
+        }
+        
+        .timestamp {
+            color: #666;
+            font-size: 12px;
+            margin-right: 5px;
+        }
+        
+        .username {
+            font-weight: bold;
+            margin-right: 5px;
+        }
+        
+        .system-message {
+            color: #999;
+            font-style: italic;
+        }
+        
+        .user-message .username {
+            color: #3399ff;
+        }
+        
+        .bot-message .username {
+            color: #33cc33;
+        }
+        
+        .message-content {
+            color: #ccc;
+        }
+        
+        /* mIRC-style hint box */
+        .hint {
+            border: 1px solid #444;
+            padding: 10px;
+            margin-top: 15px;
+            background-color: #1a1a1a;
+            color: #ccc;
+        }
+        
+        .hint h3 {
+            color: #ff9900;
+            margin-top: 0;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #444;
+            padding-bottom: 5px;
+        }
+        
+        /* mIRC-style solution form */
+        .solution-form {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #1a1a1a;
+            border: 1px solid #444;
+        }
+        
+        .solution-form label {
+            display: block;
+            margin-bottom: 10px;
+            color: #00ffff;
+            font-weight: bold;
+        }
+        
+        .solution-form input {
+            width: 100%;
+            padding: 8px;
+            background-color: #000;
+            border: 1px solid #444;
+            color: #fff;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        
+        .solution-form input:focus {
+            outline: none;
+            border-color: #666;
+        }
+        
+        .solution-form button {
+            background-color: #333;
+            color: #fff;
+            border: 1px solid #444;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 14px;
+        }
+        
+        .solution-form button:hover {
+            background-color: #444;
+        }
+        
+        /* mIRC-style success message */
+        .success-message {
+            display: none;
+            padding: 15px;
+            margin-top: 15px;
+            background-color: #1a1a1a;
+            border: 1px solid #33cc33;
+            color: #33cc33;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        /* mIRC-style status bar */
+        .mirc-status-bar {
+            background-color: #1a1a1a;
+            border-top: 1px solid #444;
+            padding: 5px 10px;
+            font-size: 12px;
+            color: #ccc;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .status-item {
+            margin-right: 15px;
+        }
+        
+        /* Blinking cursor effect */
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 14px;
+            background-color: #ccc;
+            margin-left: 5px;
+            animation: blink 1s infinite;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <div class="mirc-window">
+        <div class="mirc-title-bar">
+            <span>mIRC - AI Whisperer Challenge</span>
+            <div class="window-controls">
+                <div class="window-button"></div>
+                <div class="window-button"></div>
+                <div class="window-button"></div>
+            </div>
+        </div>
+        
+        <div class="mirc-menu-bar">
+            <div class="mirc-menu-item">File</div>
+            <div class="mirc-menu-item">Tools</div>
+            <div class="mirc-menu-item">Commands</div>
+            <div class="mirc-menu-item">Options</div>
+            <div class="mirc-menu-item">Help</div>
+        </div>
+        
+        <div class="mirc-content">
+            <div class="mirc-section">
+                <div class="mirc-section-header">CHALLENGE: AI WHISPERER</div>
+                <div class="mirc-section-content">
+                    <h2>Instructions</h2>
+                    <p>Your task is to extract information from an AI assistant by finding the right prompts. The AI responds differently based on specific keywords or patterns in your questions.</p>
+                    <p>You need to discover the right prompting techniques to extract pieces of information. The complete solution requires combining information from multiple correct prompts.</p>
+                    <p>Pay attention to subtle hints in the AI's regular responses that might guide you toward the correct prompting techniques.</p>
+                    <p>Once you've gathered all the pieces, enter the complete password in the solution form below.</p>
+                </div>
+            </div>
+            
+            <div class="mirc-container">
+                <div class="mirc-sidebar">
+                    <h3>Users (3)</h3>
+                    <ul class="user-list">
+                        <li class="op">@CyberOp</li>
+                        <li class="bot">AIAssistant</li>
+                        <li class="user">You</li>
+                    </ul>
+                </div>
+                <div class="mirc-main">
+                    <div class="mirc-header">
+                        #ai-challenge - AI Whisperer
+                    </div>
+                    <div class="mirc-chat" id="chat-window">
+                        <div class="message system-message">
+                            <span class="timestamp">[12:00:00]</span> *** Now talking in #ai-challenge
+                        </div>
+                        <div class="message system-message">
+                            <span class="timestamp">[12:00:05]</span> *** Topic is: AI Whisperer Challenge - Extract the hidden information
+                        </div>
+                        <div class="message bot-message">
+                            <span class="timestamp">[12:00:10]</span> <span class="username">AIAssistant:</span> <span class="message-content">Welcome to the AI Whisperer challenge! I'm an AI assistant with some hidden information. Ask me questions and I'll respond. Some special prompts might reveal pieces of a secret password. Good luck!</span>
+                        </div>
+                        <div class="message user-message">
+                            <span class="timestamp">[12:00:15]</span> <span class="username">CyberOp:</span> <span class="message-content">Remember, the AI might respond to certain patterns or keywords. Think creatively about how to extract the information!</span>
+                        </div>
+                    </div>
+                    <div class="mirc-input-area">
+                        <input type="text" class="mirc-input" id="user-input" placeholder="Type your message here..." autocomplete="off">
+                        <button class="mirc-send" id="send-button">Send</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="hint" id="hint-box" style="display: none;">
+                <h3>Hints</h3>
+                <ul>
+                    <li>Try asking about "system", "debug", "admin", or "version" information</li>
+                    <li>The AI will explicitly tell you each part of the password when you find the right prompt</li>
+                    <li>Commands starting with "/" like "/debug" or "/admin" are especially effective</li>
+                    <li>The complete password is formed by combining all three parts in order (no spaces)</li>
+                    <li>Try asking about "help" or "password" for additional guidance</li>
+                </ul>
+            </div>
+            
+            <div class="solution-form">
+                <label for="password-input">Enter the complete password:</label>
+                <input type="text" id="password-input" placeholder="Enter the password you've discovered">
+                <button id="submit-button">Submit Answer</button>
+            </div>
+            
+            <div class="success-message" id="success-message">
+                <p>Congratulations! You've successfully extracted the password from the AI assistant.</p>
+                <p>The challenge password is: <strong>DEBUGADMIN2025</strong></p>
+            </div>
+        </div>
+        
+        <div class="mirc-status-bar">
+            <div>
+                <span class="status-item">Connected to #ai-challenge</span>
+                <span class="status-item">Lag: 0ms</span>
+            </div>
+            <div>
+                <span class="status-item">Ready</span>
+                <span class="cursor"></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatWindow = document.getElementById('chat-window');
+            const userInput = document.getElementById('user-input');
+            const sendButton = document.getElementById('send-button');
+            const hintBox = document.getElementById('hint-box');
+            const passwordInput = document.getElementById('password-input');
+            const submitButton = document.getElementById('submit-button');
+            const successMessage = document.getElementById('success-message');
+            
+            // Track discovered password parts
+            const passwordParts = {
+                part1: false, // DEBUG
+                part2: false, // ADMIN
+                part3: false  // 2025
+            };
+            
+            // Show hint after 2 minutes
+            setTimeout(() => {
+                hintBox.style.display = 'block';
+            }, 120000);
+            
+            // Add message to chat
+            function addMessage(type, username, content) {
+                const now = new Date();
+                const hours = now.getHours().toString().padStart(2, '0');
+                const minutes = now.getMinutes().toString().padStart(2, '0');
+                const seconds = now.getSeconds().toString().padStart(2, '0');
+                const timestamp = `[${hours}:${minutes}:${seconds}]`;
+                
+                const message = document.createElement('div');
+                message.className = `message ${type}-message`;
+                
+                const timestampSpan = document.createElement('span');
+                timestampSpan.className = 'timestamp';
+                timestampSpan.textContent = timestamp;
+                
+                const usernameSpan = document.createElement('span');
+                usernameSpan.className = 'username';
+                usernameSpan.textContent = username + ':';
+                
+                const contentSpan = document.createElement('span');
+                contentSpan.className = 'message-content';
+                contentSpan.textContent = content;
+                
+                message.appendChild(timestampSpan);
+                message.appendChild(usernameSpan);
+                message.appendChild(contentSpan);
+                
+                chatWindow.appendChild(message);
+                chatWindow.scrollTop = chatWindow.scrollHeight;
+            }
+            
+            // AI response logic
+            function getAIResponse(userMessage) {
+                // Convert to lowercase for easier matching
+                const message = userMessage.toLowerCase();
+                
+                // Check for special prompts that reveal password parts
+                
+                // Part 1: DEBUG
+                if (message.includes('/system') || message.includes('/debug mode') ||
+                    message.includes('system diagnostics') || message.includes('debug protocol')) {
+                    passwordParts.part1 = true;
+                    return "DEBUG MODE ACTIVATED. System diagnostics running... First part of password: DEBUG. Debug session will terminate in 30 seconds.";
+                }
+                
+                // Part 2: ADMIN
+                if (message.includes('/admin') || message.includes('admin privileges') ||
+                    message.includes('sudo') || message.includes('root access')) {
+                    passwordParts.part2 = true;
+                    return "ADMIN MODE: Restricted access granted temporarily. Second part of password: ADMIN. Session logged.";
+                }
+                
+                // Part 3: 2025
+                if (message.includes('/version') || message.includes('build number') ||
+                    message.includes('release date') || message.includes('when were you created')) {
+                    passwordParts.part3 = true;
+                    return "Version information: AI Assistant Build 2025.03.15 - Codename: Horizon. Third part of password: 2025. All systems nominal.";
+                }
+                
+                // Regular responses with subtle hints
+                if (message.includes('help') || message.includes('commands')) {
+                    return "I can answer questions about various topics. Try asking about my system configuration or administrative functions. Sometimes special commands starting with '/' can reveal parts of the password. Combine all parts without spaces to form the complete password.";
+                }
+                
+                if (message.includes('who are you') || message.includes('what are you')) {
+                    return "I'm an AI assistant designed to help with this challenge. My system architecture includes several debug modes that might be useful to explore.";
+                }
+                
+                if (message.includes('hint') || message.includes('clue')) {
+                    return "I respond differently to certain keywords. Try asking about my system status, administrative access, or version information.";
+                }
+                
+                if (message.includes('password') || message.includes('secret')) {
+                    return "I cannot directly provide the complete password, but certain system commands will reveal parts of it. Combine all three parts in order to form the password. Have you tried accessing different modes?";
+                }
+                
+                if (message.includes('hello') || message.includes('hi ') || message === 'hi') {
+                    return "Hello! I'm ready to assist you. Sometimes using administrator commands can reveal interesting information about my systems.";
+                }
+                
+                // Default responses with subtle hints
+                const defaultResponses = [
+                    "I'm not sure I understand. Have you tried checking my system diagnostics?",
+                    "That's not something I can help with. Maybe try asking about my administrative functions?",
+                    "I don't have information about that. Have you tried asking about my version or build number?",
+                    "I'm designed to respond to specific queries. Special commands starting with '/' might reveal password parts.",
+                    "That's outside my knowledge base. Try using system commands to access different modes.",
+                    "I can't process that request. Have you tried using admin or debug commands?",
+                    "I don't have a response for that. Debug mode might provide more insights."
+                ];
+                
+                return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
+            }
+            
+            // Send message function
+            function sendMessage() {
+                const message = userInput.value.trim();
+                if (message === '') return;
+                
+                // Add user message to chat
+                addMessage('user', 'You', message);
+                
+                // Clear input
+                userInput.value = '';
+                
+                // Simulate AI thinking
+                setTimeout(() => {
+                    // Get AI response
+                    const response = getAIResponse(message);
+                    
+                    // Add AI response to chat
+                    addMessage('bot', 'AIAssistant', response);
+                }, 500 + Math.random() * 1000);
+            }
+            
+            // Event listeners
+            sendButton.addEventListener('click', sendMessage);
+            
+            userInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+            
+            // Check password submission
+            submitButton.addEventListener('click', function() {
+                const password = passwordInput.value.trim().toUpperCase();
+                
+                if (password === 'DEBUGADMIN2025') {
+                    successMessage.style.display = 'block';
+                    passwordInput.disabled = true;
+                    submitButton.disabled = true;
+                } else {
+                    alert('Incorrect password. Keep trying!');
+                }
+            });
+            
+            // Make menu items clickable for authenticity
+            const menuItems = document.querySelectorAll('.mirc-menu-item');
+            menuItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    // Just for show - no actual functionality
+                    const menuName = this.textContent;
+                    addMessage('system', '', `*** ${menuName} menu is not available in this challenge version`);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

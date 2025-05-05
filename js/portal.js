@@ -132,6 +132,13 @@ const challengeData = {
         title: "Decode the Cipher",
         answer: "CRYPTOMASTER2025",
         points: 300,
+        nextChallenges: ["challenge12"]
+    },
+    challenge12: {
+        id: "challenge12",
+        title: "AI Whisperer",
+        answer: "DEBUGADMIN2025",
+        points: 250,
         nextChallenges: []
     }
 };
@@ -547,6 +554,9 @@ function requestHint(challengeId) {
                 break;
             case "challenge11":
                 hint = "Look for patterns and letter frequencies. In English, the most common letters are E, T, A, O, I, N. Try decoding shorter words first like 'THE' and 'AND'.";
+                break;
+            case "challenge12":
+                hint = "Try using special commands that start with '/' like '/system', '/admin', or '/version'. Pay attention to capitalized words in the AI's responses.";
                 break;
         }
         

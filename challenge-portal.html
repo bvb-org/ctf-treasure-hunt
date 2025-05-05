@@ -89,6 +89,11 @@
                             <span class="challenge-title">Decode the Cipher</span>
                             <span class="challenge-status pending">Pending</span>
                         </li>
+                        <li class="challenge-item" data-challenge="challenge12">
+                            <span class="challenge-number">12</span>
+                            <span class="challenge-title">AI Whisperer</span>
+                            <span class="challenge-status pending">Pending</span>
+                        </li>
                     </ul>
                 </div>
                 <div class="leaderboard-mini">
@@ -450,6 +455,37 @@
                             <div class="form-group">
                                 <label for="challenge11-answer">Enter the password:</label>
                                 <input type="text" id="challenge11-answer" name="answer" required>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn-submit">Submit Answer</button>
+                                <button type="button" class="btn-hint">Request Hint</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Challenge 12 screen (initially hidden) -->
+                <div id="challenge12" class="challenge-screen">
+                    <div class="challenge-header">
+                        <h2 class="gradient-text">Challenge 12: AI Whisperer</h2>
+                        <div class="challenge-meta">
+                            <span class="difficulty">Medium</span>
+                            <span class="points">250 points</span>
+                            <span class="category">Artificial Intelligence</span>
+                        </div>
+                    </div>
+                    <div class="challenge-description shine-effect">
+                        <p>Your task is to extract information from an AI assistant by finding the right prompts.</p>
+                        <p>Open the challenge file below and follow the instructions to find the password.</p>
+                        <a href="challenges/ai_whisperer.html" class="download-btn" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Open Challenge
+                        </a>
+                    </div>
+                    <div class="challenge-submission shine-effect">
+                        <form id="challenge12-form" class="submission-form">
+                            <div class="form-group">
+                                <label for="challenge12-answer">Enter the password:</label>
+                                <input type="text" id="challenge12-answer" name="answer" required>
                             </div>
                             <div class="form-actions">
                                 <button type="submit" class="btn-submit">Submit Answer</button>
