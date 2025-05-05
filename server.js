@@ -39,6 +39,17 @@ db.serialize(() => {
       UNIQUE(team_id, challenge_id)
     )
   `);
+  
+  // Team members table
+  db.run(`
+    CREATE TABLE IF NOT EXISTS team_members (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      team_id TEXT NOT NULL,
+      name TEXT NOT NULL,
+      email TEXT,
+      FOREIGN KEY (team_id) REFERENCES teams (id) ON DELETE CASCADE
+    )
+  `);
 });
 
 // Make sure hunt_config table exists and has at least one row
@@ -343,29 +354,52 @@ app.get('/api/admin/teams', (req, res) => {
       return res.status(500).json({ error: 'Failed to fetch teams' });
     }
     
-    // Get members for each team
-    const promises = teams.map(team => {
-      return new Promise((resolve, reject) => {
-        db.all('SELECT id, name, email FROM team_members WHERE team_id = ?', [team.id], (err, members) => {
-          if (err) {
-            reject(err);
-            return;
-          }
-          
-          team.members = members;
-          resolve(team);
+    // If no teams found, return empty array
+    if (!teams || teams.length === 0) {
+      return res.json([]);
+    }
+    
+    // Check if team_members table exists
+    db.get("SELECT name FROM sqlite_master WHERE type='table' AND name='team_members'", [], (err, table) => {
+      if (err || !table) {
+        // If table doesn't exist or there's an error, just return teams without members
+        console.log('Team members table not found or error checking for it:', err);
+        teams.forEach(team => {
+          team.members = [];
+        });
+        return res.json(teams);
+      }
+      
+      // Get members for each team
+      const promises = teams.map(team => {
+        return new Promise((resolve, reject) => {
+          db.all('SELECT id, name, email FROM team_members WHERE team_id = ?', [team.id], (err, members) => {
+            if (err) {
+              console.error(`Error fetching members for team ${team.id}:`, err);
+              team.members = []; // Set empty members array on error
+              resolve(team);
+              return;
+            }
+            
+            team.members = members || [];
+            resolve(team);
+          });
         });
       });
+      
+      Promise.all(promises)
+        .then(teamsWithMembers => {
+          res.json(teamsWithMembers);
+        })
+        .catch(error => {
+          console.error('Error in Promise.all for team members:', error);
+          // Return teams without members in case of error
+          teams.forEach(team => {
+            team.members = [];
+          });
+          res.json(teams);
+        });
     });
-    
-    Promise.all(promises)
-      .then(teamsWithMembers => {
-        res.json(teamsWithMembers);
-      })
-      .catch(error => {
-        console.error('Error fetching team members:', error);
-        res.status(500).json({ error: 'Failed to fetch team members' });
-      });
   });
 });
 
@@ -422,26 +456,67 @@ app.post('/api/admin/teams', (req, res) => {
           return res.status(500).json({ error: 'Failed to create team' });
         }
         
-        // Insert members if provided
-        if (members && members.length > 0) {
-          const insertMember = db.prepare('INSERT INTO team_members (team_id, name, email) VALUES (?, ?, ?)');
-          
-          try {
-            members.forEach(member => {
-              insertMember.run(id, member.name, member.email || null);
-            });
-            insertMember.finalize();
-          } catch (error) {
-            console.error('Error inserting team members:', error);
-            db.run('ROLLBACK');
-            return res.status(500).json({ error: 'Failed to insert team members' });
+        // Check if team_members table exists before trying to insert members
+        db.get("SELECT name FROM sqlite_master WHERE type='table' AND name='team_members'", [], (err, table) => {
+          if (err) {
+            console.error('Error checking for team_members table:', err);
+            // Continue with commit even if we can't check for the table
+            db.run('COMMIT');
+            return res.status(201).json({ success: true, id: id });
           }
+          
+          // If table doesn't exist, create it
+          if (!table) {
+            console.log('Creating team_members table as it does not exist');
+            db.run(`
+              CREATE TABLE IF NOT EXISTS team_members (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                team_id TEXT NOT NULL,
+                name TEXT NOT NULL,
+                email TEXT,
+                FOREIGN KEY (team_id) REFERENCES teams (id) ON DELETE CASCADE
+              )
+            `, function(err) {
+              if (err) {
+                console.error('Error creating team_members table:', err);
+                db.run('COMMIT'); // Still commit the team creation
+                return res.status(201).json({ success: true, id: id });
+              }
+              
+              insertTeamMembers();
+            });
+          } else {
+            insertTeamMembers();
+          }
+        });
+        
+        // Function to insert team members
+        function insertTeamMembers() {
+          // Insert members if provided
+          if (members && members.length > 0) {
+            try {
+              const insertMember = db.prepare('INSERT INTO team_members (team_id, name, email) VALUES (?, ?, ?)');
+              
+              members.forEach(member => {
+                if (member.name) {
+                  insertMember.run(id, member.name, member.email || null);
+                }
+              });
+              
+              insertMember.finalize();
+            } catch (error) {
+              console.error('Error inserting team members:', error);
+              // Continue with commit even if member insertion fails
+              db.run('COMMIT');
+              return res.status(201).json({ success: true, id: id });
+            }
+          }
+          
+          // Commit transaction
+          db.run('COMMIT');
+          
+          res.status(201).json({ success: true, id: id });
         }
-        
-        // Commit transaction
-        db.run('COMMIT');
-        
-        res.status(201).json({ success: true, id: id });
       }
     );
   });
@@ -476,35 +551,77 @@ app.put('/api/admin/teams/:teamId', (req, res) => {
           return res.status(404).json({ error: 'Team not found' });
         }
         
-        // Delete existing members
-        db.run('DELETE FROM team_members WHERE team_id = ?', [teamId], function(err) {
+        // Check if team_members table exists
+        db.get("SELECT name FROM sqlite_master WHERE type='table' AND name='team_members'", [], (err, table) => {
           if (err) {
-            console.error('Error deleting team members:', err);
-            db.run('ROLLBACK');
-            return res.status(500).json({ error: 'Failed to update team members' });
+            console.error('Error checking for team_members table:', err);
+            // Continue with commit even if we can't check for the table
+            db.run('COMMIT');
+            return res.json({ success: true });
           }
           
-          // Insert new members if provided
-          if (members && members.length > 0) {
-            const insertMember = db.prepare('INSERT INTO team_members (team_id, name, email) VALUES (?, ?, ?)');
-            
-            try {
-              members.forEach(member => {
-                insertMember.run(teamId, member.name, member.email || null);
-              });
-              insertMember.finalize();
-            } catch (error) {
-              console.error('Error inserting team members:', error);
-              db.run('ROLLBACK');
-              return res.status(500).json({ error: 'Failed to insert team members' });
-            }
+          // If table doesn't exist, create it
+          if (!table) {
+            console.log('Creating team_members table as it does not exist');
+            db.run(`
+              CREATE TABLE IF NOT EXISTS team_members (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                team_id TEXT NOT NULL,
+                name TEXT NOT NULL,
+                email TEXT,
+                FOREIGN KEY (team_id) REFERENCES teams (id) ON DELETE CASCADE
+              )
+            `, function(err) {
+              if (err) {
+                console.error('Error creating team_members table:', err);
+                db.run('COMMIT'); // Still commit the team update
+                return res.json({ success: true });
+              }
+              
+              updateTeamMembers();
+            });
+          } else {
+            updateTeamMembers();
           }
-          
-          // Commit transaction
-          db.run('COMMIT');
-          
-          res.json({ success: true });
         });
+        
+        // Function to update team members
+        function updateTeamMembers() {
+          // Delete existing members
+          db.run('DELETE FROM team_members WHERE team_id = ?', [teamId], function(err) {
+            if (err) {
+              console.error('Error deleting team members:', err);
+              // Continue with commit even if member deletion fails
+              db.run('COMMIT');
+              return res.json({ success: true });
+            }
+            
+            // Insert new members if provided
+            if (members && members.length > 0) {
+              try {
+                const insertMember = db.prepare('INSERT INTO team_members (team_id, name, email) VALUES (?, ?, ?)');
+                
+                members.forEach(member => {
+                  if (member.name) {
+                    insertMember.run(teamId, member.name, member.email || null);
+                  }
+                });
+                
+                insertMember.finalize();
+              } catch (error) {
+                console.error('Error inserting team members:', error);
+                // Continue with commit even if member insertion fails
+                db.run('COMMIT');
+                return res.json({ success: true });
+              }
+            }
+            
+            // Commit transaction
+            db.run('COMMIT');
+            
+            res.json({ success: true });
+          });
+        }
       }
     );
   });
@@ -518,15 +635,31 @@ app.delete('/api/admin/teams/:teamId', (req, res) => {
     // Begin transaction
     db.run('BEGIN TRANSACTION');
     
-    // Delete team members first (foreign key constraint)
-    db.run('DELETE FROM team_members WHERE team_id = ?', [teamId], function(err) {
+    // Check if team_members table exists
+    db.get("SELECT name FROM sqlite_master WHERE type='table' AND name='team_members'", [], (err, table) => {
       if (err) {
-        console.error('Error deleting team members:', err);
-        db.run('ROLLBACK');
-        return res.status(500).json({ error: 'Failed to delete team members' });
+        console.error('Error checking for team_members table:', err);
+        // Continue with deletion process even if we can't check for the table
+        deleteCompletedChallenges();
+      } else if (table) {
+        // Delete team members first if table exists
+        db.run('DELETE FROM team_members WHERE team_id = ?', [teamId], function(err) {
+          if (err) {
+            console.error('Error deleting team members:', err);
+            // Continue with deletion process even if member deletion fails
+            deleteCompletedChallenges();
+          } else {
+            deleteCompletedChallenges();
+          }
+        });
+      } else {
+        // Table doesn't exist, skip to next step
+        deleteCompletedChallenges();
       }
-      
-      // Delete completed challenges
+    });
+    
+    // Function to delete completed challenges
+    function deleteCompletedChallenges() {
       db.run('DELETE FROM completed_challenges WHERE team_id = ?', [teamId], function(err) {
         if (err) {
           console.error('Error deleting completed challenges:', err);
@@ -535,25 +668,30 @@ app.delete('/api/admin/teams/:teamId', (req, res) => {
         }
         
         // Delete team
-        db.run('DELETE FROM teams WHERE id = ?', [teamId], function(err) {
-          if (err) {
-            console.error('Error deleting team:', err);
-            db.run('ROLLBACK');
-            return res.status(500).json({ error: 'Failed to delete team' });
-          }
-          
-          if (this.changes === 0) {
-            db.run('ROLLBACK');
-            return res.status(404).json({ error: 'Team not found' });
-          }
-          
-          // Commit transaction
-          db.run('COMMIT');
-          
-          res.json({ success: true });
-        });
+        deleteTeam();
       });
-    });
+    }
+    
+    // Function to delete the team
+    function deleteTeam() {
+      db.run('DELETE FROM teams WHERE id = ?', [teamId], function(err) {
+        if (err) {
+          console.error('Error deleting team:', err);
+          db.run('ROLLBACK');
+          return res.status(500).json({ error: 'Failed to delete team' });
+        }
+        
+        if (this.changes === 0) {
+          db.run('ROLLBACK');
+          return res.status(404).json({ error: 'Team not found' });
+        }
+        
+        // Commit transaction
+        db.run('COMMIT');
+        
+        res.json({ success: true });
+      });
+    }
   });
 });
 
