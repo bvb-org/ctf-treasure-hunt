@@ -648,7 +648,7 @@ nav ul li a:hover::after {
 }
 
 .rule:hover .rule-number {
-    transform: scale(1.1) rotate(360deg);
+    transform: scale(1.1);
 }
 
 .rule-content h3 {
