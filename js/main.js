@@ -28,13 +28,54 @@ function initCountdown() {
         })
         .catch(error => {
             console.error('Error fetching hunt configuration:', error);
+            
+            // Check if the hunt might be over by looking at the current time
+            // and comparing it with the expected hunt end time from localStorage if available
+            const savedConfig = localStorage.getItem('huntConfig');
+            if (savedConfig) {
+                try {
+                    const config = JSON.parse(savedConfig);
+                    const now = new Date().getTime();
+                    const startTime = new Date(config.start_time).getTime();
+                    const endTime = startTime + (config.duration_minutes * 60000);
+                    
+                    if (now > endTime) {
+                        // Hunt is over
+                        document.getElementById("countdown-timer").innerHTML = "<h3>The Hunt Has Ended!</h3>";
+                        
+                        // Disable the start button
+                        const startHuntBtn = document.getElementById('start-hunt-btn');
+                        if (startHuntBtn) {
+                            startHuntBtn.classList.add('disabled');
+                            startHuntBtn.style.pointerEvents = 'none';
+                            startHuntBtn.style.opacity = '0.5';
+                        }
+                        return;
+                    }
+                } catch (e) {
+                    console.error('Error parsing saved hunt config:', e);
+                }
+            }
+            
+            // If we couldn't determine the hunt status, show the error
             document.getElementById("countdown-timer").innerHTML = "<h3>Error loading countdown</h3>";
+            
+            // Disable the start button as a precaution
+            const startHuntBtn = document.getElementById('start-hunt-btn');
+            if (startHuntBtn) {
+                startHuntBtn.classList.add('disabled');
+                startHuntBtn.style.pointerEvents = 'none';
+                startHuntBtn.style.opacity = '0.5';
+            }
         });
 }
 
 function startCountdown(config) {
     // Get the start time from the configuration
     const eventDate = new Date(config.start_time);
+    
+    // Save the hunt configuration to localStorage for error recovery
+    localStorage.setItem('huntConfig', JSON.stringify(config));
     
     const countdownFunction = function() {
         // Get current date and time
