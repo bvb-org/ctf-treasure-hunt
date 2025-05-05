@@ -3,41 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tech Timeline Puzzle Challenge</title>
+    <title>The Sacred Timeline Challenge</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Courier New', monospace;
             line-height: 1.6;
             margin: 0;
             padding: 20px;
-            background-color: #f5f5f5;
-            color: #333;
+            background-color: #1a1a1a;
+            color: #e0e0e0;
         }
         .challenge-container {
             max-width: 800px;
             margin: 0 auto;
-            background-color: #fff;
+            background-color: #2d2d2d;
             padding: 30px;
             border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 10px rgba(255, 140, 0, 0.3);
+            border: 1px solid #ff8c00;
         }
         h1 {
-            color: #ff6200;
+            color: #ff8c00;
             text-align: center;
             margin-bottom: 30px;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 2px;
         }
         .instructions {
-            background-color: #f9f9f9;
+            background-color: #3d3d3d;
             padding: 20px;
             border-radius: 5px;
             margin-bottom: 30px;
+            border-left: 4px solid #ff8c00;
         }
         .timeline-container {
             margin-bottom: 30px;
         }
         .timeline-item {
-            background-color: #fff;
-            border: 1px solid #ddd;
+            background-color: #3d3d3d;
+            border: 1px solid #555;
             border-radius: 5px;
             padding: 15px;
             margin-bottom: 10px;
@@ -48,21 +52,21 @@
             align-items: center;
         }
         .timeline-item:hover {
-            background-color: #f9f9f9;
+            background-color: #4d4d4d;
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 8px rgba(255, 140, 0, 0.2);
         }
         .timeline-item.dragging {
             opacity: 0.5;
-            background-color: #e3f2fd;
+            background-color: #5d5d5d;
         }
         .timeline-item.correct {
-            border-left: 4px solid #4caf50;
-            background-color: #e8f5e9;
+            border-left: 4px solid #00bfff;
+            background-color: #2d3d4d;
         }
         .timeline-item.incorrect {
-            border-left: 4px solid #f44336;
-            background-color: #ffebee;
+            border-left: 4px solid #ff4040;
+            background-color: #4d2d2d;
         }
         .timeline-item-content {
             flex-grow: 1;
@@ -70,15 +74,16 @@
         .timeline-item-title {
             font-weight: bold;
             margin-bottom: 5px;
+            color: #ff8c00;
         }
         .timeline-item-description {
             font-size: 14px;
-            color: #666;
+            color: #ccc;
         }
         .timeline-item-year {
             display: none;
             font-weight: bold;
-            color: #ff6200;
+            color: #00bfff;
             margin-left: 15px;
         }
         .timeline-item.correct .timeline-item-year {
@@ -95,20 +100,21 @@
         }
         .drag-handle-line {
             height: 3px;
-            background-color: #ccc;
+            background-color: #ff8c00;
             border-radius: 3px;
         }
         .progress-bar {
             width: 100%;
             height: 20px;
-            background-color: #f0f0f0;
+            background-color: #3d3d3d;
             border-radius: 10px;
             margin-bottom: 20px;
             overflow: hidden;
+            border: 1px solid #555;
         }
         .progress-fill {
             height: 100%;
-            background-color: #4caf50;
+            background-color: #00bfff;
             width: 0%;
             transition: width 0.3s ease;
         }
@@ -116,6 +122,7 @@
             text-align: center;
             font-weight: bold;
             margin-bottom: 20px;
+            color: #ff8c00;
         }
         .button-group {
             display: flex;
@@ -130,48 +137,51 @@
             cursor: pointer;
             font-size: 14px;
             transition: background-color 0.3s;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 1px;
         }
         .btn-check {
-            background-color: #4caf50;
-            color: white;
+            background-color: #ff8c00;
+            color: #1a1a1a;
         }
         .btn-check:hover {
-            background-color: #45a049;
+            background-color: #ffa500;
         }
         .btn-hint {
-            background-color: #2196f3;
-            color: white;
+            background-color: #00bfff;
+            color: #1a1a1a;
         }
         .btn-hint:hover {
-            background-color: #0b7dda;
+            background-color: #33ccff;
         }
         .btn-reset {
-            background-color: #f44336;
-            color: white;
+            background-color: #ff4040;
+            color: #1a1a1a;
         }
         .btn-reset:hover {
-            background-color: #d32f2f;
+            background-color: #ff6060;
         }
         .hint {
-            background-color: #fffde7;
+            background-color: #3d3d3d;
             padding: 10px;
-            border-left: 4px solid #ffd600;
+            border-left: 4px solid #00bfff;
             margin-top: 20px;
             display: none;
         }
         .success-message {
             display: none;
-            background-color: #e8f5e9;
-            color: #2e7d32;
+            background-color: #2d3d2d;
+            color: #00bfff;
             padding: 15px;
             border-radius: 5px;
             margin-top: 20px;
             text-align: center;
             font-weight: bold;
+            border: 1px solid #00bfff;
         }
         .timeline-visualization {
             height: 5px;
-            background-color: #ddd;
+            background-color: #ff8c00;
             margin: 30px 0;
             position: relative;
         }
@@ -179,7 +189,7 @@
             position: absolute;
             width: 15px;
             height: 15px;
-            background-color: #ff6200;
+            background-color: #00bfff;
             border-radius: 50%;
             top: -5px;
             transform: translateX(-50%);
@@ -187,7 +197,7 @@
         .timeline-year-label {
             position: absolute;
             font-size: 12px;
-            color: #666;
+            color: #ff8c00;
             top: 15px;
             transform: translateX(-50%);
         }
@@ -205,22 +215,48 @@
         .timeline-item.pulse {
             animation: pulse 0.5s ease;
         }
+        .tva-logo {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #ff8c00;
+            font-weight: bold;
+            letter-spacing: 5px;
+            border: 2px solid #ff8c00;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #2d2d2d;
+        }
+        .tva-stamp {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: rgba(255, 140, 0, 0.3);
+            font-size: 12px;
+            transform: rotate(15deg);
+            font-weight: bold;
+            border: 1px solid rgba(255, 140, 0, 0.3);
+            padding: 3px 8px;
+            border-radius: 3px;
+        }
     </style>
 </head>
 <body>
     <div class="challenge-container">
-        <h1>CHALLENGE: TECH TIMELINE PUZZLE</h1>
+        <div class="tva-logo">TVA</div>
+        <h1>CHALLENGE: THE SACRED TIMELINE</h1>
+        <div class="tva-stamp">FOR ALL TIME. ALWAYS.</div>
         
         <div class="instructions">
-            <h2>Instructions</h2>
-            <p>Your task is to arrange the following tech innovations in chronological order (oldest to newest). This challenge tests your knowledge of the history of technology and computing.</p>
-            <p>Drag and drop the items to reorder them. Once you've arranged them in the correct order, click "Check Order" to verify your solution.</p>
+            <h2>Instructions from the Time Variance Authority</h2>
+            <p>Attention agent: The Sacred Timeline has been disrupted. Your task is to arrange the following Nexus Events in chronological order (oldest to newest) to restore the proper flow of time.</p>
+            <p>Drag and drop the events to reorder them. Once you've arranged them in the correct order, click "Prune Variants" to verify your solution and prevent a multiversal war.</p>
         </div>
         
         <div class="progress-bar">
             <div class="progress-fill" id="progress-fill"></div>
         </div>
-        <div class="progress-text" id="progress-text">Progress: 0/10 in correct position</div>
+        <div class="progress-text" id="progress-text">Timeline Integrity: 0/10 events properly aligned</div>
         
         <div class="timeline-container" id="timeline-container">
             <!-- Timeline items will be generated by JavaScript -->
@@ -231,13 +267,13 @@
         </div>
         
         <div class="button-group">
-            <button id="check-btn" class="btn btn-check">Check Order</button>
-            <button id="hint-btn" class="btn btn-hint">Show Hint</button>
-            <button id="reset-btn" class="btn btn-reset">Reset Order</button>
+            <button id="check-btn" class="btn btn-check">Prune Variants</button>
+            <button id="hint-btn" class="btn btn-hint">Consult Miss Minutes</button>
+            <button id="reset-btn" class="btn btn-reset">Reset Timeline</button>
         </div>
         
         <div id="hint" class="hint">
-            <h3>Hints</h3>
+            <h3>Miss Minutes Says:</h3>
             <ul>
                 <li>The World Wide Web was created in 1989, after the first email was sent.</li>
                 <li>The first iPhone was released in 2007, before Bitcoin was introduced.</li>
@@ -247,8 +283,8 @@
         </div>
         
         <div id="success-message" class="success-message">
-            <p>Congratulations! You've correctly arranged all the tech innovations in chronological order.</p>
-            <p>The challenge password is: <strong>TechEvolution</strong></p>
+            <p>Congratulations, agent! You've successfully restored the Sacred Timeline.</p>
+            <p>Your TVA access code is: <strong>TechEvolution</strong></p>
         </div>
     </div>
 
@@ -486,7 +522,7 @@
                 // Update progress
                 const progress = (correctCount / timelineData.length) * 100;
                 progressFill.style.width = progress + '%';
-                progressText.textContent = `Progress: ${correctCount}/${timelineData.length} in correct position`;
+                progressText.textContent = `Timeline Integrity: ${correctCount}/${timelineData.length} innovations properly aligned`;
                 
                 // Check if all are correct
                 if (correctCount === timelineData.length) {
@@ -561,7 +597,7 @@
                 
                 // Reset progress
                 progressFill.style.width = '0%';
-                progressText.textContent = `Progress: 0/${timelineData.length} in correct position`;
+                progressText.textContent = `Timeline Integrity: 0/${timelineData.length} innovations properly aligned`;
                 
                 // Hide success message
                 successMessage.style.display = 'none';
