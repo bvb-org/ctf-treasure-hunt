@@ -50,12 +50,12 @@
     {
       "id": "challenge5",
       "title": "Git Mystery",
-      "description": "Find the secret message hidden in the Git commit history",
+      "description": "Decode the secret message hidden in Git commit messages",
       "difficulty": "Medium",
       "points": 200,
       "category": "Version Control",
-      "file": "git_instructions.txt",
-      "hint": "Look at the first letter of each commit message"
+      "file": "git_mystery.html",
+      "hint": "Pay attention to highlighted words in the commit messages"
     },
     {
       "id": "challenge6",

@@ -88,7 +88,7 @@ const challengeData = {
     challenge5: {
         id: "challenge5",
         title: "Git Mystery",
-        answer: "SECRETGITPASSWORD",
+        answer: "SECRETKYE",
         points: 200,
         nextChallenges: ["challenge6"]
     },
@@ -522,7 +522,7 @@ function requestHint(challengeId) {
                 hint = "Remember the different categories: 1xx (Informational), 2xx (Success), 3xx (Redirection), 4xx (Client Error), and 5xx (Server Error).";
                 break;
             case "challenge5":
-                hint = "Use 'git log --pretty=format:\"%s\"' to get just the commit messages, then extract the first letter of each.";
+                hint = "Select the commits in chronological order (by date) to reveal the highlighted letters in the correct sequence.";
                 break;
             case "challenge6":
                 hint = "Focus on the distinctive colors and shapes of each logo. Some logos are simplified versions of the actual logos.";
