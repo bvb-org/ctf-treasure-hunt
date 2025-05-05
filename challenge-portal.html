@@ -6,24 +6,31 @@
     <title>CTF Treasure Hunt - Challenge Portal</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/portal.css">
+    <link rel="stylesheet" href="css/portal-canvas.css">
     <link rel="stylesheet" href="css/modal.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="css/custom-portal.css">
 </head>
 <body class="portal-body">
+    <canvas id="hero-canvas"></canvas>
     <div class="portal-container">
         <header class="portal-header">
             <div class="logo">
-                <h1>CTF Treasure Hunt</h1>
+                <h1 class="gradient-text">CTF Treasure Hunt</h1>
+                <span id="team-name">Team: Loading...</span>
             </div>
             <div class="team-info">
-                <span id="team-name">Team: Loading...</span>
+                <div class="header-timer">
+                    <span>Time: </span>
+                    <span id="hours" class="time-block">03</span>:<span id="minutes" class="time-block">45</span>:<span id="seconds" class="time-block">22</span>
+                </div>
                 <span id="team-score">Score: 0</span>
                 <button id="logout-btn" class="btn-logout">Logout</button>
             </div>
         </header>
 
         <div class="portal-content">
-            <div class="sidebar">
+            <div class="sidebar slide-in-left">
                 <div class="team-progress">
                     <h3>Your Progress</h3>
                     <ul class="challenge-list">
@@ -93,21 +100,15 @@
                     </ol>
                     <a href="index.html#leaderboard" class="view-full">View Full Leaderboard</a>
                 </div>
-                <div class="time-remaining">
-                    <h3>Time Remaining</h3>
-                    <div class="timer">
-                        <span id="hours">03</span>:<span id="minutes">45</span>:<span id="seconds">22</span>
-                    </div>
-                </div>
             </div>
 
-            <div class="challenge-area">
+            <div class="challenge-area fade-in">
                 <div id="welcome-screen" class="challenge-screen active">
-                    <h2>Welcome to the CTF Treasure Hunt!</h2>
+                    <h2 class="gradient-text">Welcome to the CTF Treasure Hunt!</h2>
                     <p>You're about to embark on a journey through 11 interactive technical challenges that will test your knowledge in various areas of IT, networking, security, web development, and programming.</p>
                     <p>All challenges can be completed directly in your browser, making them accessible to team members with diverse technical backgrounds.</p>
                     <p>All challenges are unlocked and available from the start. Click on any challenge in the sidebar to begin. Good luck!</p>
-                    <div class="rules-reminder">
+                    <div class="rules-reminder shine-effect">
                         <h3>Quick Reminders:</h3>
                         <ul>
                             <li>You have 1 hour to complete as many challenges as possible</li>
@@ -120,21 +121,21 @@
 
                 <div id="challenge1" class="challenge-screen">
                     <div class="challenge-header">
-                        <h2>Challenge 1: The Hidden Message</h2>
+                        <h2 class="gradient-text">Challenge 1: The Hidden Message</h2>
                         <div class="challenge-meta">
                             <span class="difficulty">Easy</span>
                             <span class="points">100 points</span>
                             <span class="category">Cryptography</span>
                         </div>
                     </div>
-                    <div class="challenge-description">
+                    <div class="challenge-description shine-effect">
                         <p>Your first challenge is to decode the hidden message in a binary sequence.</p>
                         <p>Download the challenge file below and follow the instructions to find the password.</p>
                         <a href="challenges/binary_message.txt" class="download-btn" download>
                             <i class="fas fa-download"></i> Download Challenge File
                         </a>
                     </div>
-                    <div class="challenge-submission">
+                    <div class="challenge-submission shine-effect">
                         <form id="challenge1-form" class="submission-form">
                             <div class="form-group">
                                 <label for="challenge1-answer">Enter the password:</label>
@@ -151,21 +152,21 @@
                 <!-- Challenge 2 screen (initially hidden) -->
                 <div id="challenge2" class="challenge-screen">
                     <div class="challenge-header">
-                        <h2>Challenge 2: Network Puzzle</h2>
+                        <h2 class="gradient-text">Challenge 2: Network Puzzle</h2>
                         <div class="challenge-meta">
                             <span class="difficulty">Easy</span>
                             <span class="points">150 points</span>
                             <span class="category">Networking</span>
                         </div>
                     </div>
-                    <div class="challenge-description">
+                    <div class="challenge-description shine-effect">
                         <p>Your task is to identify network devices from their descriptions and complete the network diagram.</p>
                         <p>Open the challenge file below and follow the instructions to find the password.</p>
                         <a href="challenges/network_puzzle.html" class="download-btn" target="_blank">
                             <i class="fas fa-external-link-alt"></i> Open Challenge
                         </a>
                     </div>
-                    <div class="challenge-submission">
+                    <div class="challenge-submission shine-effect">
                         <form id="challenge2-form" class="submission-form">
                             <div class="form-group">
                                 <label for="challenge2-answer">Enter the password:</label>
@@ -182,21 +183,21 @@
                 <!-- Challenge 3 screen (initially hidden) -->
                 <div id="challenge3" class="challenge-screen">
                     <div class="challenge-header">
-                        <h2>Challenge 3: Password Strength</h2>
+                        <h2 class="gradient-text">Challenge 3: Password Strength</h2>
                         <div class="challenge-meta">
                             <span class="difficulty">Easy</span>
                             <span class="points">150 points</span>
                             <span class="category">Security</span>
                         </div>
                     </div>
-                    <div class="challenge-description">
+                    <div class="challenge-description shine-effect">
                         <p>Your task is to create a secure password that meets all the specified requirements.</p>
                         <p>Open the challenge file below and follow the instructions to find the password.</p>
                         <a href="challenges/password_strength.html" class="download-btn" target="_blank">
                             <i class="fas fa-external-link-alt"></i> Open Challenge
                         </a>
                     </div>
-                    <div class="challenge-submission">
+                    <div class="challenge-submission shine-effect">
                         <form id="challenge3-form" class="submission-form">
                             <div class="form-group">
                                 <label for="challenge3-answer">Enter the password:</label>
@@ -213,21 +214,21 @@
                 <!-- Challenge 4 screen (initially hidden) -->
                 <div id="challenge4" class="challenge-screen">
                     <div class="challenge-header">
-                        <h2>Challenge 4: HTTP Status Codes</h2>
+                        <h2 class="gradient-text">Challenge 4: HTTP Status Codes</h2>
                         <div class="challenge-meta">
                             <span class="difficulty">Medium</span>
                             <span class="points">200 points</span>
                             <span class="category">Web Development</span>
                         </div>
                     </div>
-                    <div class="challenge-description">
+                    <div class="challenge-description shine-effect">
                         <p>Your task is to match the HTTP status codes with their correct descriptions.</p>
                         <p>Open the challenge file below and follow the instructions to find the password.</p>
                         <a href="challenges/http_status.html" class="download-btn" target="_blank">
                             <i class="fas fa-external-link-alt"></i> Open Challenge
                         </a>
                     </div>
-                    <div class="challenge-submission">
+                    <div class="challenge-submission shine-effect">
                         <form id="challenge4-form" class="submission-form">
                             <div class="form-group">
                                 <label for="challenge4-answer">Enter the password:</label>
@@ -244,21 +245,21 @@
                 <!-- Challenge 5 screen (initially hidden) -->
                 <div id="challenge5" class="challenge-screen">
                     <div class="challenge-header">
-                        <h2>Challenge 5: Git Mystery</h2>
+                        <h2 class="gradient-text">Challenge 5: Git Mystery</h2>
                         <div class="challenge-meta">
                             <span class="difficulty">Medium</span>
                             <span class="points">200 points</span>
                             <span class="category">Version Control</span>
                         </div>
                     </div>
-                    <div class="challenge-description">
+                    <div class="challenge-description shine-effect">
                         <p>Your task is to find a secret message hidden in the Git commit history.</p>
                         <p>Open the challenge file below and follow the instructions to find the password.</p>
                         <a href="challenges/git_mystery.html" class="download-btn" target="_blank">
                             <i class="fas fa-external-link-alt"></i> Open Challenge
                         </a>
                     </div>
-                    <div class="challenge-submission">
+                    <div class="challenge-submission shine-effect">
                         <form id="challenge5-form" class="submission-form">
                             <div class="form-group">
                                 <label for="challenge5-answer">Enter the password:</label>
@@ -275,21 +276,21 @@
                 <!-- Challenge 6 screen (initially hidden) -->
                 <div id="challenge6" class="challenge-screen">
                     <div class="challenge-header">
-                        <h2>Challenge 6: Tech Logo Quiz</h2>
+                        <h2 class="gradient-text">Challenge 6: Tech Logo Quiz</h2>
                         <div class="challenge-meta">
                             <span class="difficulty">Medium</span>
                             <span class="points">200 points</span>
                             <span class="category">Tech Culture</span>
                         </div>
                     </div>
-                    <div class="challenge-description">
+                    <div class="challenge-description shine-effect">
                         <p>Your task is to identify the tech companies from partial or distorted logos.</p>
                         <p>Open the challenge file below and follow the instructions to find the password.</p>
                         <a href="challenges/logo_quiz.html" class="download-btn" target="_blank">
                             <i class="fas fa-external-link-alt"></i> Open Challenge
                         </a>
                     </div>
-                    <div class="challenge-submission">
+                    <div class="challenge-submission shine-effect">
                         <form id="challenge6-form" class="submission-form">
                             <div class="form-group">
                                 <label for="challenge6-answer">Enter the password:</label>
@@ -306,21 +307,21 @@
                 <!-- Challenge 7 screen (initially hidden) -->
                 <div id="challenge7" class="challenge-screen">
                     <div class="challenge-header">
-                        <h2>Challenge 7: Debug the Code</h2>
+                        <h2 class="gradient-text">Challenge 7: Debug the Code</h2>
                         <div class="challenge-meta">
                             <span class="difficulty">Medium</span>
                             <span class="points">250 points</span>
                             <span class="category">Development</span>
                         </div>
                     </div>
-                    <div class="challenge-description">
+                    <div class="challenge-description shine-effect">
                         <p>Your task is to find and fix the bugs in a simple JavaScript function.</p>
                         <p>Open the challenge file below and follow the instructions to find the password.</p>
                         <a href="challenges/debug_code.html" class="download-btn" target="_blank">
                             <i class="fas fa-external-link-alt"></i> Open Challenge
                         </a>
                     </div>
-                    <div class="challenge-submission">
+                    <div class="challenge-submission shine-effect">
                         <form id="challenge7-form" class="submission-form">
                             <div class="form-group">
                                 <label for="challenge7-answer">Enter the password:</label>
@@ -337,21 +338,21 @@
                 <!-- Challenge 8 screen (initially hidden) -->
                 <div id="challenge8" class="challenge-screen">
                     <div class="challenge-header">
-                        <h2>Challenge 8: IT Crossword Puzzle</h2>
+                        <h2 class="gradient-text">Challenge 8: IT Crossword Puzzle</h2>
                         <div class="challenge-meta">
                             <span class="difficulty">Hard</span>
                             <span class="points">300 points</span>
                             <span class="category">General IT Knowledge</span>
                         </div>
                     </div>
-                    <div class="challenge-description">
+                    <div class="challenge-description shine-effect">
                         <p>Your task is to complete the crossword puzzle with IT and programming terms.</p>
                         <p>Open the challenge file below and follow the instructions to find the password.</p>
                         <a href="challenges/it_crossword.html" class="download-btn" target="_blank">
                             <i class="fas fa-external-link-alt"></i> Open Challenge
                         </a>
                     </div>
-                    <div class="challenge-submission">
+                    <div class="challenge-submission shine-effect">
                         <form id="challenge8-form" class="submission-form">
                             <div class="form-group">
                                 <label for="challenge8-answer">Enter the password:</label>
@@ -368,21 +369,21 @@
                 <!-- Challenge 9 screen (initially hidden) -->
                 <div id="challenge9" class="challenge-screen">
                     <div class="challenge-header">
-                        <h2>Challenge 9: Tech Emoji Pictionary</h2>
+                        <h2 class="gradient-text">Challenge 9: Tech Emoji Pictionary</h2>
                         <div class="challenge-meta">
                             <span class="difficulty">Medium</span>
                             <span class="points">250 points</span>
                             <span class="category">Tech Culture</span>
                         </div>
                     </div>
-                    <div class="challenge-description">
+                    <div class="challenge-description shine-effect">
                         <p>Your task is to identify tech concepts represented by emoji combinations.</p>
                         <p>Open the challenge file below and follow the instructions to find the password.</p>
                         <a href="challenges/emoji_pictionary.html" class="download-btn" target="_blank">
                             <i class="fas fa-external-link-alt"></i> Open Challenge
                         </a>
                     </div>
-                    <div class="challenge-submission">
+                    <div class="challenge-submission shine-effect">
                         <form id="challenge9-form" class="submission-form">
                             <div class="form-group">
                                 <label for="challenge9-answer">Enter the password:</label>
@@ -399,21 +400,21 @@
                 <!-- Challenge 10 screen (initially hidden) -->
                 <div id="challenge10" class="challenge-screen">
                     <div class="challenge-header">
-                        <h2>Challenge 10: Tech Timeline Puzzle</h2>
+                        <h2 class="gradient-text">Challenge 10: Tech Timeline Puzzle</h2>
                         <div class="challenge-meta">
                             <span class="difficulty">Medium</span>
                             <span class="points">250 points</span>
                             <span class="category">Tech History</span>
                         </div>
                     </div>
-                    <div class="challenge-description">
+                    <div class="challenge-description shine-effect">
                         <p>Your task is to arrange tech innovations in chronological order.</p>
                         <p>Open the challenge file below and follow the instructions to find the password.</p>
                         <a href="challenges/tech_timeline.html" class="download-btn" target="_blank">
                             <i class="fas fa-external-link-alt"></i> Open Challenge
                         </a>
                     </div>
-                    <div class="challenge-submission">
+                    <div class="challenge-submission shine-effect">
                         <form id="challenge10-form" class="submission-form">
                             <div class="form-group">
                                 <label for="challenge10-answer">Enter the password:</label>
@@ -430,21 +431,21 @@
                 <!-- Challenge 11 screen (initially hidden) -->
                 <div id="challenge11" class="challenge-screen">
                     <div class="challenge-header">
-                        <h2>Challenge 11: Decode the Cipher</h2>
+                        <h2 class="gradient-text">Challenge 11: Decode the Cipher</h2>
                         <div class="challenge-meta">
                             <span class="difficulty">Hard</span>
                             <span class="points">300 points</span>
                             <span class="category">Cryptography</span>
                         </div>
                     </div>
-                    <div class="challenge-description">
+                    <div class="challenge-description shine-effect">
                         <p>Your task is to crack a substitution cipher to reveal a hidden message.</p>
                         <p>Open the challenge file below and follow the instructions to find the password.</p>
                         <a href="challenges/cipher_challenge.html" class="download-btn" target="_blank">
                             <i class="fas fa-external-link-alt"></i> Open Challenge
                         </a>
                     </div>
-                    <div class="challenge-submission">
+                    <div class="challenge-submission shine-effect">
                         <form id="challenge11-form" class="submission-form">
                             <div class="form-group">
                                 <label for="challenge11-answer">Enter the password:</label>
@@ -459,9 +460,9 @@
                 </div>
                 
                 <div id="completion-screen" class="challenge-screen">
-                    <div class="completion-message">
-                        <i class="fas fa-trophy"></i>
-                        <h2>Congratulations!</h2>
+                    <div class="completion-message shine-effect">
+                        <i class="fas fa-trophy float-animation"></i>
+                        <h2 class="gradient-text">Congratulations!</h2>
                         <p>You've completed all challenges in the CTF Treasure Hunt!</p>
                         <div class="final-score">
                             <h3>Your Final Score: <span id="final-score">0</span></h3>
@@ -477,5 +478,8 @@
 
     <script src="js/modal.js"></script>
     <script src="js/portal.js"></script>
+    <script src="js/portal-effects.js"></script>
+    <script src="js/portal-canvas.js"></script>
+    <script src="js/animations.js"></script>
 </body>
 </html>

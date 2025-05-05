@@ -1,0 +1,174 @@
+/* Portal Canvas Styles */
+
+#hero-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.portal-body {
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Ensure challenge content appears above canvas */
+.portal-container {
+    position: relative;
+    z-index: 1;
+}
+
+/* Glowing elements */
+.glow-effect {
+    position: relative;
+}
+
+.glow-effect::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    box-shadow: 0 0 15px rgba(255, 98, 0, 0.5);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.glow-effect:hover::after {
+    opacity: 1;
+}
+
+/* Particle animations */
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 0.7; }
+    50% { transform: scale(1.05); opacity: 1; }
+    100% { transform: scale(1); opacity: 0.7; }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInLeft {
+    from { opacity: 0; transform: translateX(-30px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInRight {
+    from { opacity: 0; transform: translateX(30px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+/* Ripple effect for buttons */
+.btn-submit, .download-btn, .btn-return, .btn-hint {
+    position: relative;
+    overflow: hidden;
+}
+
+.ripple {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    transform: scale(0);
+    animation: ripple 0.6s linear;
+    pointer-events: none;
+}
+
+@keyframes ripple {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+/* Challenge item hover effect */
+.challenge-item {
+    transition: all 0.3s ease;
+}
+
+.challenge-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 5px 15px rgba(255, 98, 0, 0.2);
+}
+
+/* Timer animation */
+.timer span {
+    display: inline-block;
+    animation: pulse 2s infinite;
+}
+
+.timer span:nth-child(1) { animation-delay: 0s; }
+.timer span:nth-child(2) { animation-delay: 0.2s; }
+.timer span:nth-child(3) { animation-delay: 0.4s; }
+
+/* Gradient text animation */
+@keyframes gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.gradient-text {
+    background: linear-gradient(90deg, #fff, #ff6200, #fff);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: gradient 5s ease infinite;
+}
+
+/* Shine effect for cards */
+@keyframes shine {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+.shine-effect {
+    position: relative;
+    overflow: hidden;
+}
+
+.shine-effect::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent 65%, rgba(255, 98, 0, 0.05) 75%, transparent 85%);
+    background-size: 200% 200%;
+    animation: shine 3s infinite;
+    pointer-events: none;
+}
+
+/* Floating animation for elements */
+.float-animation {
+    animation: float 3s ease-in-out infinite;
+}
+
+/* Fade-in animation for screens */
+.fade-in {
+    animation: fadeIn 0.8s ease-out;
+}
+
+/* Slide-in animations */
+.slide-in-left {
+    animation: slideInLeft 0.8s ease-out;
+}
+
+.slide-in-right {
+    animation: slideInRight 0.8s ease-out;
+}

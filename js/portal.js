@@ -281,9 +281,14 @@ function initCountdownTimer() {
                 const seconds = Math.floor((distance % (1000 * 60)) / 1000);
                 
                 // Display the time
-                document.getElementById('hours').textContent = formatTime(hours);
-                document.getElementById('minutes').textContent = formatTime(minutes);
-                document.getElementById('seconds').textContent = formatTime(seconds);
+                const hoursElements = document.querySelectorAll('#hours');
+                const minutesElements = document.querySelectorAll('#minutes');
+                const secondsElements = document.querySelectorAll('#seconds');
+                
+                // Update all instances of hours, minutes, seconds
+                hoursElements.forEach(el => el.textContent = formatTime(hours));
+                minutesElements.forEach(el => el.textContent = formatTime(minutes));
+                secondsElements.forEach(el => el.textContent = formatTime(seconds));
             }, 1000);
         })
         .catch(error => {

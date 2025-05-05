@@ -1,0 +1,70 @@
+/* Custom overrides for challenge portal */
+
+/* 1. Make the sidebar wider by 50% */
+.sidebar {
+    width: 450px; /* Increased from 300px */
+}
+
+/* 2. Remove pulsing animation from score and time */
+.header-timer {
+    animation: none;
+}
+
+#team-score {
+    animation: none;
+}
+
+/* 3. Team name styling for subheading */
+.logo {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+#team-name {
+    margin-top: 5px;
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+/* 4. Reorder team info elements */
+.team-info {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* 5. Make containers on the right more visible at all times */
+.challenge-description,
+.challenge-submission,
+.rules-reminder {
+    background-color: rgba(20, 20, 20, 0.7) !important;
+    border: 1px solid rgba(255, 98, 0, 0.3) !important;
+    box-shadow: 0 5px 15px rgba(255, 98, 0, 0.15) !important;
+    transition: transform 0.3s !important;
+}
+
+.challenge-description:hover,
+.challenge-submission:hover,
+.rules-reminder:hover {
+    transform: translateY(-5px) !important;
+    box-shadow: 0 10px 25px rgba(255, 98, 0, 0.25) !important;
+}
+
+/* 6. Remove particle burst effect on challenge hover */
+.particle-burst {
+    display: none !important;
+}
+
+/* Media query adjustments for the wider sidebar */
+@media (max-width: 1200px) {
+    .sidebar {
+        width: 350px;
+    }
+}
+
+@media (max-width: 992px) {
+    .sidebar {
+        width: 100%;
+    }
+}
