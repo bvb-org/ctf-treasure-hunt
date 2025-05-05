@@ -1,7 +1,7 @@
 {
   "name": "ing-treasure-hunt",
   "version": "1.0.0",
-  "description": "ING Tech Treasure Hunt Challenge Portal",
+  "description": "CTF Treasure Hunt Challenge Portal",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

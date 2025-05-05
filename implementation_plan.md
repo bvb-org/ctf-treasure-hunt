@@ -1,8 +1,8 @@
-# ING Tech Treasure Hunt - Implementation Plan
+# CTF Treasure Hunt - Implementation Plan
 
 ## Event Overview
 
-The ING Tech Treasure Hunt is a technical challenge event designed for IT professionals at ING. This event combines technical puzzles, coding challenges, and problem-solving tasks in a competitive format. Participants will work in teams to solve a series of increasingly difficult challenges, earning points and advancing through the treasure hunt.
+The CTF Treasure Hunt is a technical challenge event designed for IT professionals at ING. This event combines technical puzzles, coding challenges, and problem-solving tasks in a competitive format. Participants will work in teams to solve a series of increasingly difficult challenges, earning points and advancing through the treasure hunt.
 
 ## Event Format
 
@@ -139,9 +139,9 @@ Participants will need:
 ## Prizes and Recognition
 
 Suggested prizes:
-- **1st Place**: ING Tech hoodies + gift cards
-- **2nd Place**: ING Tech t-shirts + gift cards
-- **3rd Place**: ING Tech socks + gift cards
+- **1st Place**: Hoodies + gift cards
+- **2nd Place**: T-shirts + gift cards
+- **3rd Place**: Socks + gift cards
 - **Participation**: Small swag items for all participants
 
 ## Contingency Plans
@@ -190,6 +190,6 @@ The challenges have been designed with the following principles in mind:
 
 ## Conclusion
 
-This implementation plan provides a comprehensive framework for organizing the ING Tech Treasure Hunt. The modular design allows for flexibility in deployment and customization based on your specific requirements and constraints.
+This implementation plan provides a comprehensive framework for organizing the CTF Treasure Hunt. The modular design allows for flexibility in deployment and customization based on your specific requirements and constraints.
 
 By following this plan, you can create an engaging and challenging event that promotes technical skills, teamwork, and a fun competitive atmosphere among your colleagues.

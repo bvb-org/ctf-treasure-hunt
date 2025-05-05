@@ -1,5 +1,5 @@
 /**
- * ING Tech Treasure Hunt - Canvas-like Effects
+ * CTF Treasure Hunt - Canvas-like Effects
  * This script adds canvas-like particle effects to various sections of the page
  */
 

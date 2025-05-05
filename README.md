@@ -1,4 +1,4 @@
-# ING Tech Treasure Hunt
+# CTF Treasure Hunt
 
 A team-based technical treasure hunt challenge portal for ING's tech teams.
 

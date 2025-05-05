@@ -1,5 +1,5 @@
 /**
- * ING Tech Treasure Hunt - Canvas Animations
+ * CTF Treasure Hunt - Canvas Animations
  * This script creates an interactive particle animation in the hero section
  * using ING brand colors.
  */
