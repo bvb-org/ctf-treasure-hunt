@@ -14,7 +14,7 @@
       "difficulty": "Easy",
       "points": 100,
       "category": "Cryptography",
-      "file": "binary_message.txt",
+      "file": "binary_message.html",
       "hint": "Think about how text is represented in computers"
     },
     {

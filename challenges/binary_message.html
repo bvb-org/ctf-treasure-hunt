@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Hidden Message Challenge</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #0a0a0a;
+            color: #00ff00;
+        }
+        .terminal-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: #0c0c0c;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 20px rgba(0, 255, 0, 0.2);
+            border: 1px solid #1a1a1a;
+            position: relative;
+            overflow: hidden;
+        }
+        .terminal-header {
+            background-color: #333;
+            color: #fff;
+            padding: 8px 15px;
+            border-radius: 8px 8px 0 0;
+            margin: -30px -30px 20px -30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .terminal-title {
+            font-weight: bold;
+        }
+        .terminal-controls {
+            display: flex;
+            gap: 8px;
+        }
+        .terminal-button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .terminal-button.close {
+            background-color: #ff5f56;
+        }
+        .terminal-button.minimize {
+            background-color: #ffbd2e;
+        }
+        .terminal-button.maximize {
+            background-color: #27c93f;
+        }
+        h1 {
+            color: #00ff00;
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+        }
+        .prompt {
+            color: #00ff00;
+            font-weight: bold;
+        }
+        .user {
+            color: #00ff00;
+        }
+        .host {
+            color: #ff00ff;
+        }
+        .directory {
+            color: #00ffff;
+        }
+        .command {
+            color: #ffffff;
+        }
+        .binary-display {
+            background-color: #0a0a0a;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+            border: 1px solid #333;
+            white-space: pre-wrap;
+            word-break: break-all;
+            position: relative;
+            overflow-x: auto;
+        }
+        .instructions {
+            background-color: #1a1a1a;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+            border-left: 4px solid #00ff00;
+        }
+        .hint {
+            background-color: #1a1a1a;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            border-left: 4px solid #ffbd2e;
+        }
+        .tools {
+            background-color: #1a1a1a;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            border-left: 4px solid #00ffff;
+        }
+        .solution-input {
+            background-color: #1a1a1a;
+            border: 1px solid #333;
+            color: #ffffff;
+            padding: 10px;
+            width: 100%;
+            font-family: 'Courier New', monospace;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+        .submit-button {
+            background-color: #00ff00;
+            color: #0a0a0a;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            transition: all 0.3s;
+        }
+        .submit-button:hover {
+            background-color: #00cc00;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 0, 0.3);
+        }
+        .success-message {
+            display: none;
+            background-color: rgba(0, 255, 0, 0.1);
+            color: #00ff00;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+            text-align: center;
+            font-weight: bold;
+            border: 1px solid rgba(0, 255, 0, 0.3);
+            animation: terminal-glow 2s infinite alternate;
+        }
+        @keyframes terminal-glow {
+            from {
+                box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+            }
+            to {
+                box-shadow: 0 0 20px rgba(0, 255, 0, 0.6);
+            }
+        }
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 20px;
+            background-color: #00ff00;
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+            margin-left: 5px;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        .terminal-line {
+            margin: 10px 0;
+            line-height: 1.5;
+        }
+        .ascii-art {
+            color: #00ff00;
+            font-family: monospace;
+            white-space: pre;
+            line-height: 1.2;
+            margin: 20px 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="terminal-container">
+        <div class="terminal-header">
+            <div class="terminal-controls">
+                <span class="terminal-button close"></span>
+                <span class="terminal-button minimize"></span>
+                <span class="terminal-button maximize"></span>
+            </div>
+            <div class="terminal-title">kali@kali: ~/ctf/challenges</div>
+            <div></div>
+        </div>
+
+        <div class="terminal-line">
+            <span class="prompt"><span class="user">kali</span>@<span class="host">kali</span>:<span class="directory">~/ctf/challenges</span>$</span>
+            <span class="command">cat challenge1.txt</span>
+        </div>
+
+        <div class="ascii-art">
+ ██████╗████████╗███████╗    ████████╗██████╗ ███████╗ █████╗ ███████╗██╗   ██╗██████╗ ███████╗    ██╗  ██╗██╗   ██╗███╗   ██╗████████╗
+██╔════╝╚══██╔══╝██╔════╝    ╚══██╔══╝██╔══██╗██╔════╝██╔══██╗██╔════╝██║   ██║██╔══██╗██╔════╝    ██║  ██║██║   ██║████╗  ██║╚══██╔══╝
+██║        ██║   █████╗         ██║   ██████╔╝█████╗  ███████║███████╗██║   ██║██████╔╝█████╗      ███████║██║   ██║██╔██╗ ██║   ██║   
+██║        ██║   ██╔══╝         ██║   ██╔══██╗██╔══╝  ██╔══██║╚════██║██║   ██║██╔══██╗██╔══╝      ██╔══██║██║   ██║██║╚██╗██║   ██║   
+╚██████╗   ██║   ██║            ██║   ██║  ██║███████╗██║  ██║███████║╚██████╔╝██║  ██║███████╗    ██║  ██║╚██████╔╝██║ ╚████║   ██║   
+ ╚═════╝   ╚═╝   ╚═╝            ╚═╝   ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚══════╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝    ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═══╝   ╚═╝   
+        </div>
+
+        <h1>===== CHALLENGE 1: THE HIDDEN MESSAGE =====</h1>
+        
+        <div class="instructions">
+            <h2>Mission Briefing</h2>
+            <p>Welcome to the CTF Treasure Hunt! Your first challenge is to decode the hidden message in this binary sequence.</p>
+        </div>
+        
+        <div class="binary-display" id="binary-display">
+01001000 01100101 01101100 01101100 01101111 00100000 01001000 01110101 01101110 01110100 01100101 01110010 00100001 00100000 01010100 01101000 01100101 00100000 01100110 01101001 01110010 01110011 01110100 00100000 01110000 01100001 01110011 01110011 01110111 01101111 01110010 01100100 00100000 01101001 01110011 00111010 00100000 01010011 01100101 01100011 01110101 01110010 01101001 01110100 01111001 01000110 01101001 01110010 01110011 01110100 00110001 00110010 00110011
+        </div>
+        
+        <div class="terminal-line">
+            <span class="prompt"><span class="user">kali</span>@<span class="host">kali</span>:<span class="directory">~/ctf/challenges</span>$</span>
+            <span class="command">cat instructions.txt</span>
+        </div>
+
+        <div class="instructions">
+            <h2>INSTRUCTIONS:</h2>
+            <ol>
+                <li>Convert the binary sequence to ASCII text</li>
+                <li>Find the password mentioned in the decoded message</li>
+                <li>Enter the password below to unlock the next challenge</li>
+            </ol>
+        </div>
+        
+        <div class="hint">
+            <h3>HINT:</h3>
+            <p>Think about how text is represented in computers. Each 8-bit binary sequence represents a single ASCII character.</p>
+        </div>
+        
+        <div class="tools">
+            <h3>TOOLS YOU MIGHT NEED:</h3>
+            <ul>
+                <li>Binary to ASCII converter</li>
+                <li>Basic understanding of binary representation</li>
+            </ul>
+        </div>
+        
+        <div class="terminal-line">
+            <span class="prompt"><span class="user">kali</span>@<span class="host">kali</span>:<span class="directory">~/ctf/challenges</span>$</span>
+            <span class="command">enter_password</span>
+            <span class="cursor"></span>
+        </div>
+        
+        <input type="text" id="password-input" class="solution-input" placeholder="Enter the password here...">
+        <button id="submit-button" class="submit-button">Submit</button>
+        
+        <div id="success-message" class="success-message">
+            <p>Access granted! You've successfully decoded the binary message.</p>
+            <p>Moving to the next challenge...</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const passwordInput = document.getElementById('password-input');
+            const submitButton = document.getElementById('submit-button');
+            const successMessage = document.getElementById('success-message');
+            
+            // The correct password from the binary message
+            const correctPassword = "SecurityFirst123";
+            
+            submitButton.addEventListener('click', function() {
+                const userPassword = passwordInput.value.trim();
+                
+                if (userPassword === correctPassword) {
+                    successMessage.style.display = 'block';
+                    passwordInput.disabled = true;
+                    submitButton.disabled = true;
+                    
+                    // Scroll to the success message
+                    successMessage.scrollIntoView({ behavior: 'smooth' });
+                    
+                    // Optional: Redirect to the next challenge after a delay
+                    // setTimeout(() => {
+                    //     window.location.href = 'next_challenge.html';
+                    // }, 3000);
+                } else {
+                    // Shake the input to indicate incorrect password
+                    passwordInput.classList.add('shake');
+                    setTimeout(() => {
+                        passwordInput.classList.remove('shake');
+                    }, 500);
+                }
+            });
+            
+            // Allow pressing Enter to submit
+            passwordInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    submitButton.click();
+                }
+            });
+            
+            // Optional: Add a typewriter effect to the binary display
+            const binaryDisplay = document.getElementById('binary-display');
+            const binaryText = binaryDisplay.textContent;
+            binaryDisplay.textContent = '';
+            
+            let i = 0;
+            const typeWriter = () => {
+                if (i < binaryText.length) {
+                    binaryDisplay.textContent += binaryText.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 10);
+                }
+            };
+            
+            // Start the typewriter effect
+            typeWriter();
+        });
+    </script>
+</body>
+</html>
