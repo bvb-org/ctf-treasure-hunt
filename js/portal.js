@@ -125,6 +125,13 @@ const challengeData = {
         title: "Tech Timeline Puzzle",
         answer: "TechEvolution",
         points: 250,
+        nextChallenges: ["challenge11"]
+    },
+    challenge11: {
+        id: "challenge11",
+        title: "Decode the Cipher",
+        answer: "CRYPTOMASTER2025",
+        points: 300,
         nextChallenges: []
     }
 };
@@ -531,6 +538,9 @@ function requestHint(challengeId) {
                 break;
             case "challenge10":
                 hint = "Consider the chronological order of major tech innovations. Think about when the internet, smartphones, and cloud computing were introduced.";
+                break;
+            case "challenge11":
+                hint = "Look for patterns and letter frequencies. In English, the most common letters are E, T, A, O, I, N. Try decoding shorter words first like 'THE' and 'AND'.";
                 break;
         }
         

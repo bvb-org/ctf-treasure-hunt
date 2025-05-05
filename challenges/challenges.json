@@ -106,6 +106,16 @@
       "category": "Tech History",
       "file": "tech_timeline.html",
       "hint": "Consider how technologies build upon each other and when major tech milestones occurred"
+    },
+    {
+      "id": "challenge11",
+      "title": "Decode the Cipher",
+      "description": "Crack a substitution cipher to reveal a hidden message",
+      "difficulty": "Hard",
+      "points": 300,
+      "category": "Cryptography",
+      "file": "cipher_challenge.html",
+      "hint": "Look for patterns and common letter frequencies in English"
     }
   ],
   "progression": {
@@ -119,7 +129,8 @@
       "challenge7": ["challenge6"],
       "challenge8": ["challenge7"],
       "challenge9": ["challenge6"],
-      "challenge10": ["challenge9"]
+      "challenge10": ["challenge9"],
+      "challenge11": ["challenge10"]
     }
   },
   "scoring": {
