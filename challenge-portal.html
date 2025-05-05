@@ -66,6 +66,16 @@
                             <span class="challenge-title">IT Crossword Puzzle</span>
                             <span class="challenge-status pending">Pending</span>
                         </li>
+                        <li class="challenge-item" data-challenge="challenge9">
+                            <span class="challenge-number">9</span>
+                            <span class="challenge-title">Tech Emoji Pictionary</span>
+                            <span class="challenge-status pending">Pending</span>
+                        </li>
+                        <li class="challenge-item" data-challenge="challenge10">
+                            <span class="challenge-number">10</span>
+                            <span class="challenge-title">Tech Timeline Puzzle</span>
+                            <span class="challenge-status pending">Pending</span>
+                        </li>
                     </ul>
                 </div>
                 <div class="leaderboard-mini">
@@ -88,7 +98,7 @@
             <div class="challenge-area">
                 <div id="welcome-screen" class="challenge-screen active">
                     <h2>Welcome to the CTF Treasure Hunt!</h2>
-                    <p>You're about to embark on a journey through 8 interactive technical challenges that will test your knowledge in various areas of IT, networking, security, web development, and programming.</p>
+                    <p>You're about to embark on a journey through 10 interactive technical challenges that will test your knowledge in various areas of IT, networking, security, web development, and programming.</p>
                     <p>All challenges can be completed directly in your browser, making them accessible to team members with diverse technical backgrounds.</p>
                     <p>All challenges are unlocked and available from the start. Click on any challenge in the sidebar to begin. Good luck!</p>
                     <div class="rules-reminder">
@@ -349,7 +359,67 @@
                     </div>
                 </div>
 
-                <!-- Additional challenge screens would be added here -->
+                <!-- Challenge 9 screen (initially hidden) -->
+                <div id="challenge9" class="challenge-screen">
+                    <div class="challenge-header">
+                        <h2>Challenge 9: Tech Emoji Pictionary</h2>
+                        <div class="challenge-meta">
+                            <span class="difficulty">Medium</span>
+                            <span class="points">250 points</span>
+                            <span class="category">Tech Culture</span>
+                        </div>
+                    </div>
+                    <div class="challenge-description">
+                        <p>Your task is to identify tech concepts represented by emoji combinations.</p>
+                        <p>Open the challenge file below and follow the instructions to find the password.</p>
+                        <a href="challenges/emoji_pictionary.html" class="download-btn" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Open Challenge
+                        </a>
+                    </div>
+                    <div class="challenge-submission">
+                        <form id="challenge9-form" class="submission-form">
+                            <div class="form-group">
+                                <label for="challenge9-answer">Enter the password:</label>
+                                <input type="text" id="challenge9-answer" name="answer" required>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn-submit">Submit Answer</button>
+                                <button type="button" class="btn-hint">Request Hint</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Challenge 10 screen (initially hidden) -->
+                <div id="challenge10" class="challenge-screen">
+                    <div class="challenge-header">
+                        <h2>Challenge 10: Tech Timeline Puzzle</h2>
+                        <div class="challenge-meta">
+                            <span class="difficulty">Medium</span>
+                            <span class="points">250 points</span>
+                            <span class="category">Tech History</span>
+                        </div>
+                    </div>
+                    <div class="challenge-description">
+                        <p>Your task is to arrange tech innovations in chronological order.</p>
+                        <p>Open the challenge file below and follow the instructions to find the password.</p>
+                        <a href="challenges/tech_timeline.html" class="download-btn" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Open Challenge
+                        </a>
+                    </div>
+                    <div class="challenge-submission">
+                        <form id="challenge10-form" class="submission-form">
+                            <div class="form-group">
+                                <label for="challenge10-answer">Enter the password:</label>
+                                <input type="text" id="challenge10-answer" name="answer" required>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn-submit">Submit Answer</button>
+                                <button type="button" class="btn-hint">Request Hint</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
                 
                 <div id="completion-screen" class="challenge-screen">
                     <div class="completion-message">

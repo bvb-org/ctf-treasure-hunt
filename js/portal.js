@@ -97,7 +97,7 @@ const challengeData = {
         title: "Tech Logo Quiz",
         answer: "TechBrands",
         points: 200,
-        nextChallenges: ["challenge7"]
+        nextChallenges: ["challenge7", "challenge9"]
     },
     challenge7: {
         id: "challenge7",
@@ -111,6 +111,20 @@ const challengeData = {
         title: "IT Crossword Puzzle",
         answer: "TechTerms123",
         points: 300,
+        nextChallenges: []
+    },
+    challenge9: {
+        id: "challenge9",
+        title: "Tech Emoji Pictionary",
+        answer: "EmojiTech2025",
+        points: 250,
+        nextChallenges: ["challenge10"]
+    },
+    challenge10: {
+        id: "challenge10",
+        title: "Tech Timeline Puzzle",
+        answer: "TechEvolution",
+        points: 250,
         nextChallenges: []
     }
 };
@@ -511,6 +525,12 @@ function requestHint(challengeId) {
                 break;
             case "challenge8":
                 hint = "For the across clues, think about Python, arrays, routers, agile methodology, relational databases, bugs, and the internet.";
+                break;
+            case "challenge9":
+                hint = "Think about what each emoji could symbolize in a tech context. Consider how emojis can represent programming concepts, hardware, and software.";
+                break;
+            case "challenge10":
+                hint = "Consider the chronological order of major tech innovations. Think about when the internet, smartphones, and cloud computing were introduced.";
                 break;
         }
         
