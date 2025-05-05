@@ -86,6 +86,26 @@
       "category": "General IT Knowledge",
       "file": "it_crossword.html",
       "hint": "Think about common programming languages, hardware components, and tech terminology"
+    },
+    {
+      "id": "challenge9",
+      "title": "Tech Emoji Pictionary",
+      "description": "Identify tech concepts represented by emoji combinations",
+      "difficulty": "Medium",
+      "points": 250,
+      "category": "Tech Culture",
+      "file": "emoji_pictionary.html",
+      "hint": "Think about what each emoji could symbolize in a tech context"
+    },
+    {
+      "id": "challenge10",
+      "title": "Tech Timeline Puzzle",
+      "description": "Arrange tech innovations in chronological order",
+      "difficulty": "Medium",
+      "points": 250,
+      "category": "Tech History",
+      "file": "tech_timeline.html",
+      "hint": "Consider how technologies build upon each other and when major tech milestones occurred"
     }
   ],
   "progression": {
@@ -97,7 +117,9 @@
       "challenge5": ["challenge3"],
       "challenge6": ["challenge4", "challenge5"],
       "challenge7": ["challenge6"],
-      "challenge8": ["challenge7"]
+      "challenge8": ["challenge7"],
+      "challenge9": ["challenge6"],
+      "challenge10": ["challenge9"]
     }
   },
   "scoring": {

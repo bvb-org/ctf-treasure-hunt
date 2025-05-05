@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Timeline Puzzle Challenge</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .challenge-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #ff6200;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .instructions {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+        }
+        .timeline-container {
+            margin-bottom: 30px;
+        }
+        .timeline-item {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 10px;
+            cursor: grab;
+            transition: all 0.3s ease;
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .timeline-item:hover {
+            background-color: #f9f9f9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .timeline-item.dragging {
+            opacity: 0.5;
+            background-color: #e3f2fd;
+        }
+        .timeline-item.correct {
+            border-left: 4px solid #4caf50;
+            background-color: #e8f5e9;
+        }
+        .timeline-item.incorrect {
+            border-left: 4px solid #f44336;
+            background-color: #ffebee;
+        }
+        .timeline-item-content {
+            flex-grow: 1;
+        }
+        .timeline-item-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .timeline-item-description {
+            font-size: 14px;
+            color: #666;
+        }
+        .timeline-item-year {
+            display: none;
+            font-weight: bold;
+            color: #ff6200;
+            margin-left: 15px;
+        }
+        .timeline-item.correct .timeline-item-year {
+            display: block;
+        }
+        .drag-handle {
+            width: 20px;
+            height: 20px;
+            margin-right: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            cursor: grab;
+        }
+        .drag-handle-line {
+            height: 3px;
+            background-color: #ccc;
+            border-radius: 3px;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background-color: #4caf50;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        .progress-text {
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+        .btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+        .btn-check {
+            background-color: #4caf50;
+            color: white;
+        }
+        .btn-check:hover {
+            background-color: #45a049;
+        }
+        .btn-hint {
+            background-color: #2196f3;
+            color: white;
+        }
+        .btn-hint:hover {
+            background-color: #0b7dda;
+        }
+        .btn-reset {
+            background-color: #f44336;
+            color: white;
+        }
+        .btn-reset:hover {
+            background-color: #d32f2f;
+        }
+        .hint {
+            background-color: #fffde7;
+            padding: 10px;
+            border-left: 4px solid #ffd600;
+            margin-top: 20px;
+            display: none;
+        }
+        .success-message {
+            display: none;
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .timeline-visualization {
+            height: 5px;
+            background-color: #ddd;
+            margin: 30px 0;
+            position: relative;
+        }
+        .timeline-marker {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background-color: #ff6200;
+            border-radius: 50%;
+            top: -5px;
+            transform: translateX(-50%);
+        }
+        .timeline-year-label {
+            position: absolute;
+            font-size: 12px;
+            color: #666;
+            top: 15px;
+            transform: translateX(-50%);
+        }
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        .timeline-item.pulse {
+            animation: pulse 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="challenge-container">
+        <h1>CHALLENGE: TECH TIMELINE PUZZLE</h1>
+        
+        <div class="instructions">
+            <h2>Instructions</h2>
+            <p>Your task is to arrange the following tech innovations in chronological order (oldest to newest). This challenge tests your knowledge of the history of technology and computing.</p>
+            <p>Drag and drop the items to reorder them. Once you've arranged them in the correct order, click "Check Order" to verify your solution.</p>
+        </div>
+        
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <div class="progress-text" id="progress-text">Progress: 0/10 in correct position</div>
+        
+        <div class="timeline-container" id="timeline-container">
+            <!-- Timeline items will be generated by JavaScript -->
+        </div>
+        
+        <div class="timeline-visualization" id="timeline-visualization">
+            <!-- Timeline markers will be generated by JavaScript -->
+        </div>
+        
+        <div class="button-group">
+            <button id="check-btn" class="btn btn-check">Check Order</button>
+            <button id="hint-btn" class="btn btn-hint">Show Hint</button>
+            <button id="reset-btn" class="btn btn-reset">Reset Order</button>
+        </div>
+        
+        <div id="hint" class="hint">
+            <h3>Hints</h3>
+            <ul>
+                <li>The World Wide Web was created in 1989, after the first email was sent.</li>
+                <li>The first iPhone was released in 2007, before Bitcoin was introduced.</li>
+                <li>Social media platforms emerged after the dot-com bubble but before cloud computing became mainstream.</li>
+                <li>The first commercially available AI assistant came after smartphones but before widespread adoption of VR.</li>
+            </ul>
+        </div>
+        
+        <div id="success-message" class="success-message">
+            <p>Congratulations! You've correctly arranged all the tech innovations in chronological order.</p>
+            <p>The challenge password is: <strong>TechEvolution</strong></p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Timeline data - each item has a title, description, and year
+            const timelineData = [
+                {
+                    title: "First Electronic Computer (ENIAC)",
+                    description: "The first programmable, electronic, general-purpose digital computer",
+                    year: 1945
+                },
+                {
+                    title: "First Email Sent",
+                    description: "Ray Tomlinson sent the first email using the @ symbol",
+                    year: 1971
+                },
+                {
+                    title: "World Wide Web",
+                    description: "Tim Berners-Lee invented the World Wide Web",
+                    year: 1989
+                },
+                {
+                    title: "Dot-com Bubble",
+                    description: "Rapid growth and collapse of internet-based companies",
+                    year: 1999
+                },
+                {
+                    title: "Facebook Launch",
+                    description: "Mark Zuckerberg launched Facebook from his Harvard dorm room",
+                    year: 2004
+                },
+                {
+                    title: "iPhone Release",
+                    description: "Apple released the first iPhone, revolutionizing mobile technology",
+                    year: 2007
+                },
+                {
+                    title: "Bitcoin Introduction",
+                    description: "Satoshi Nakamoto introduced the cryptocurrency Bitcoin",
+                    year: 2009
+                },
+                {
+                    title: "Cloud Computing Mainstream",
+                    description: "Cloud services became widely adopted by businesses and consumers",
+                    year: 2012
+                },
+                {
+                    title: "AI Assistants",
+                    description: "Voice assistants like Siri, Alexa, and Google Assistant became popular",
+                    year: 2014
+                },
+                {
+                    title: "Virtual Reality Consumer Adoption",
+                    description: "VR headsets became accessible to consumers",
+                    year: 2016
+                }
+            ];
+            
+            // Shuffle the timeline data for the initial display
+            const shuffledData = [...timelineData].sort(() => Math.random() - 0.5);
+            
+            const timelineContainer = document.getElementById('timeline-container');
+            const timelineVisualization = document.getElementById('timeline-visualization');
+            const progressFill = document.getElementById('progress-fill');
+            const progressText = document.getElementById('progress-text');
+            const successMessage = document.getElementById('success-message');
+            const checkBtn = document.getElementById('check-btn');
+            const hintBtn = document.getElementById('hint-btn');
+            const hint = document.getElementById('hint');
+            const resetBtn = document.getElementById('reset-btn');
+            
+            let draggedItem = null;
+            
+            // Create timeline items
+            shuffledData.forEach((item, index) => {
+                const timelineItem = document.createElement('div');
+                timelineItem.className = 'timeline-item';
+                timelineItem.draggable = true;
+                timelineItem.dataset.year = item.year;
+                timelineItem.dataset.index = index;
+                
+                const dragHandle = document.createElement('div');
+                dragHandle.className = 'drag-handle';
+                for (let i = 0; i < 3; i++) {
+                    const line = document.createElement('div');
+                    line.className = 'drag-handle-line';
+                    dragHandle.appendChild(line);
+                }
+                
+                const content = document.createElement('div');
+                content.className = 'timeline-item-content';
+                
+                const title = document.createElement('div');
+                title.className = 'timeline-item-title';
+                title.textContent = item.title;
+                
+                const description = document.createElement('div');
+                description.className = 'timeline-item-description';
+                description.textContent = item.description;
+                
+                const year = document.createElement('div');
+                year.className = 'timeline-item-year';
+                year.textContent = item.year;
+                
+                content.appendChild(title);
+                content.appendChild(description);
+                
+                timelineItem.appendChild(dragHandle);
+                timelineItem.appendChild(content);
+                timelineItem.appendChild(year);
+                
+                timelineContainer.appendChild(timelineItem);
+                
+                // Add drag event listeners
+                timelineItem.addEventListener('dragstart', function(e) {
+                    draggedItem = this;
+                    setTimeout(() => {
+                        this.classList.add('dragging');
+                    }, 0);
+                });
+                
+                timelineItem.addEventListener('dragend', function() {
+                    this.classList.remove('dragging');
+                    draggedItem = null;
+                    updateVisualization();
+                });
+            });
+            
+            // Add drag over event listener to container
+            timelineContainer.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                const afterElement = getDragAfterElement(this, e.clientY);
+                if (draggedItem) {
+                    if (afterElement) {
+                        this.insertBefore(draggedItem, afterElement);
+                    } else {
+                        this.appendChild(draggedItem);
+                    }
+                }
+            });
+            
+            // Function to determine where to place the dragged item
+            function getDragAfterElement(container, y) {
+                const draggableElements = [...container.querySelectorAll('.timeline-item:not(.dragging)')];
+                
+                return draggableElements.reduce((closest, child) => {
+                    const box = child.getBoundingClientRect();
+                    const offset = y - box.top - box.height / 2;
+                    
+                    if (offset < 0 && offset > closest.offset) {
+                        return { offset: offset, element: child };
+                    } else {
+                        return closest;
+                    }
+                }, { offset: Number.NEGATIVE_INFINITY }).element;
+            }
+            
+            // Function to update the timeline visualization
+            function updateVisualization() {
+                timelineVisualization.innerHTML = '';
+                
+                // Get the current order of items
+                const items = document.querySelectorAll('.timeline-item');
+                const years = Array.from(items).map(item => parseInt(item.dataset.year));
+                
+                // Find min and max years
+                const minYear = Math.min(...years);
+                const maxYear = Math.max(...years);
+                const range = maxYear - minYear;
+                
+                // First, collect all items with their years and positions
+                const itemsWithPositions = Array.from(items).map(item => {
+                    const year = parseInt(item.dataset.year);
+                    const position = ((year - minYear) / range) * 100;
+                    return { item, year, position };
+                });
+                
+                // Sort items by position (left to right)
+                itemsWithPositions.sort((a, b) => a.position - b.position);
+                
+                // Create markers and labels with alternating pattern based on chronological order
+                itemsWithPositions.forEach((itemData, index) => {
+                    const { year, position } = itemData;
+                    const isAlternate = index % 2 === 0; // First item (index 0) is up, second down, etc.
+                    
+                    // Create marker (dot) - all markers stay in a straight line
+                    const marker = document.createElement('div');
+                    marker.className = 'timeline-marker';
+                    marker.style.left = `${position}%`;
+                    // Keep all markers at the same vertical position
+                    marker.style.top = '-5px';
+                    
+                    // Create year label
+                    const label = document.createElement('div');
+                    label.className = 'timeline-year-label';
+                    label.textContent = year;
+                    label.style.left = `${position}%`;
+                    
+                    // Alternate label positions: above or below the timeline
+                    if (isAlternate) {
+                        label.style.top = '-25px'; // Position above the timeline (first, third, etc.)
+                    } else {
+                        label.style.top = '15px';  // Position below the timeline (second, fourth, etc.)
+                    }
+                    
+                    timelineVisualization.appendChild(marker);
+                    timelineVisualization.appendChild(label);
+                });
+            }
+            
+            // Function to check the order
+            function checkOrder() {
+                const items = document.querySelectorAll('.timeline-item');
+                let correctCount = 0;
+                
+                // Reset all items
+                items.forEach(item => {
+                    item.classList.remove('correct', 'incorrect', 'pulse');
+                });
+                
+                // Check each item
+                items.forEach((item, index) => {
+                    const year = parseInt(item.dataset.year);
+                    const correctIndex = timelineData.findIndex(data => data.year === year);
+                    
+                    if (index === correctIndex) {
+                        item.classList.add('correct', 'pulse');
+                        correctCount++;
+                    } else {
+                        item.classList.add('incorrect', 'pulse');
+                    }
+                });
+                
+                // Update progress
+                const progress = (correctCount / timelineData.length) * 100;
+                progressFill.style.width = progress + '%';
+                progressText.textContent = `Progress: ${correctCount}/${timelineData.length} in correct position`;
+                
+                // Check if all are correct
+                if (correctCount === timelineData.length) {
+                    successMessage.style.display = 'block';
+                } else {
+                    successMessage.style.display = 'none';
+                }
+            }
+            
+            // Function to reset the order
+            function resetOrder() {
+                // Remove all items
+                timelineContainer.innerHTML = '';
+                
+                // Shuffle the data again
+                const newShuffledData = [...timelineData].sort(() => Math.random() - 0.5);
+                
+                // Recreate the items
+                newShuffledData.forEach((item, index) => {
+                    const timelineItem = document.createElement('div');
+                    timelineItem.className = 'timeline-item';
+                    timelineItem.draggable = true;
+                    timelineItem.dataset.year = item.year;
+                    timelineItem.dataset.index = index;
+                    
+                    const dragHandle = document.createElement('div');
+                    dragHandle.className = 'drag-handle';
+                    for (let i = 0; i < 3; i++) {
+                        const line = document.createElement('div');
+                        line.className = 'drag-handle-line';
+                        dragHandle.appendChild(line);
+                    }
+                    
+                    const content = document.createElement('div');
+                    content.className = 'timeline-item-content';
+                    
+                    const title = document.createElement('div');
+                    title.className = 'timeline-item-title';
+                    title.textContent = item.title;
+                    
+                    const description = document.createElement('div');
+                    description.className = 'timeline-item-description';
+                    description.textContent = item.description;
+                    
+                    const year = document.createElement('div');
+                    year.className = 'timeline-item-year';
+                    year.textContent = item.year;
+                    
+                    content.appendChild(title);
+                    content.appendChild(description);
+                    
+                    timelineItem.appendChild(dragHandle);
+                    timelineItem.appendChild(content);
+                    timelineItem.appendChild(year);
+                    
+                    timelineContainer.appendChild(timelineItem);
+                    
+                    // Add drag event listeners
+                    timelineItem.addEventListener('dragstart', function(e) {
+                        draggedItem = this;
+                        setTimeout(() => {
+                            this.classList.add('dragging');
+                        }, 0);
+                    });
+                    
+                    timelineItem.addEventListener('dragend', function() {
+                        this.classList.remove('dragging');
+                        draggedItem = null;
+                        updateVisualization();
+                    });
+                });
+                
+                // Reset progress
+                progressFill.style.width = '0%';
+                progressText.textContent = `Progress: 0/${timelineData.length} in correct position`;
+                
+                // Hide success message
+                successMessage.style.display = 'none';
+                
+                // Update visualization
+                updateVisualization();
+            }
+            
+            // Add button event listeners
+            checkBtn.addEventListener('click', checkOrder);
+            hintBtn.addEventListener('click', function() {
+                hint.style.display = hint.style.display === 'none' ? 'block' : 'none';
+            });
+            resetBtn.addEventListener('click', resetOrder);
+            
+            // Initialize the visualization
+            updateVisualization();
+        });
+    </script>
+</body>
+</html>
