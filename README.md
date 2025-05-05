@@ -127,15 +127,15 @@ If you prefer to deploy manually without GitHub Actions:
 
 2. Run the container:
    ```bash
-   # Create data directory if it doesn't exist
-   mkdir -p ~/treasure-hunt-data
+   # Create a Docker volume for database persistence
+   docker volume create treasure-hunt-db
    
    # Run the container
    docker run -d \
      --name ing-treasure-hunt \
      --restart unless-stopped \
      -p 3123:3123 \
-     -v ~/treasure-hunt-data:/app/data \
+     -v treasure-hunt-db:/app/data \
      -e DB_PATH=/app/data/treasure_hunt.db \
      ing-treasure-hunt:latest
    ```

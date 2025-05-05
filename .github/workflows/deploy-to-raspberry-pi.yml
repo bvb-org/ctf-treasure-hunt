@@ -5,7 +5,7 @@ on:
 
 env:
   DOCKER_IMAGE: ing-treasure-hunt
-  DB_VOLUME_NAME: treasure-hunt-data  # Volume for database persistence
+  DB_VOLUME_NAME: treasure-hunt-db  # Volume for database persistence
 
 jobs:
   deploy:
@@ -32,35 +32,17 @@ jobs:
             docker volume create ${{ env.DB_VOLUME_NAME }}
           fi
 
-      - name: Copy database from container if it exists
-        run: |
-          # Create a temporary container to extract the database if it doesn't exist in the volume
-          if docker inspect ${{ env.DOCKER_IMAGE }} &>/dev/null; then
-            # Create data directory if it doesn't exist
-            mkdir -p ./db_data
-            
-            # Copy the database from the existing container if it exists
-            docker cp ${{ env.DOCKER_IMAGE }}:/app/treasure_hunt.db ./db_data/ || true
-          fi
-
       - name: Deploy new container
         run: |
-          # Stop and remove the existing container
-          docker stop ${{ env.DOCKER_IMAGE }} && docker rm ${{ env.DOCKER_IMAGE }} || true
+          # Stop and remove the existing container (ignore errors if it doesn't exist)
+          docker stop ${{ env.DOCKER_IMAGE }} || true
+          docker rm ${{ env.DOCKER_IMAGE }} || true
           
-          # Create data directory if it doesn't exist
-          mkdir -p /home/pi/treasure-hunt-data
-          
-          # Copy the database to the persistent location if we extracted it
-          if [ -f "./db_data/treasure_hunt.db" ]; then
-            cp ./db_data/treasure_hunt.db /home/pi/treasure-hunt-data/ || true
-          fi
-          
-          # Run the new container with volume mount for database persistence
+          # Run the new container with Docker volume for database persistence
           docker run -d \
             --name ${{ env.DOCKER_IMAGE }} \
             --restart unless-stopped \
             -p 3123:3123 \
-            -v /home/pi/treasure-hunt-data:/app/data \
+            -v ${{ env.DB_VOLUME_NAME }}:/app/data \
             -e DB_PATH=/app/data/treasure_hunt.db \
             ${{ env.DOCKER_IMAGE }}:latest
