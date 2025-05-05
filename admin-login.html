@@ -6,6 +6,7 @@
     <title>CTF Treasure Hunt - Admin Login</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/portal.css">
+    <link rel="stylesheet" href="css/modal.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         .login-container {
@@ -162,10 +163,12 @@
                 })
                 .catch(error => {
                     console.error('Error during login:', error);
+                    showError('An error occurred during login. Please try again.', 'Error');
                     errorMessage.style.display = 'block';
                 });
             });
         });
     </script>
+    <script src="js/modal.js"></script>
 </body>
 </html>

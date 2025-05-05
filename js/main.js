@@ -193,7 +193,7 @@ function initRegistrationForm() {
                 })
                 .catch(error => {
                     console.error('Error fetching teams data:', error);
-                    alert('Error loading teams. Please try again later.');
+                    showError('Error loading teams. Please try again later.', 'Error');
                 });
         });
     }
@@ -204,7 +204,7 @@ function showTeamSelectionModal(teams) {
     // If teams is not an array, handle the error
     if (!Array.isArray(teams)) {
         console.error('Teams data is not an array:', teams);
-        alert('Error loading teams. Please try again later.');
+        showError('Error loading teams. Please try again later.', 'Error');
         return;
     }
     // Create modal container

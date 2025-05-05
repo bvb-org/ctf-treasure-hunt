@@ -6,6 +6,7 @@
     <title>CTF Treasure Hunt - Admin Portal</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/portal.css">
+    <link rel="stylesheet" href="css/modal.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         .admin-container {
@@ -492,8 +493,17 @@
     </div>
     
     <script>
-        // Show alert message
+        // Show alert message using our custom modal
         function showAlert(message, type) {
+            if (type === 'success') {
+                showSuccess(message, 'Success');
+            } else if (type === 'danger') {
+                showError(message, 'Error');
+            } else {
+                showInfo(message, 'Information');
+            }
+            
+            // Also update the alert element for visual consistency
             const alertElement = document.getElementById('alert-message');
             alertElement.textContent = message;
             alertElement.className = `alert alert-${type}`;
@@ -1106,6 +1116,7 @@
                 });
         }
     </script>
+    <script src="js/modal.js"></script>
     </div>
 </body>
 </html>

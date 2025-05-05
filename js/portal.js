@@ -372,7 +372,7 @@ function checkAnswer(challengeId, submittedAnswer) {
         completeChallenge(challengeId);
     } else {
         // Show incorrect answer message
-        alert("Incorrect answer. Please try again.");
+        showError("Incorrect answer. Please try again.", "Incorrect Answer");
     }
 }
 
@@ -403,7 +403,7 @@ function completeChallenge(challengeId) {
     .then(data => {
         if (data.success === false) {
             // Challenge was already completed
-            alert(`You've already completed the "${challenge.title}" challenge.`);
+            showInfo(`You've already completed the "${challenge.title}" challenge.`, "Challenge Already Completed");
             return;
         }
         
@@ -425,7 +425,7 @@ function completeChallenge(challengeId) {
                 updateTeamStorage();
                 
                 // Show success message
-                alert(`Congratulations! You've completed the "${challenge.title}" challenge and earned ${points} points.`);
+                showSuccess(`Congratulations! You've completed the "${challenge.title}" challenge and earned ${points} points.`, "Challenge Completed");
                 
                 // Update top teams in sidebar
                 updateTopTeams();
@@ -439,7 +439,7 @@ function completeChallenge(challengeId) {
     })
     .catch(error => {
         console.error('Error completing challenge:', error);
-        alert('Error saving your progress. Please try again.');
+        showError('Error saving your progress. Please try again.', 'Error');
     });
 }
 
@@ -496,9 +496,10 @@ function unlockNextChallenges(nextChallengeIds) {
 // Request a hint for a challenge
 function requestHint(challengeId) {
     // Confirm hint request (will reduce points)
-    const confirmHint = confirm("Requesting a hint will reduce the points for this challenge by 20%. Are you sure?");
-    
-    if (confirmHint) {
+    modal.confirm(
+        "Requesting a hint will reduce the points for this challenge by 20%. Are you sure?",
+        "Confirm Hint Request",
+        () => {
         // Mark hint as used for this challenge
         teamState.hintsUsed[challengeId] = true;
         
@@ -545,8 +546,9 @@ function requestHint(challengeId) {
         }
         
         // Display the hint
-        alert(`Hint: ${hint}`);
-    }
+        showInfo(`${hint}`, "Hint");
+        }
+    );
 }
 
 // Show the completion screen

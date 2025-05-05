@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CTF Treasure Hunt</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/modal.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
@@ -184,6 +185,7 @@
         </footer>
     </div>
 
+    <script src="js/modal.js"></script>
     <script src="js/main.js"></script>
     <script src="js/animations.js"></script>
     <script src="js/canvas-effects.js"></script>
@@ -204,12 +206,12 @@
                                 showTeamSelectionModal(teams);
                             } else {
                                 // Fallback if function not available
-                                alert('Please use the Registration link to select your team.');
+                                showInfo('Please use the Registration link to select your team.', 'Team Selection');
                             }
                         })
                         .catch(error => {
                             console.error('Error fetching teams data:', error);
-                            alert('Error loading teams. Please try again later.');
+                            showError('Error loading teams. Please try again later.', 'Error');
                         });
                 });
             }
