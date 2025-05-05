@@ -11,7 +11,8 @@ app.use(express.static(path.join(__dirname)));
 app.use(bodyParser.json());
 
 // Set up SQLite database
-const dbPath = path.join(__dirname, 'treasure_hunt.db');
+const dbPath = process.env.DB_PATH || path.join(__dirname, 'treasure_hunt.db');
+console.log(`Using database at: ${dbPath}`);
 const db = new sqlite3.Database(dbPath);
 
 // Create tables if they don't exist

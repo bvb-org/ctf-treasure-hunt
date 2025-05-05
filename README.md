@@ -98,3 +98,46 @@ The treasure hunt includes 8 technical challenges:
 To add or modify teams, edit the `teams.json` file.
 
 To modify challenges, edit the `challenges/challenges.json` file and corresponding challenge files.
+
+## Deployment to Raspberry Pi
+
+This project can be deployed to a Raspberry Pi using GitHub Actions and Docker.
+
+### Prerequisites for Deployment
+
+1. A Raspberry Pi with Docker installed
+2. GitHub Actions self-hosted runner set up on the Raspberry Pi
+3. Git repository with this code pushed to GitHub
+
+### Deployment Process
+
+1. The deployment is configured to run via GitHub Actions workflow
+2. The workflow is triggered manually from the GitHub Actions tab
+3. The application is containerized using Docker
+4. The database is persisted between deployments using a volume mount
+
+### Manual Deployment
+
+If you prefer to deploy manually without GitHub Actions:
+
+1. Build the Docker image:
+   ```bash
+   docker build -t ing-treasure-hunt .
+   ```
+
+2. Run the container:
+   ```bash
+   # Create data directory if it doesn't exist
+   mkdir -p ~/treasure-hunt-data
+   
+   # Run the container
+   docker run -d \
+     --name ing-treasure-hunt \
+     --restart unless-stopped \
+     -p 3123:3123 \
+     -v ~/treasure-hunt-data:/app/data \
+     -e DB_PATH=/app/data/treasure_hunt.db \
+     ing-treasure-hunt:latest
+   ```
+
+3. Access the application at http://[raspberry-pi-ip]:3123

@@ -1,0 +1,66 @@
+name: Deploy to Raspberry Pi
+
+on:
+  workflow_dispatch:  # Manual trigger from GitHub UI
+
+env:
+  DOCKER_IMAGE: ing-treasure-hunt
+  DB_VOLUME_NAME: treasure-hunt-data  # Volume for database persistence
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: false
+          load: true
+          tags: ${{ env.DOCKER_IMAGE }}:latest
+
+      - name: Create database volume if it doesn't exist
+        run: |
+          # Check if volume exists, create if it doesn't
+          if ! docker volume inspect ${{ env.DB_VOLUME_NAME }} &>/dev/null; then
+            docker volume create ${{ env.DB_VOLUME_NAME }}
+          fi
+
+      - name: Copy database from container if it exists
+        run: |
+          # Create a temporary container to extract the database if it doesn't exist in the volume
+          if docker inspect ${{ env.DOCKER_IMAGE }} &>/dev/null; then
+            # Create data directory if it doesn't exist
+            mkdir -p ./db_data
+            
+            # Copy the database from the existing container if it exists
+            docker cp ${{ env.DOCKER_IMAGE }}:/app/treasure_hunt.db ./db_data/ || true
+          fi
+
+      - name: Deploy new container
+        run: |
+          # Stop and remove the existing container
+          docker stop ${{ env.DOCKER_IMAGE }} && docker rm ${{ env.DOCKER_IMAGE }} || true
+          
+          # Create data directory if it doesn't exist
+          mkdir -p /home/pi/treasure-hunt-data
+          
+          # Copy the database to the persistent location if we extracted it
+          if [ -f "./db_data/treasure_hunt.db" ]; then
+            cp ./db_data/treasure_hunt.db /home/pi/treasure-hunt-data/ || true
+          fi
+          
+          # Run the new container with volume mount for database persistence
+          docker run -d \
+            --name ${{ env.DOCKER_IMAGE }} \
+            --restart unless-stopped \
+            -p 3123:3123 \
+            -v /home/pi/treasure-hunt-data:/app/data \
+            -e DB_PATH=/app/data/treasure_hunt.db \
+            ${{ env.DOCKER_IMAGE }}:latest
