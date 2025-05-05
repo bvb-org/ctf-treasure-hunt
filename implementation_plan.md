@@ -6,7 +6,7 @@ The CTF Treasure Hunt is a technical challenge event designed for IT professiona
 
 ## Event Format
 
-- **Duration**: 4 hours (6:00 PM - 10:00 PM)
+- **Duration**: 1 hour (eg 6:00 PM - 7:00 PM)
 - **Location**: Online or in-office (flexible)
 - **Team Structure**: Teams of 3-5 members
 - **Challenge Structure**: Sequential progression with some parallel paths

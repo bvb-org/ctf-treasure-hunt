@@ -2,7 +2,7 @@
   "event": {
     "name": "CTF Treasure Hunt",
     "description": "A technical treasure hunt for ING's brightest minds",
-    "duration": "4 hours",
+    "duration": "depends on the number of challenges",
     "date": "2025-05-30T18:00:00",
     "location": "Online"
   },
