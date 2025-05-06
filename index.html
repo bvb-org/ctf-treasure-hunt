@@ -191,31 +191,42 @@
     <script src="js/canvas-effects.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Add event listener to the Start Hunt button
-            const startHuntBtn = document.getElementById('start-hunt-btn');
-            if (startHuntBtn) {
-                startHuntBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
+                    console.log('DOM fully loaded, initializing Start Hunt button');
+                    // Add event listener to the Start Hunt button
+                    const startHuntBtn = document.getElementById('start-hunt-btn');
+                    console.log('Start Hunt button found:', startHuntBtn);
                     
-                    // Fetch teams data and show team selection modal
-                    fetch('/api/teams')
-                        .then(response => response.json())
-                        .then(teams => {
-                            // Use the same function from main.js
-                            if (typeof showTeamSelectionModal === 'function') {
-                                showTeamSelectionModal(teams);
-                            } else {
-                                // Fallback if function not available
-                                showInfo('Please use the Registration link to select your team.', 'Team Selection');
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error fetching teams data:', error);
-                            showError('Error loading teams. Please try again later.', 'Error');
+                    if (startHuntBtn) {
+                        startHuntBtn.addEventListener('click', function(e) {
+                            console.log('Start Hunt button clicked');
+                            e.preventDefault();
+                            
+                            // Fetch teams data and show team selection modal
+                            console.log('Fetching teams data from /api/teams');
+                            fetch('/api/teams')
+                                .then(response => {
+                                    console.log('API response received:', response);
+                                    return response.json();
+                                })
+                                .then(teams => {
+                                    console.log('Teams data received:', teams);
+                                    // Use the same function from main.js
+                                    if (typeof showTeamSelectionModal === 'function') {
+                                        console.log('showTeamSelectionModal function exists, calling it');
+                                        showTeamSelectionModal(teams);
+                                    } else {
+                                        console.error('showTeamSelectionModal function not found');
+                                        // Fallback if function not available
+                                        showInfo('Please use the Registration link to select your team.', 'Team Selection');
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Error fetching teams data:', error);
+                                    showError('Error loading teams. Please try again later.', 'Error');
+                                });
                         });
+                    }
                 });
-            }
-        });
     </script>
 </body>
 </html>

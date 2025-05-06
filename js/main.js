@@ -201,58 +201,41 @@ function initRegistrationForm() {
 
 // Show team selection modal
 function showTeamSelectionModal(teams) {
+    console.log('Creating team selection modal with teams:', teams);
     // If teams is not an array, handle the error
     if (!Array.isArray(teams)) {
         console.error('Teams data is not an array:', teams);
         showError('Error loading teams. Please try again later.', 'Error');
         return;
     }
+    
+    // Create modal overlay (following the structure in modal.css)
+    const modalOverlay = document.createElement('div');
+    modalOverlay.className = 'modal-overlay';
+    
     // Create modal container
     const modalContainer = document.createElement('div');
     modalContainer.className = 'modal-container';
-    modalContainer.style.position = 'fixed';
-    modalContainer.style.top = '0';
-    modalContainer.style.left = '0';
-    modalContainer.style.width = '100%';
-    modalContainer.style.height = '100%';
-    modalContainer.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
-    modalContainer.style.display = 'flex';
-    modalContainer.style.justifyContent = 'center';
-    modalContainer.style.alignItems = 'center';
-    modalContainer.style.zIndex = '1000';
-    
-    // Create modal content
-    const modalContent = document.createElement('div');
-    modalContent.className = 'modal-content';
-    modalContent.style.backgroundColor = '#fff';
-    modalContent.style.borderRadius = '8px';
-    modalContent.style.padding = '30px';
-    modalContent.style.width = '80%';
-    modalContent.style.maxWidth = '600px';
-    modalContent.style.maxHeight = '80vh';
-    modalContent.style.overflowY = 'auto';
     
     // Create modal header
     const modalHeader = document.createElement('div');
     modalHeader.className = 'modal-header';
-    modalHeader.style.marginBottom = '20px';
     
-    const modalTitle = document.createElement('h2');
+    const modalTitle = document.createElement('h3');
+    modalTitle.className = 'modal-title';
     modalTitle.textContent = 'Select Your Team';
-    modalTitle.style.color = '#ff6200';
-    modalTitle.style.marginBottom = '10px';
-    
-    const modalDescription = document.createElement('p');
-    modalDescription.textContent = 'Choose your team to access the challenge portal:';
     
     modalHeader.appendChild(modalTitle);
-    modalHeader.appendChild(modalDescription);
+    
+    // Create modal body
+    const modalBody = document.createElement('div');
+    modalBody.className = 'modal-body';
     
     // Create team list
     const teamList = document.createElement('div');
     teamList.className = 'team-list';
     teamList.style.display = 'grid';
-    teamList.style.gridTemplateColumns = 'repeat(auto-fill, minmax(250px, 1fr))';
+    teamList.style.gridTemplateColumns = 'repeat(auto-fill, minmax(200px, 1fr))';
     teamList.style.gap = '15px';
     teamList.style.marginBottom = '20px';
     
@@ -274,6 +257,7 @@ function showTeamSelectionModal(teams) {
         });
         
         teamCard.addEventListener('click', () => {
+            console.log('Team card clicked, redirecting to:', `/${team.id}`);
             window.location.href = `/${team.id}`;
         });
         
@@ -283,40 +267,62 @@ function showTeamSelectionModal(teams) {
         teamName.style.color = '#333';
         
         teamCard.appendChild(teamName);
-        
         teamList.appendChild(teamCard);
     });
     
+    modalBody.appendChild(teamList);
+    
+    // Create modal footer
+    const modalFooter = document.createElement('div');
+    modalFooter.className = 'modal-footer';
+    
     // Create close button
     const closeButton = document.createElement('button');
+    closeButton.className = 'modal-btn modal-btn-secondary';
     closeButton.textContent = 'Close';
-    closeButton.style.backgroundColor = '#ccc';
-    closeButton.style.color = '#333';
-    closeButton.style.border = 'none';
-    closeButton.style.padding = '10px 20px';
-    closeButton.style.borderRadius = '4px';
-    closeButton.style.cursor = 'pointer';
-    closeButton.style.marginTop = '10px';
     
     closeButton.addEventListener('click', () => {
-        document.body.removeChild(modalContainer);
+        document.body.removeChild(modalOverlay);
     });
+    
+    modalFooter.appendChild(closeButton);
     
     // Assemble modal
-    modalContent.appendChild(modalHeader);
-    modalContent.appendChild(teamList);
-    modalContent.appendChild(closeButton);
-    modalContainer.appendChild(modalContent);
+    modalContainer.appendChild(modalHeader);
+    modalContainer.appendChild(modalBody);
+    modalContainer.appendChild(modalFooter);
+    modalOverlay.appendChild(modalContainer);
     
     // Add modal to body
-    document.body.appendChild(modalContainer);
+    document.body.appendChild(modalOverlay);
+    
+    // Make the modal visible by adding the active class
+    setTimeout(() => {
+        modalOverlay.classList.add('active');
+    }, 10);
     
     // Close modal when clicking outside
-    modalContainer.addEventListener('click', (e) => {
-        if (e.target === modalContainer) {
-            document.body.removeChild(modalContainer);
+    modalOverlay.addEventListener('click', (e) => {
+        if (e.target === modalOverlay) {
+            modalOverlay.classList.remove('active');
+            setTimeout(() => {
+                document.body.removeChild(modalOverlay);
+            }, 300); // Wait for transition to complete
         }
     });
+    
+    // Add keydown event to close modal on Escape key
+    const escapeHandler = (e) => {
+        if (e.key === 'Escape') {
+            modalOverlay.classList.remove('active');
+            setTimeout(() => {
+                document.body.removeChild(modalOverlay);
+                document.removeEventListener('keydown', escapeHandler);
+            }, 300);
+        }
+    };
+    
+    document.addEventListener('keydown', escapeHandler);
 }
 
 // Smooth Scrolling
