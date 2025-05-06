@@ -6,135 +6,181 @@
     <title>IT Crossword Puzzle Challenge</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             margin: 0;
             padding: 20px;
-            background-color: #f5f5f5;
-            color: #333;
+            background-color: #1a1a2e;
+            color: #e6e6e6;
+            background-image: radial-gradient(circle at 10% 20%, #1a1a2e 0%, #16213e 90%);
         }
         .challenge-container {
-            max-width: 900px;
+            max-width: 1000px;
             margin: 0 auto;
-            background-color: #fff;
+            background-color: rgba(255, 255, 255, 0.1);
             padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
         h1 {
             color: #ff6200;
             text-align: center;
             margin-bottom: 30px;
+            font-size: 2.2rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            letter-spacing: 1px;
         }
         .instructions {
-            background-color: #f9f9f9;
+            background-color: rgba(255, 255, 255, 0.05);
             padding: 20px;
-            border-radius: 5px;
+            border-radius: 8px;
             margin-bottom: 30px;
+            border-left: 4px solid #ff6200;
         }
         .crossword-container {
             display: flex;
             flex-wrap: wrap;
-            gap: 30px;
+            gap: 40px;
             margin-bottom: 30px;
+            justify-content: center;
         }
         .crossword-grid {
             flex: 1;
-            min-width: 400px;
+            min-width: 450px;
         }
         .crossword-clues {
             flex: 1;
-            min-width: 300px;
+            min-width: 350px;
         }
         .grid {
             display: grid;
-            grid-template-columns: repeat(15, 30px);
-            grid-template-rows: repeat(15, 30px);
-            gap: 1px;
+            grid-template-columns: repeat(12, 38px);
+            grid-template-rows: repeat(12, 38px);
+            gap: 2px;
             margin-bottom: 20px;
+            justify-content: center;
         }
         .cell {
-            width: 30px;
-            height: 30px;
-            border: 1px solid #ddd;
+            width: 38px;
+            height: 38px;
+            border: 1px solid #4a4e69;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
-            background-color: #fff;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            transition: all 0.2s ease;
         }
         .cell.black {
-            background-color: #333;
+            background-color: #0f3460;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
         }
         .cell-number {
             position: absolute;
-            top: 1px;
-            left: 2px;
-            font-size: 10px;
-            color: #666;
+            top: 2px;
+            left: 3px;
+            font-size: 12px;
+            color: #ff9e00;
+            font-weight: bold;
         }
         .cell input {
             width: 100%;
             height: 100%;
             border: none;
             text-align: center;
-            font-size: 16px;
+            font-size: 20px;
+            font-weight: bold;
             text-transform: uppercase;
             background: transparent;
+            color: #fff;
         }
         .cell input:focus {
             outline: 2px solid #ff6200;
+            background-color: rgba(255, 98, 0, 0.2);
+            box-shadow: 0 0 10px rgba(255, 98, 0, 0.5);
+        }
+        .cell:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 8px rgba(255, 98, 0, 0.4);
         }
         .clue-list {
             margin-bottom: 20px;
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 8px;
         }
         .clue-list h3 {
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             color: #ff6200;
+            font-size: 1.3rem;
+            border-bottom: 2px solid rgba(255, 98, 0, 0.3);
+            padding-bottom: 5px;
         }
         .clue-list ol {
             padding-left: 25px;
         }
         .clue-list li {
-            margin-bottom: 8px;
+            margin-bottom: 12px;
+            transition: all 0.2s ease;
+            padding: 5px;
+            border-radius: 4px;
+        }
+        .clue-list li:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
         }
         .hint {
-            background-color: #fffde7;
-            padding: 10px;
+            background-color: rgba(255, 214, 0, 0.1);
+            padding: 15px;
             border-left: 4px solid #ffd600;
             margin-top: 20px;
+            border-radius: 0 8px 8px 0;
         }
         .solution {
             display: none;
-            background-color: #e8f5e9;
+            background-color: rgba(76, 175, 80, 0.1);
             padding: 15px;
-            border-radius: 5px;
+            border-radius: 8px;
             margin-top: 20px;
             border-left: 4px solid #4caf50;
         }
         .success-message {
             display: none;
-            background-color: #e8f5e9;
-            color: #2e7d32;
-            padding: 15px;
-            border-radius: 5px;
+            background-color: rgba(76, 175, 80, 0.2);
+            color: #4caf50;
+            padding: 20px;
+            border-radius: 8px;
             margin-top: 20px;
             text-align: center;
             font-weight: bold;
+            animation: pulse 2s infinite;
+            box-shadow: 0 0 15px rgba(76, 175, 80, 0.5);
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(76, 175, 80, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
         }
         .button-group {
             display: flex;
-            gap: 10px;
-            margin-top: 20px;
+            gap: 15px;
+            margin-top: 25px;
             justify-content: center;
         }
         .btn {
-            padding: 10px 15px;
+            padding: 12px 20px;
             border: none;
-            border-radius: 4px;
+            border-radius: 50px;
             cursor: pointer;
-            font-size: 14px;
-            transition: background-color 0.3s;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         .btn-check {
             background-color: #4caf50;
@@ -142,6 +188,8 @@
         }
         .btn-check:hover {
             background-color: #45a049;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
         }
         .btn-hint {
             background-color: #2196f3;
@@ -149,6 +197,8 @@
         }
         .btn-hint:hover {
             background-color: #0b7dda;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
         }
         .btn-reset {
             background-color: #f44336;
@@ -156,25 +206,33 @@
         }
         .btn-reset:hover {
             background-color: #d32f2f;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
         }
         .progress-bar {
             width: 100%;
-            height: 20px;
-            background-color: #f0f0f0;
-            border-radius: 10px;
+            height: 25px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
             margin-bottom: 20px;
             overflow: hidden;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
         }
         .progress-fill {
             height: 100%;
-            background-color: #4caf50;
+            background: linear-gradient(90deg, #4caf50, #8bc34a);
             width: 0%;
-            transition: width 0.3s ease;
+            transition: width 0.5s ease;
+            border-radius: 50px;
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
         }
         .progress-text {
             text-align: center;
             font-weight: bold;
             margin-bottom: 20px;
+            color: #8bc34a;
+            font-size: 1.1rem;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
         }
     </style>
 </head>
@@ -210,26 +268,21 @@
                 <div class="clue-list">
                     <h3>Across</h3>
                     <ol>
-                        <li>A high-level programming language known for its readability and simplicity</li>
-                        <li>A collection of related data items stored under a single name</li>
-                        <li>A network device that forwards data packets between computer networks</li>
-                        <li>A software development methodology emphasizing iterative development</li>
-                        <li>A type of database that uses a structure of tables with rows and columns</li>
-                        <li>A programming error that causes unexpected results</li>
-                        <li>A global system of interconnected computer networks</li>
+                        <li value="1">A popular programming language used for web development</li>
+                        <li value="2">A network device that forwards data packets between computer networks</li>
+                        <li value="3">A global system of interconnected computer networks</li>
+                        <li value="4">A set of instructions that a computer follows to perform a task</li>
+                        <li value="5">A software development methodology emphasizing iterative development</li>
                     </ol>
                 </div>
                 
                 <div class="clue-list">
                     <h3>Down</h3>
                     <ol>
-                        <li>A set of step-by-step instructions to solve a problem</li>
-                        <li>A process of finding and fixing errors in software</li>
-                        <li>A version control system for tracking changes in source code</li>
-                        <li>A practice of automating software delivery processes</li>
-                        <li>A method to protect data by converting it into a code</li>
-                        <li>A type of software that allows interaction with a computer's hardware</li>
-                        <li>A programming paradigm based on "objects" containing data and methods</li>
+                        <li value="6">A step-by-step procedure for solving a problem</li>
+                        <li value="7">A high-level programming language known for its readability and simplicity</li>
+                        <li value="8">A structured collection of data stored electronically</li>
+                        <li value="9">A network of remote servers to store, manage, and process data</li>
                     </ol>
                 </div>
             </div>
@@ -239,15 +292,18 @@
             <h3>Hint</h3>
             <p>Here are some hints for the more challenging words:</p>
             <ul>
-                <li>Across 1: This programming language is named after a British comedy group</li>
-                <li>Across 4: This methodology has "sprints" and "stand-up meetings"</li>
-                <li>Down 3: This version control system has "commit", "push", and "pull" operations</li>
-                <li>Down 4: This practice is often paired with "Continuous Integration"</li>
+                <li>Across 1: Named after a type of coffee, starts with J</li>
+                <li>Across 3: Often called the "information superhighway", starts with I</li>
+                <li>Down 6: A step-by-step procedure for solving problems, starts with A</li>
+                <li>Down 7: Named after a British comedy group, starts with P</li>
+                <li>Down 8: Where you store and organize information, starts with D</li>
+                <li>Down 9: Services delivered over the internet instead of locally, starts with C</li>
             </ul>
         </div>
         
         <div id="success-message" class="success-message">
-            <p>Congratulations! You've successfully completed the IT Crossword Puzzle.</p>
+            <p>🎉 Congratulations! 🎉</p>
+            <p>You've successfully completed the IT Crossword Puzzle.</p>
             <p>The challenge password is: <strong>TechTerms123</strong></p>
         </div>
     </div>
@@ -257,52 +313,44 @@
             // Crossword puzzle data
             const puzzleData = {
                 grid: [
-                    "P,Y,T,H,O,N,#,A,#,G,#,D,#,#,#",
-                    "#,#,#,#,#,#,L,#,#,I,#,E,#,#,#",
-                    "#,#,#,#,#,#,G,#,#,T,#,B,#,#,#",
-                    "A,R,R,A,Y,#,O,#,#,#,#,U,#,#,#",
-                    "#,#,O,#,#,#,R,O,U,T,E,R,#,#,#",
-                    "#,#,U,#,#,#,I,#,#,#,N,#,#,#,#",
-                    "#,#,T,#,#,#,T,#,#,#,C,#,#,#,#",
-                    "#,A,G,I,L,E,H,#,#,#,R,#,#,#,#",
-                    "#,#,#,#,#,#,M,#,#,#,Y,#,#,#,#",
-                    "R,E,L,A,T,I,O,N,A,L,P,#,#,#,#",
-                    "#,#,#,#,#,#,#,#,#,#,T,#,#,#,#",
-                    "#,#,#,#,#,#,#,#,#,#,I,#,#,#,#",
-                    "B,U,G,#,#,#,#,#,#,#,O,#,#,#,#",
-                    "#,#,#,#,#,#,#,#,#,#,N,#,#,#,#",
-                    "I,N,T,E,R,N,E,T,#,#,#,#,#,#,#"
+                    "#,#,#,J,A,V,A,#,#,#,#,#",
+                    "#,#,#,#,#,#,L,#,#,P,#,#",
+                    "#,#,#,#,#,#,G,#,#,Y,#,#",
+                    "#,#,#,#,#,#,O,#,#,T,#,#",
+                    "#,R,O,U,T,E,R,#,#,H,#,D",
+                    "#,#,#,#,#,#,I,#,#,O,#,A",
+                    "#,#,C,#,I,N,T,E,R,N,E,T",
+                    "#,#,L,#,#,#,H,#,#,#,#,A",
+                    "P,R,O,G,R,A,M,#,#,#,#,B",
+                    "#,#,U,#,#,#,#,#,#,#,#,A",
+                    "#,#,D,#,#,#,#,#,#,#,#,S",
+                    "#,#,#,#,#,#,#,A,G,I,L,E"
                 ],
                 answers: {
                     across: {
-                        1: "PYTHON",
-                        4: "ARRAY",
-                        5: "ROUTER",
-                        8: "AGILE",
-                        10: "RELATIONAL",
-                        13: "BUG",
-                        15: "INTERNET"
+                        1: "JAVA",
+                        2: "ROUTER",
+                        3: "INTERNET",
+                        4: "PROGRAM",
+                        5: "AGILE"
                     },
                     down: {
-                        1: "ALGORITHM",
-                        2: "DEBUGGING",
-                        3: "GIT",
-                        4: "DEVOPS",
-                        6: "ENCRYPTION",
-                        7: "DRIVER",
-                        9: "OBJECT"
+                        6: "ALGORITHM",
+                        7: "PYTHON",
+                        8: "DATABASE",
+                        9: "CLOUD"
                     }
                 },
                 cellNumbers: {
-                    "0,0": 1,
-                    "0,6": 2,
-                    "0,8": 3,
-                    "3,0": 4,
-                    "4,4": 5,
-                    "7,1": 8,
-                    "9,0": 10,
-                    "12,0": 13,
-                    "14,0": 15
+                    "0,3": 1,
+                    "4,1": 2,
+                    "6,4": 3,
+                    "8,0": 4,
+                    "11,7": 5,
+                    "1,6": 6,
+                    "1,9": 7,
+                    "4,11": 8,
+                    "6,2": 9
                 }
             };
             
@@ -315,6 +363,38 @@
             const hint = document.getElementById('hint');
             const checkBtn = document.getElementById('check-btn');
             const resetBtn = document.getElementById('reset-btn');
+            
+            // Add some visual flair with a confetti effect for success
+            function showConfetti() {
+                for (let i = 0; i < 150; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.style.position = 'fixed';
+                    confetti.style.width = Math.random() * 10 + 5 + 'px';
+                    confetti.style.height = Math.random() * 10 + 5 + 'px';
+                    confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                    confetti.style.borderRadius = '50%';
+                    confetti.style.top = '-10px';
+                    confetti.style.left = Math.random() * window.innerWidth + 'px';
+                    confetti.style.zIndex = '1000';
+                    confetti.style.opacity = Math.random() * 0.5 + 0.5;
+                    confetti.style.animation = `fall ${Math.random() * 3 + 2}s linear forwards`;
+                    document.body.appendChild(confetti);
+                    
+                    setTimeout(() => {
+                        document.body.removeChild(confetti);
+                    }, 5000);
+                }
+                
+                document.head.insertAdjacentHTML('beforeend', `
+                    <style>
+                        @keyframes fall {
+                            to {
+                                transform: translateY(100vh) rotate(720deg);
+                            }
+                        }
+                    </style>
+                `);
+            }
             
             // Create the grid cells
             for (let row = 0; row < puzzleData.grid.length; row++) {
@@ -465,6 +545,7 @@
                 // Check if all cells are correct
                 if (correctCount === totalCells) {
                     successMessage.style.display = 'block';
+                    showConfetti();
                 } else {
                     successMessage.style.display = 'none';
                 }
