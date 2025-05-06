@@ -60,3 +60,4 @@ Desktop.ini
 *.swp
 *.swo
 treasure_hunt.db
+.roo/mcp.json
