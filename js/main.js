@@ -77,6 +77,9 @@ function startCountdown(config) {
     // Save the hunt configuration to localStorage for error recovery
     localStorage.setItem('huntConfig', JSON.stringify(config));
     
+    // Initialize the countdown interval variable
+    let countdownInterval;
+    
     const countdownFunction = function() {
         // Get current date and time
         const now = new Date().getTime();
@@ -98,7 +101,9 @@ function startCountdown(config) {
         
         // If the countdown is finished, display countdown until hunt ends and enable the start button
         if (distance < 0) {
-            clearInterval(countdownInterval);
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+            }
             
             // Calculate end time (start time + duration)
             const endTime = new Date(eventDate.getTime() + (config.duration_minutes * 60000));
@@ -173,7 +178,7 @@ function startCountdown(config) {
     countdownFunction();
     
     // Update the countdown every 1 second
-    const countdownInterval = setInterval(countdownFunction, 1000);
+    countdownInterval = setInterval(countdownFunction, 1000);
 }
 
 // Registration Link
