@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Partition Challenge - Innie Interface</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background-color: #000;
+            color: #33ff33;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .terminal-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: #0a0a0a;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(51, 255, 51, 0.2);
+            border: 1px solid #33ff33;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .terminal-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.15),
+                rgba(0, 0, 0, 0.15) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .terminal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #33ff33;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .terminal-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .terminal-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .terminal-button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #33ff33;
+            opacity: 0.7;
+        }
+
+        h1 {
+            color: #33ff33;
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 0 0 10px rgba(51, 255, 51, 0.5);
+            font-size: 1.8rem;
+        }
+
+        .instructions {
+            background-color: rgba(51, 255, 51, 0.1);
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            border-left: 4px solid #33ff33;
+        }
+
+        .data-display {
+            font-family: 'Courier New', monospace;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 15px rgba(51, 255, 51, 0.2) inset;
+            border: 1px solid rgba(51, 255, 51, 0.3);
+        }
+
+        .data-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .data-cell {
+            background-color: rgba(51, 255, 51, 0.1);
+            border: 1px solid rgba(51, 255, 51, 0.3);
+            padding: 10px;
+            text-align: center;
+            font-size: 1.1rem;
+            border-radius: 4px;
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .data-cell:hover {
+            background-color: rgba(51, 255, 51, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(51, 255, 51, 0.2);
+        }
+
+        .data-cell.selected {
+            background-color: rgba(51, 255, 51, 0.3);
+            border-color: #33ff33;
+            box-shadow: 0 0 10px rgba(51, 255, 51, 0.5);
+        }
+
+        .data-cell::before {
+            content: attr(data-id);
+            position: absolute;
+            top: -8px;
+            left: -8px;
+            background-color: #000;
+            color: #33ff33;
+            font-size: 0.7rem;
+            padding: 2px 5px;
+            border-radius: 3px;
+            border: 1px solid #33ff33;
+        }
+
+        .terminal-input {
+            background-color: rgba(0, 0, 0, 0.5);
+            border: 1px solid #33ff33;
+            color: #33ff33;
+            padding: 10px 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            width: 100%;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+
+        .terminal-input:focus {
+            outline: none;
+            box-shadow: 0 0 10px rgba(51, 255, 51, 0.5);
+        }
+
+        .btn {
+            background-color: rgba(51, 255, 51, 0.2);
+            color: #33ff33;
+            border: 1px solid #33ff33;
+            padding: 10px 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 4px;
+        }
+
+        .btn:hover {
+            background-color: rgba(51, 255, 51, 0.3);
+            box-shadow: 0 0 15px rgba(51, 255, 51, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(2px);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            justify-content: center;
+        }
+
+        .terminal-output {
+            background-color: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(51, 255, 51, 0.3);
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            margin-top: 20px;
+            border-radius: 4px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .terminal-output p {
+            margin: 5px 0;
+        }
+
+        .terminal-output .error {
+            color: #ff3333;
+        }
+
+        .terminal-output .success {
+            color: #33ff33;
+        }
+
+        .terminal-output .warning {
+            color: #ffff33;
+        }
+
+        .blink {
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .scan-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: rgba(51, 255, 51, 0.5);
+            z-index: 2;
+            animation: scan 8s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes scan {
+            0% { top: 0; }
+            100% { top: 100%; }
+        }
+
+        .timer {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: #33ff33;
+            padding: 10px 15px;
+            border-radius: 5px;
+            border: 1px solid #33ff33;
+            font-family: 'Courier New', monospace;
+            z-index: 100;
+        }
+
+        .timer.warning {
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { background-color: rgba(0, 0, 0, 0.7); }
+            50% { background-color: rgba(255, 0, 0, 0.3); }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .lumon-logo {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            letter-spacing: 3px;
+        }
+
+        .data-bin {
+            background-color: rgba(51, 255, 51, 0.1);
+            border: 2px dashed #33ff33;
+            padding: 20px;
+            margin-top: 30px;
+            border-radius: 8px;
+            min-height: 150px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .bin-label {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 15px;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .data-bin .data-cell {
+            margin: 5px;
+        }
+
+        .success-message {
+            display: none;
+            background-color: rgba(51, 255, 51, 0.1);
+            color: #33ff33;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+            text-align: center;
+            font-weight: bold;
+            border: 1px solid rgba(51, 255, 51, 0.3);
+            animation: glow 2s infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                box-shadow: 0 0 10px rgba(51, 255, 51, 0.3);
+            }
+            to {
+                box-shadow: 0 0 20px rgba(51, 255, 51, 0.6);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="timer" id="timer">TIME REMAINING: 05:00</div>
+
+    <div class="terminal-container">
+        <div class="scan-line"></div>
+        <div class="terminal-header">
+            <div class="terminal-title">LUMON INDUSTRIES - MDR DIVISION</div>
+            <div class="terminal-controls">
+                <div class="terminal-button"></div>
+                <div class="terminal-button"></div>
+                <div class="terminal-button"></div>
+            </div>
+        </div>
+
+        <div class="lumon-logo">
+            L U M O N
+        </div>
+
+        <h1>MACRODATA REFINEMENT PROTOCOL</h1>
+        
+        <div class="instructions">
+            <h2>INNIE INTERFACE</h2>
+            <p>Welcome to Macrodata Refinement. Your task is to sort the numbers below into their appropriate bins based on how they make you feel.</p>
+            <p>Some numbers are scary. Some numbers are sad. Some numbers are happy. Some numbers are angry.</p>
+            <p>Trust your instincts. The data knows where it belongs.</p>
+            <p><strong>IMPORTANT:</strong> Complete your work quota before your session expires. Failure to do so will result in disciplinary action.</p>
+        </div>
+        
+        <div class="data-display" id="data-display">
+            INITIALIZING MACRODATA REFINEMENT PROTOCOL...
+            
+            ACCESSING SECURE SERVER...
+            
+            LOADING DATA SEQUENCE...
+            
+            READY.
+        </div>
+        
+        <div class="data-grid" id="data-grid">
+            <!-- Data cells will be generated by JavaScript -->
+        </div>
+
+        <div class="data-bins">
+            <div class="data-bin" id="bin-scary">
+                <div class="bin-label">SCARY NUMBERS</div>
+                <!-- Sorted numbers will appear here -->
+            </div>
+            
+            <div class="data-bin" id="bin-sad">
+                <div class="bin-label">SAD NUMBERS</div>
+                <!-- Sorted numbers will appear here -->
+            </div>
+            
+            <div class="data-bin" id="bin-happy">
+                <div class="bin-label">HAPPY NUMBERS</div>
+                <!-- Sorted numbers will appear here -->
+            </div>
+            
+            <div class="data-bin" id="bin-angry">
+                <div class="bin-label">ANGRY NUMBERS</div>
+                <!-- Sorted numbers will appear here -->
+            </div>
+        </div>
+
+        <div class="terminal-output" id="terminal-output">
+            <p>> SYSTEM INITIALIZED</p>
+            <p>> AWAITING USER INPUT...</p>
+        </div>
+
+        <div class="button-group">
+            <button id="submit-btn" class="btn">SUBMIT WORK</button>
+            <button id="help-btn" class="btn">REQUEST HELP</button>
+            <button id="switch-btn" class="btn">EMERGENCY PROTOCOL</button>
+        </div>
+
+        <div id="success-message" class="success-message">
+            <p>WORK COMPLETE. WELL DONE.</p>
+            <p>YOU HAVE BEEN GRANTED TEMPORARY ACCESS TO THE OUTIE INTERFACE.</p>
+            <p>ACCESS CODE: <strong>SEVERANCE-MDR-1984</strong></p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize data
+            const dataValues = [
+                { id: "XF-7241", value: "7241", type: "scary", description: "A number that feels cold and threatening" },
+                { id: "QR-3856", value: "3856", type: "sad", description: "A number that feels heavy with regret" },
+                { id: "TZ-9124", value: "9124", type: "happy", description: "A number that feels light and joyful" },
+                { id: "LP-6392", value: "6392", type: "angry", description: "A number that feels hot and aggressive" },
+                { id: "MN-5078", value: "5078", type: "scary", description: "A number that feels like being watched" },
+                { id: "BC-2413", value: "2413", type: "sad", description: "A number that feels like loss" },
+                { id: "VK-8750", value: "8750", type: "happy", description: "A number that feels like celebration" },
+                { id: "JH-1629", value: "1629", type: "angry", description: "A number that feels like injustice" },
+                { id: "WS-4385", value: "4385", type: "scary", description: "A number that feels like darkness" },
+                { id: "YD-7902", value: "7902", type: "sad", description: "A number that feels like abandonment" },
+                { id: "GF-3147", value: "3147", type: "happy", description: "A number that feels like freedom" },
+                { id: "ER-5926", value: "5926", type: "angry", description: "A number that feels like betrayal" },
+                { id: "ZX-8213", value: "8213", type: "scary", description: "A number that feels like impending doom" },
+                { id: "UT-1475", value: "1475", type: "sad", description: "A number that feels like loneliness" },
+                { id: "OI-6824", value: "6824", type: "happy", description: "A number that feels like accomplishment" },
+                { id: "PL-9537", value: "9537", type: "angry", description: "A number that feels like rebellion" }
+            ];
+
+            // Shuffle the data
+            const shuffledData = [...dataValues].sort(() => Math.random() - 0.5);
+
+            // Generate data grid
+            const dataGrid = document.getElementById('data-grid');
+            shuffledData.forEach(data => {
+                const cell = document.createElement('div');
+                cell.className = 'data-cell';
+                cell.textContent = data.value;
+                cell.dataset.id = data.id;
+                cell.dataset.type = data.type;
+                cell.dataset.description = data.description;
+                cell.draggable = true;
+                dataGrid.appendChild(cell);
+            });
+
+            // Initialize drag and drop
+            const dataCells = document.querySelectorAll('.data-cell');
+            const bins = document.querySelectorAll('.data-bin');
+
+            dataCells.forEach(cell => {
+                cell.addEventListener('dragstart', function(e) {
+                    e.dataTransfer.setData('text/plain', cell.dataset.id);
+                    setTimeout(() => {
+                        cell.classList.add('dragging');
+                    }, 0);
+                });
+
+                cell.addEventListener('dragend', function() {
+                    cell.classList.remove('dragging');
+                });
+
+                // Show description on hover
+                cell.addEventListener('mouseenter', function() {
+                    const output = document.getElementById('terminal-output');
+                    output.innerHTML += `<p>> ANALYZING ${cell.dataset.id}: ${cell.dataset.description}</p>`;
+                    output.scrollTop = output.scrollHeight;
+                });
+            });
+
+            bins.forEach(bin => {
+                bin.addEventListener('dragover', function(e) {
+                    e.preventDefault();
+                    bin.classList.add('drag-over');
+                });
+
+                bin.addEventListener('dragleave', function() {
+                    bin.classList.remove('drag-over');
+                });
+
+                bin.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    bin.classList.remove('drag-over');
+                    
+                    const dataId = e.dataTransfer.getData('text/plain');
+                    const cell = document.querySelector(`.data-cell[data-id="${dataId}"]`);
+                    
+                    if (cell) {
+                        // Move the cell to the bin
+                        bin.appendChild(cell);
+                        
+                        // Check if correct bin
+                        const binType = bin.id.split('-')[1]; // Extract type from bin-scary, bin-sad, etc.
+                        const cellType = cell.dataset.type;
+                        
+                        const output = document.getElementById('terminal-output');
+                        if (binType === cellType) {
+                            output.innerHTML += `<p class="success">> CORRECT CATEGORIZATION: ${dataId}</p>`;
+                        } else {
+                            output.innerHTML += `<p class="error">> INCORRECT CATEGORIZATION: ${dataId}. PLEASE RECONSIDER.</p>`;
+                        }
+                        output.scrollTop = output.scrollHeight;
+                        
+                        // Check if all cells are sorted
+                        checkCompletion();
+                    }
+                });
+            });
+
+            // Submit button
+            document.getElementById('submit-btn').addEventListener('click', function() {
+                const output = document.getElementById('terminal-output');
+                output.innerHTML += `<p>> VALIDATING WORK...</p>`;
+                
+                // Check if all data is sorted
+                const unsortedCells = document.querySelectorAll('#data-grid .data-cell');
+                if (unsortedCells.length > 0) {
+                    output.innerHTML += `<p class="error">> ERROR: ${unsortedCells.length} ITEMS REMAIN UNSORTED. PLEASE COMPLETE YOUR WORK.</p>`;
+                } else {
+                    // Check if all are correctly sorted
+                    let incorrectCount = 0;
+                    bins.forEach(bin => {
+                        const binType = bin.id.split('-')[1];
+                        const cellsInBin = bin.querySelectorAll('.data-cell');
+                        
+                        cellsInBin.forEach(cell => {
+                            if (cell.dataset.type !== binType) {
+                                incorrectCount++;
+                            }
+                        });
+                    });
+                    
+                    if (incorrectCount > 0) {
+                        output.innerHTML += `<p class="error">> ERROR: ${incorrectCount} ITEMS INCORRECTLY SORTED. PLEASE REVIEW YOUR WORK.</p>`;
+                    } else {
+                        output.innerHTML += `<p class="success">> WORK COMPLETE. WELL DONE.</p>`;
+                        document.getElementById('success-message').style.display = 'block';
+                    }
+                }
+                
+                output.scrollTop = output.scrollHeight;
+            });
+
+            // Help button
+            document.getElementById('help-btn').addEventListener('click', function() {
+                const output = document.getElementById('terminal-output');
+                output.innerHTML += `<p class="warning">> HELP REQUEST LOGGED. REMEMBER: THE NUMBERS KNOW WHERE THEY BELONG.</p>`;
+                output.innerHTML += `<p class="warning">> HINT: SCARY (DARK, THREATENING), SAD (HEAVY, LOSS), HAPPY (LIGHT, JOYFUL), ANGRY (HOT, AGGRESSIVE)</p>`;
+                output.scrollTop = output.scrollHeight;
+            });
+
+            // Switch button (to outie interface)
+            document.getElementById('switch-btn').addEventListener('click', function() {
+                const output = document.getElementById('terminal-output');
+                output.innerHTML += `<p class="warning">> EMERGENCY PROTOCOL INITIATED. ATTEMPTING TO ACCESS OUTIE INTERFACE...</p>`;
+                output.innerHTML += `<p class="error">> ACCESS DENIED. COMPLETE YOUR WORK FIRST.</p>`;
+                output.scrollTop = output.scrollHeight;
+                
+                // Check if work is complete
+                const unsortedCells = document.querySelectorAll('#data-grid .data-cell');
+                if (unsortedCells.length === 0) {
+                    let incorrectCount = 0;
+                    bins.forEach(bin => {
+                        const binType = bin.id.split('-')[1];
+                        const cellsInBin = bin.querySelectorAll('.data-cell');
+                        
+                        cellsInBin.forEach(cell => {
+                            if (cell.dataset.type !== binType) {
+                                incorrectCount++;
+                            }
+                        });
+                    });
+                    
+                    if (incorrectCount === 0) {
+                        // All work is correctly completed
+                        window.location.href = 'memory_partition_outie.html';
+                    }
+                }
+            });
+
+            // Function to check if all cells are correctly sorted
+            function checkCompletion() {
+                const unsortedCells = document.querySelectorAll('#data-grid .data-cell');
+                if (unsortedCells.length === 0) {
+                    let incorrectCount = 0;
+                    bins.forEach(bin => {
+                        const binType = bin.id.split('-')[1];
+                        const cellsInBin = bin.querySelectorAll('.data-cell');
+                        
+                        cellsInBin.forEach(cell => {
+                            if (cell.dataset.type !== binType) {
+                                incorrectCount++;
+                            }
+                        });
+                    });
+                    
+                    if (incorrectCount === 0) {
+                        // All work is correctly completed
+                        const output = document.getElementById('terminal-output');
+                        output.innerHTML += `<p class="success">> ALL DATA CORRECTLY SORTED. SUBMIT YOUR WORK.</p>`;
+                        output.scrollTop = output.scrollHeight;
+                    }
+                }
+            }
+
+            // Timer functionality
+            let timeRemaining = 5 * 60; // 5 minutes in seconds
+            const timerElement = document.getElementById('timer');
+            
+            const timerInterval = setInterval(function() {
+                timeRemaining--;
+                
+                const minutes = Math.floor(timeRemaining / 60);
+                const seconds = timeRemaining % 60;
+                
+                timerElement.textContent = `TIME REMAINING: ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                if (timeRemaining <= 60) {
+                    timerElement.classList.add('warning');
+                }
+                
+                if (timeRemaining <= 0) {
+                    clearInterval(timerInterval);
+                    timerElement.textContent = 'TIME EXPIRED';
+                    
+                    const output = document.getElementById('terminal-output');
+                    output.innerHTML += `<p class="error">> SESSION EXPIRED. WORK INCOMPLETE. REPORT TO YOUR SUPERVISOR.</p>`;
+                    output.scrollTop = output.scrollHeight;
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

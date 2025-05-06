@@ -126,6 +126,16 @@
       "category": "Artificial Intelligence",
       "file": "ai_whisperer.html",
       "hint": "Try different command patterns and look for subtle hints in the AI's responses"
+    },
+    {
+      "id": "challenge13",
+      "title": "Memory Partition",
+      "description": "Navigate between severed interfaces to reconcile partitioned data",
+      "difficulty": "Intermediate",
+      "points": 300,
+      "category": "Data Analysis",
+      "file": "memory_partition_innie.html",
+      "hint": "Look for patterns in the data prefixes and how they relate to emotional categories"
     }
   ],
   "progression": {
@@ -141,7 +151,8 @@
       "challenge9": ["challenge6"],
       "challenge10": ["challenge9"],
       "challenge11": ["challenge10"],
-      "challenge12": ["challenge11"]
+      "challenge12": ["challenge11"],
+      "challenge13": ["challenge12"]
     }
   },
   "scoring": {

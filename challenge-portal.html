@@ -94,6 +94,11 @@
                             <span class="challenge-title">AI Whisperer</span>
                             <span class="challenge-status pending">Pending</span>
                         </li>
+                        <li class="challenge-item" data-challenge="challenge13">
+                            <span class="challenge-number">13</span>
+                            <span class="challenge-title">Memory Partition</span>
+                            <span class="challenge-status pending">Pending</span>
+                        </li>
                     </ul>
                 </div>
                 <div class="leaderboard-mini">
@@ -110,7 +115,7 @@
             <div class="challenge-area fade-in">
                 <div id="welcome-screen" class="challenge-screen active">
                     <h2 class="gradient-text">Welcome to the CTF Treasure Hunt!</h2>
-                    <p>You're about to embark on a journey through 11 interactive technical challenges that will test your knowledge in various areas of IT, networking, security, web development, and programming.</p>
+                    <p>You're about to embark on a journey through 13 interactive technical challenges that will test your knowledge in various areas of IT, networking, security, web development, and programming.</p>
                     <p>All challenges can be completed directly in your browser, making them accessible to team members with diverse technical backgrounds.</p>
                     <p>All challenges are unlocked and available from the start. Click on any challenge in the sidebar to begin. Good luck!</p>
                     <div class="rules-reminder shine-effect">
@@ -486,6 +491,37 @@
                             <div class="form-group">
                                 <label for="challenge12-answer">Enter the password:</label>
                                 <input type="text" id="challenge12-answer" name="answer" required>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn-submit">Submit Answer</button>
+                                <button type="button" class="btn-hint">Request Hint</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Challenge 13 screen (initially hidden) -->
+                <div id="challenge13" class="challenge-screen">
+                    <div class="challenge-header">
+                        <h2 class="gradient-text">Challenge 13: Memory Partition</h2>
+                        <div class="challenge-meta">
+                            <span class="difficulty">Intermediate</span>
+                            <span class="points">300 points</span>
+                            <span class="category">Data Analysis</span>
+                        </div>
+                    </div>
+                    <div class="challenge-description shine-effect">
+                        <p>Your task is to navigate between severed interfaces to reconcile partitioned data.</p>
+                        <p>Open the challenge file below and follow the instructions to find the password.</p>
+                        <a href="challenges/memory_partition_innie.html" class="download-btn" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Open Challenge
+                        </a>
+                    </div>
+                    <div class="challenge-submission shine-effect">
+                        <form id="challenge13-form" class="submission-form">
+                            <div class="form-group">
+                                <label for="challenge13-answer">Enter the password:</label>
+                                <input type="text" id="challenge13-answer" name="answer" required>
                             </div>
                             <div class="form-actions">
                                 <button type="submit" class="btn-submit">Submit Answer</button>

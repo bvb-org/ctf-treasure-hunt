@@ -139,6 +139,13 @@ const challengeData = {
         title: "AI Whisperer",
         answer: "DEBUGADMIN2025",
         points: 250,
+        nextChallenges: ["challenge13"]
+    },
+    challenge13: {
+        id: "challenge13",
+        title: "Memory Partition",
+        answer: "REINTEGRATION-COMPLETE",
+        points: 300,
         nextChallenges: []
     }
 };
@@ -557,6 +564,9 @@ function requestHint(challengeId) {
                 break;
             case "challenge12":
                 hint = "Try using special commands that start with '/' like '/system', '/admin', or '/version'. Pay attention to capitalized words in the AI's responses.";
+                break;
+            case "challenge13":
+                hint = "Look for patterns in the data prefixes (XF, QR, TZ, etc.) and how they relate to emotional categories. You need to switch between the Innie and Outie interfaces to find the solution.";
                 break;
         }
         
